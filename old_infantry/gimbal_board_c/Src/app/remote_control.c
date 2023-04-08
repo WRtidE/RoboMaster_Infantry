@@ -20,7 +20,7 @@
 #include "remote_control.h"
 #include "motor.h"
 #include "main.h"
-//cxzflag
+
 
 extern UART_HandleTypeDef huart3;
 extern DMA_HandleTypeDef hdma_usart3_rx;
