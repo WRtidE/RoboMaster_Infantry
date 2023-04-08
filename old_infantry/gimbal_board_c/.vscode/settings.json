@@ -2,6 +2,9 @@
   "files.associations": {
     "bsp_usart.h": "c",
     "BSP_RC.H": "cpp",
-    "remote_control.h": "c"
+    "remote_control.h": "c",
+    "motor.h": "c",
+    "struct_typedef.h": "c",
+    "instask.h": "c"
   }
 }

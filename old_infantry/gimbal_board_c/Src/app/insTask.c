@@ -1,4 +1,5 @@
- #include "INSTask.h"
+# include "INSTask.h"
+# include "motor.h"
 
 float Q_angle=0.005;//角度方差
 	float Q_gyro_bias=0.004;//角速度方差
@@ -51,7 +52,7 @@ void Kalman_Fliter(float *gx, float *ax)
 
 	
 }
-  void INS_Task(void const *pvParameters)   
+void insTask(void const * argument) 
 {
   
      osDelay(7);
@@ -66,12 +67,21 @@ void Kalman_Fliter(float *gx, float *ax)
     {
        BMI088_read(ins_data.accel, ins_data.gyro, &ins_data.temp);
        imu_temp_control(ins_data.temp);
-			Kalman_Fliter(&ins_data.gyro[0], &ins_data.accel[0]);
-			Kalman_Fliter(&ins_data.gyro[1], &ins_data.accel[1]);
-			Kalman_Fliter(&ins_data.gyro[2], &ins_data.accel[2]);
+			// Kalman_Fliter(&ins_data.gyro[0], &ins_data.accel[0]);
+			// Kalman_Fliter(&ins_data.gyro[1], &ins_data.accel[1]);
+			// Kalman_Fliter(&ins_data.gyro[2], &ins_data.accel[2]);
+      //ins_data.accel[1] = 9.8;
        MahonyAHRSupdateIMU(ins_data.INS_quat, ins_data.gyro[0], ins_data.gyro[1], ins_data.gyro[2], ins_data.accel[0], ins_data.accel[1], ins_data.accel[2]); 
        get_angle(ins_data.INS_quat, &ins_data.angle[0], &ins_data.angle[1], &ins_data.angle[2]);
        a= uxTaskGetStackHighWaterMark( NULL );
+      //  fp32 a,b,c;
+      //  a=ins_data.accel[0];
+      //  b=ins_data.accel[1];
+      //  c=ins_data.accel[2];
+      //  ins_data.accel[0]=ins_data.accel[0]/(a+b+c)*256;
+      //  ins_data.accel[1]=ins_data.accel[1]/(a+b+c)*256;
+      //  ins_data.accel[2]=ins_data.accel[2]/(a+b+c)*256;
+       send_ins_data_to_a((int32_t)ins_data.angle[0],(int32_t)ins_data.angle[1],(int32_t)ins_data.angle[2]);
        osDelay(1);
     }
   }
@@ -299,7 +309,7 @@ void BMI088_read(fp32 *accel,fp32 *gyro,fp32* temp)
   {
      int cnt=0;
     fp32  gyro_offsets_sum[3];	//fp就是float类型
-    fp32  accel_offsets_sum[3];
+    fp32  accel_offsets_sum[3] = {0,0,0};
     while(cnt <= 3000)
    {
       BMI088_read(ins_data.accel,ins_data.gyro,&ins_data.temp);

@@ -1,4 +1,8 @@
 ﻿#include "motor.h"
+#include "main.h"
+#include "struct_typedef.h"
+#include "cmsis_os.h"
+
 
 CAN_TxHeaderTypeDef can1_TxHeader;
 uint8_t can1_TxData[8];
@@ -124,4 +128,41 @@ void CAN_rc_forward(int16_t ch[], char s[])
     can1_TxData[6] = 6;
     can1_TxData[7] = 7;
     HAL_CAN_AddTxMessage(&hcan1, &can1_TxHeader, can1_TxData, &send_mail_box);
+}
+
+
+
+
+
+//can发送
+void send_ins_data_to_a(int32_t ins_yaw, int32_t ins_pitch, int32_t ins_roll)
+{
+    CAN_TxHeaderTypeDef txHeader;
+    
+    uint32_t send_mail_box;
+    uint8_t tx_data[8];
+    txHeader.StdId = 0x302;
+    txHeader.ExtId = 0;
+    txHeader.RTR = CAN_RTR_DATA;
+    txHeader.IDE = CAN_ID_STD;
+    txHeader.DLC = 8;
+    ins_yaw += 180;
+    ins_pitch += 180;
+    ins_roll += 180;
+
+    tx_data[0] = (ins_yaw >> 8) & 0xFF;
+    tx_data[1] = ins_yaw & 0xFF;
+    tx_data[2] = (ins_pitch >> 8) & 0xFF;
+    tx_data[3] = ins_pitch & 0xFF;
+    tx_data[4] = (ins_roll >> 8) & 0xFF;
+    tx_data[5] = ins_roll & 0xFF;
+    tx_data[6] = 0;
+    tx_data[7] = 0;
+    HAL_CAN_AddTxMessage(&hcan1, &can1_TxHeader, tx_data, &send_mail_box);
+    osDelay(10);
+    if (HAL_CAN_AddTxMessage(&hcan1, &txHeader, tx_data, (uint32_t*)CAN_TX_MAILBOX0) != HAL_OK)
+    {
+      // 发送失败
+      Error_Handler();
+    }
 }

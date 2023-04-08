@@ -1,6 +1,7 @@
 ﻿#ifndef MOTOR_H
 #define MOTOR_H
 #include "can.h"
+#include "struct_typedef.h"
 
 extern CAN_TxHeaderTypeDef can1_TxHeader;
 extern uint8_t can1_TxData[8];
@@ -28,9 +29,13 @@ typedef enum
 } can_msg_id_e;
 
 
+
+
+
 #define CHASSIS_CAN hcan1
 #define GIMBAL_CAN hcan2
 
 extern void CAN_rc_forward(int16_t ch[], char s[]);
 extern void CAN_cmd_chassis(int16_t yaw, int16_t pitch, int16_t shoot, int16_t rev);
+extern void send_ins_data_to_a(int32_t ins_yaw, int32_t ins_pitch, int32_t ins_roll);
 #endif
