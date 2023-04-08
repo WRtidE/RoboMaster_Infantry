@@ -19,7 +19,7 @@
 
 #include "remote_control.h"
 #include "motor.h"
-
+#include "main.h"
 
 
 extern UART_HandleTypeDef huart3;
