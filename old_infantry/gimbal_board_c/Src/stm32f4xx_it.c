@@ -263,7 +263,7 @@ void USART1_IRQHandler(void)
 /**
   * @brief This function handles USART3 global interrupt.
   */
-__weak void USART3_IRQHandler(void)
+ __weak void USART3_IRQHandler(void)
 {
   /* USER CODE BEGIN USART3_IRQn 0 */
 
