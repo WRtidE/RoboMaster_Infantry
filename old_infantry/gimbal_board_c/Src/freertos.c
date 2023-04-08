@@ -167,13 +167,7 @@ void gimbal_pitch_task(void const * argument)
 
 void communication_task(void const * argument)
 {
-  // motor_info[1].set_voltage = 0;
-  // motor_info[2].set_voltage = 0;
-  // motor_info[3].set_voltage = 0;
-  // motor_info[4].set_voltage = 0;
-  // motor_info[5].set_voltage = 0;
-  // motor_info[6].set_voltage = 0;
-  // motor_info[7].set_voltage = 0;
+
   for (;;)
   {
     if (rc_ctrl.rc.ch[3] > 300)

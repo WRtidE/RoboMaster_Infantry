@@ -127,40 +127,8 @@ void communication_task(void const * argument)
 * @retval None
 */
 
-void gimbal_yaw_task(void const * argument)
-{
- 
- 
-  pid_init(&motor_pid[4], 40, 3, 0, 30000, 30000); 
-  for(;;)
-  {
-    if(can_flag==1)
-    {
-      if (rc_ctrl.rc.ch[0] >= 974 && rc_ctrl.rc.ch[0] <= 1074) 
-      {
-        if (motor_info[4].rotor_speed > 10 || motor_info[4].rotor_speed < -10) 
-        {
-          target_speed[4] = 0;
-          motor_info[4].set_voltage = pid_calc(&motor_pid[4], target_speed[4], motor_info[4].rotor_speed);
-        }
-        else
-        {
-          motor_info[4].set_voltage = 0;
-        }
-      }else
-      {
-        if(rc_ctrl.rc.ch[0]>=364&&rc_ctrl.rc.ch[0]<=1684)
-        {
-          target_speed[4] = -((rc_ctrl.rc.ch[0] - 1024) / 660 * 20); 
-          motor_info[4].set_voltage = pid_calc(&motor_pid[4], target_speed[4], motor_info[4].rotor_speed);
-        }
-      }
-      set_motor_voltage1(1, motor_info[4].set_voltage, motor_info[5].set_voltage, motor_info[6].set_voltage, 0);
-    }
-    osDelay(1);
-  }
- 
-}
+
+
 
 
 /**

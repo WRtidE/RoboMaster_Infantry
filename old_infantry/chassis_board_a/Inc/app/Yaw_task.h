@@ -10,7 +10,6 @@
 extern RC_ctrl_t rc_ctrl;		
 
 
-void Yaw_task(void const *pvParameters);
-
+void gimbal_yaw_task(void const * argument);
 
 #endif

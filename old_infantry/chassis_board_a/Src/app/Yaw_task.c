@@ -38,7 +38,7 @@ static void Yaw_mode_2();
 
 static void Yaw_can_send();
 
-void Yaw_task(void const *pvParameters)
+void gimbal_yaw_task(void const * argument)
 {
 
 	Yaw_init();
@@ -48,13 +48,12 @@ void Yaw_task(void const *pvParameters)
   {
 		Yaw_read_imu();
 
-		
-		if(rc_ctrl.rc.s[1] == 2 && ins_yaw)
+		if(rc_ctrl.rc.s[0] == 2 && ins_yaw)
 		{
 			Yaw_mode_1();
 		}
 		
-		else if(rc_ctrl.rc.s[1] == 1 || rc_ctrl.rc.s[1] == 3)
+		else if(rc_ctrl.rc.s[0] == 1 || rc_ctrl.rc.s[0] == 3)
 		{
 			Yaw_mode_2();
 		}
@@ -79,30 +78,10 @@ static void Yaw_read_imu()
 		ins_row = ins_data.angle[2];
 }
 
-static void Yaw_can_send()
-{
-	CAN_TxHeaderTypeDef tx_header;
-  uint8_t             tx_data[8];
-	
-  tx_header.StdId = 0x2ff;
-  tx_header.IDE   = CAN_ID_STD;
-  tx_header.RTR   = CAN_RTR_DATA;
-  tx_header.DLC   = 8;		
 
-  tx_data[0] = (chassis.motor[4].set_voltage>>8)&0xff;		
-  tx_data[1] = (chassis.motor[4].set_voltage)&0xff;
-  tx_data[2] = 0x00;
-  tx_data[3] = 0x00;
-  tx_data[4] = 0x00;
-  tx_data[5] = 0x00;
-  tx_data[6] = 0x00;
-  tx_data[7] = 0x00;
-  HAL_CAN_AddTxMessage(&hcan2, &tx_header, tx_data,(uint32_t*)CAN_TX_MAILBOX0);
-}
 
 static void Yaw_mode_1()
 {
-	
 				if(rc_ctrl.rc.ch[0] > base-valve && rc_ctrl.rc.ch[0] < base+valve)
 				{
 					if(yaw_model_flag == 1)	
@@ -154,13 +133,13 @@ static void Yaw_mode_2()
 {
 	if(rc_ctrl.rc.ch[0] >= base+valve && rc_ctrl.rc.ch[0] <= base_max)  
 	{
-		chassis.motor[4].target_speed = 60;
+		chassis.motor[4].target_speed = 5;
 		yaw_model_flag = 1;
 	}
 	
 	else if(rc_ctrl.rc.ch[0] >= base_min && rc_ctrl.rc.ch[0]<base - valve)  
 	{
-		chassis.motor[4].target_speed = -60;
+		chassis.motor[4].target_speed = -5;
 		yaw_model_flag = 1;
 	}
 	
@@ -171,4 +150,25 @@ static void Yaw_mode_2()
 	}
 	chassis.motor[4].set_voltage = pid_calc(&chassis.motor_speed_pid[4], chassis.motor[4].target_speed, chassis.motor[4].motor_recieve.speed_rpm);
 	Yaw_can_send();
+}
+
+static void Yaw_can_send()
+{
+	CAN_TxHeaderTypeDef tx_header;
+  uint8_t             tx_data[8];
+	
+  tx_header.StdId = 0x2ff;
+  tx_header.IDE   = CAN_ID_STD;
+  tx_header.RTR   = CAN_RTR_DATA;
+  tx_header.DLC   = 8;		
+
+  tx_data[0] = (chassis.motor[4].set_voltage>>8)&0xff;		
+  tx_data[1] = (chassis.motor[4].set_voltage)&0xff;
+  tx_data[2] = 0x00;
+  tx_data[3] = 0x00;
+  tx_data[4] = 0x00;
+  tx_data[5] = 0x00;
+  tx_data[6] = 0x00;
+  tx_data[7] = 0x00;
+  HAL_CAN_AddTxMessage(&hcan2, &tx_header, tx_data,(uint32_t*)CAN_TX_MAILBOX0);
 }
