@@ -46,18 +46,17 @@ void gimbal_yaw_task(void const * argument)
 
   for(;;)
   {
-		Yaw_read_imu();
+	Yaw_read_imu();
 
-		if(rc_ctrl.rc.s[0] == 2 && ins_yaw)
-		{
-			Yaw_mode_1();
-		}
+	if(rc_ctrl.rc.s[0] == 2 && ins_yaw)
+	{
+		Yaw_mode_1();
+	}
 		
-		else if(rc_ctrl.rc.s[0] == 1 || rc_ctrl.rc.s[0] == 3)
-		{
-			Yaw_mode_2();
-		}
-		Yaw_can_send();
+	else if(rc_ctrl.rc.s[0] == 1 || rc_ctrl.rc.s[0] == 3)
+	{
+		Yaw_mode_2();
+	}
     osDelay(1);
   }
 
@@ -68,89 +67,98 @@ void gimbal_yaw_task(void const * argument)
 static void Yaw_init()	
 {
 
-	pid_init(&chassis.motor_speed_pid[4],60,10,5,30000,30000);
+	pid_init(&chassis.motor_speed_pid[4],5,0.01,0,30000,30000);
 }
 
 static void Yaw_read_imu()
 {
-		ins_yaw = ins_data.angle[0];
-		ins_pitch = ins_data.angle[1];
-		ins_row = ins_data.angle[2];
+	ins_yaw = ins_data.angle[0];
+	ins_pitch = ins_data.angle[1];
+	ins_row = ins_data.angle[2];
 }
 
 
+// 传递值是0~360
 
-static void Yaw_mode_1()
-{
-				if(rc_ctrl.rc.ch[0] > base-valve && rc_ctrl.rc.ch[0] < base+valve)
-				{
-					if(yaw_model_flag == 1)	
-					{
-						init_yaw = ins_yaw;
-						yaw_model_flag = 0;
-					}
-						err_yaw = ins_yaw - init_yaw;	
-					
-					if(err_yaw < -180)	
-					{
-						err_yaw += 360;   
-					}
-					
-					else if(err_yaw > 180)
-					{
-						err_yaw -= 360;      
-					}
-				
-					
-					if(err_yaw > angle_valve || err_yaw < -angle_valve)
-					{
-						chassis.motor[4].target_speed = err_yaw * angle_weight;
-					}
-					
-					else
-					{
-						chassis.motor[4].target_speed = 0;
-					}
-				}
-				
-				if(rc_ctrl.rc.ch[0] >= base+valve && rc_ctrl.rc.ch[0] <= base_max)    
-				{
-					chassis.motor[4].target_speed = 60;
-					yaw_model_flag = 1;
-				}
-				else if(rc_ctrl.rc.ch[0] >= base_min && rc_ctrl.rc.ch[0]<base - valve)  
-				{
-					chassis.motor[4].target_speed = 60;
-					yaw_model_flag = 1;
-				}
-								
-				
-				chassis.motor[4].set_voltage = pid_calc(&chassis.motor_speed_pid[5], chassis.motor[5].target_speed , chassis.motor[5].motor_recieve.speed_rpm);
-				Yaw_can_send();
-}
+// 170 - 180  = -10
+// 270 - 180  =  90 
 
-static void Yaw_mode_2()
+
+void Yaw_mode_1()
 {
-	if(rc_ctrl.rc.ch[0] >= base+valve && rc_ctrl.rc.ch[0] <= base_max)  
+	if(rc_ctrl.rc.ch[0] > base-valve && rc_ctrl.rc.ch[0] < base+valve) //遥控器在中值
 	{
-		chassis.motor[4].target_speed = 5;
-		yaw_model_flag = 1;
+		if(yaw_model_flag == 1)	  // 记录当前角度
+		{
+			init_yaw = ins_yaw;
+			yaw_model_flag = 0;
+		}
+		
+		err_yaw = ins_yaw - init_yaw;	//误差角
+		
+		
+		// if(err_yaw < -180)	
+		// {
+		// 	err_yaw += 360;    
+		// }
+		
+		// else if(err_yaw > 180)
+		// {
+		// 	err_yaw -= 360;      
+		// }
+	
+		
+		if(err_yaw > angle_valve || err_yaw < -angle_valve) 
+		{
+			// chassis.motor[4].target_speed = err_yaw * angle_weight;
+			chassis.motor[4].target_speed = - (err_yaw * angle_weight);
+		}
+		
+		else
+		{
+			chassis.motor[4].target_speed = 0;
+		}
 	}
 	
+	if(rc_ctrl.rc.ch[0] >= base+valve && rc_ctrl.rc.ch[0] <= base_max)    
+	{
+		chassis.motor[4].target_speed = 60;
+		yaw_model_flag = 1;
+	}
 	else if(rc_ctrl.rc.ch[0] >= base_min && rc_ctrl.rc.ch[0]<base - valve)  
 	{
-		chassis.motor[4].target_speed = -5;
+		chassis.motor[4].target_speed = 60;
 		yaw_model_flag = 1;
+	}
+					
+	
+	chassis.motor[4].set_voltage = pid_calc(&chassis.motor_speed_pid[4], chassis.motor[4].target_speed , chassis.motor[4].motor_recieve.speed_rpm);
+	Yaw_can_send();
+}
+
+void Yaw_mode_2()
+{
+	
+	if(rc_ctrl.rc.ch[0] >= 1224 && rc_ctrl.rc.ch[0] <= 1684)  
+	{
+    	chassis.motor[4].target_speed = 50;
+	}
+	
+	else if(rc_ctrl.rc.ch[0] >= 364 && rc_ctrl.rc.ch[0]<824)  
+	{
+    	chassis.motor[4].target_speed = -50;
 	}
 	
 	else
 	{
-		chassis.motor[4].target_speed = 0;
-		yaw_model_flag = 1;
+    	chassis.motor[4].target_speed = 0;
 	}
 	chassis.motor[4].set_voltage = pid_calc(&chassis.motor_speed_pid[4], chassis.motor[4].target_speed, chassis.motor[4].motor_recieve.speed_rpm);
 	Yaw_can_send();
 }
+
+
+
 
 static void Yaw_can_send()
 {
