@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "instask.h": "c",
-        "remote_control.h": "c",
-        "motor.h": "c"
-    }
-}

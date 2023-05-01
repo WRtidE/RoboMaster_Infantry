@@ -1,7 +1,0 @@
-{
-  "files.associations": {
-    "bsp_usart.h": "c",
-    "BSP_RC.H": "cpp",
-    "remote_control.h": "c"
-  }
-}
