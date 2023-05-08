@@ -4229,53 +4229,53 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       156         14          0          0          0       7554   bsp_rc.o
-       520         44          0          4          0       2820   can.o
-       692         50          0         40        114       5164   can_user.o
-       142          0          0          0          0      23683   cmsis_os.o
-       200          6          0          0          0       1018   dma.o
-         0          0          0          0          0      17160   event_groups.o
-        24         10          0          0        596       6364   freertos.o
-       766         90          0          4          0       3164   friction_task.o
-       472         24          0          0          0       1367   gpio.o
-        20          4          0          0          0        653   gpio_user.o
-       724         74          0         32      15360       7967   heap_4.o
-       260         30          0          0         84       2045   i2c.o
-      3708        242         12         51        168      17023   ins_task.o
-       148          0          0          0          0       4038   list.o
-       342         28          0        244       1080      37258   main.o
-       124         22        156         24          0       2084   mx_freertos_init.o
-       276          0          0          0          0     717265   pid.o
-       592          8          0          0          0       2682   pid_imu.o
-      1164         94          0         16        364       5793   pitch_task.o
-       894         78          0         12          0      11996   port.o
-      1012         88          0          8        194     610393   remote_control.o
-       432         38          0          0        280       2259   spi.o
-        24          4          0          0          0        619   startdefaulttask.o
+       156         14          0          0          0       7274   bsp_rc.o
+       520         44          0          4          0       2540   can.o
+       692         50          0         40        114       4772   can_user.o
+       142          0          0          0          0      23187   cmsis_os.o
+       200          6          0          0          0        910   dma.o
+         0          0          0          0          0      16936   event_groups.o
+        24         10          0          0        596       6148   freertos.o
+       766         90          0          4          0       2832   friction_task.o
+       472         24          0          0          0       1255   gpio.o
+        20          4          0          0          0        597   gpio_user.o
+       724         74          0         32      15360       7583   heap_4.o
+       260         30          0          0         84       1821   i2c.o
+      3708        242         12         51        168      15819   ins_task.o
+       148          0          0          0          0       3706   list.o
+       342         28          0        244       1080      36370   main.o
+       124         22        156         24          0       1924   mx_freertos_init.o
+       276          0          0          0          0     716381   pid.o
+       592          8          0          0          0       2458   pid_imu.o
+      1164         94          0         16        364       5577   pitch_task.o
+       894         78          0         12          0      11404   port.o
+      1012         88          0          8        194     609457   remote_control.o
+       432         38          0          0        280       2035   spi.o
+        24          4          0          0          0        567   startdefaulttask.o
         64         26        392          0       1536        900   startup_stm32f407xx.o
-       136         24          0          9          0       9278   stm32f4xx_hal.o
-      2134          6          0          0          0      15899   stm32f4xx_hal_can.o
-       252         22          0          0          0      34150   stm32f4xx_hal_cortex.o
-      1436         16          8          0          0       7746   stm32f4xx_hal_dma.o
-       540         50          0          0          0       3063   stm32f4xx_hal_gpio.o
-      2856         46          0          0          0      12634   stm32f4xx_hal_i2c.o
-        84          6          0          0          0       1018   stm32f4xx_hal_msp.o
-      1888         94          0          0          0       6909   stm32f4xx_hal_rcc.o
-      3322         68          0          0          0      22672   stm32f4xx_hal_spi.o
-      2392        142          0          0          0      18236   stm32f4xx_hal_tim.o
-       184         30          0          0          0       2813   stm32f4xx_hal_tim_ex.o
-       180         20          0          0         72       1703   stm32f4xx_hal_timebase_tim.o
-      2658         26          0          0          0      17129   stm32f4xx_hal_uart.o
-       512        144          0          0          0      17619   stm32f4xx_it.o
+       136         24          0          9          0       8898   stm32f4xx_hal.o
+      2134          6          0          0          0      14807   stm32f4xx_hal_can.o
+       252         22          0          0          0      33818   stm32f4xx_hal_cortex.o
+      1436         16          8          0          0       7246   stm32f4xx_hal_dma.o
+       540         50          0          0          0       2839   stm32f4xx_hal_gpio.o
+      2856         46          0          0          0      11970   stm32f4xx_hal_i2c.o
+        84          6          0          0          0        910   stm32f4xx_hal_msp.o
+      1888         94          0          0          0       6473   stm32f4xx_hal_rcc.o
+      3322         68          0          0          0      21176   stm32f4xx_hal_spi.o
+      2392        142          0          0          0      16980   stm32f4xx_hal_tim.o
+       184         30          0          0          0       2593   stm32f4xx_hal_tim_ex.o
+       180         20          0          0         72       1539   stm32f4xx_hal_timebase_tim.o
+      2658         26          0          0          0      15969   stm32f4xx_hal_uart.o
+       512        144          0          0          0      15995   stm32f4xx_it.o
          0          0          0          0          0        384   stream_buffer.o
-        20          6         24          4          0       1367   system_stm32f4xx.o
-      2230        276          0         60        240      23447   tasks.o
-       936         76          0          0        360       5822   tim.o
-        16          6          0          0          0        599   time_user.o
-      1072         98          0          0        780       4150   usart.o
+        20          6         24          4          0       1199   system_stm32f4xx.o
+      2230        276          0         60        240      22315   tasks.o
+       936         76          0          0        360       5330   tim.o
+        16          6          0          0          0        543   time_user.o
+      1072         98          0          0        780       3834   usart.o
 
     ----------------------------------------------------------------------
-     35642       2130        626        512      21228    1697907   Object Totals
+     35642       2130        626        512      21228    1677271   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         38          0          2          4          0          0   (incl. Padding)
 
@@ -4352,8 +4352,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     40114       2478        626        512      21328    1673775   Grand Totals
-     40114       2478        626         56      21328    1673775   ELF Image Totals (compressed)
+     40114       2478        626        512      21328    1653139   Grand Totals
+     40114       2478        626         56      21328    1653139   ELF Image Totals (compressed)
      40114       2478        626         56          0          0   ROM Totals
 
 ==============================================================================
