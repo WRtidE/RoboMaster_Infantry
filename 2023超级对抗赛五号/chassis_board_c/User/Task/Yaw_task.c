@@ -3,6 +3,7 @@
 #include "cmsis_os.h"
 #include "Chassis_task.h"
 #include "drv_can.h"
+#include "INS_task.h"
 
 #define valve 100	
 #define base 1024		
@@ -15,19 +16,26 @@ fp32 ins_pitch;
 fp32 ins_roll;
 extern fp32 yaw_data;
 fp32 init_yaw;	
-fp32 err_yaw;		
+fp32 err_yaw;
 fp32 angle_weight = 3;	
 uint8_t reset_flag = 0;
 uint8_t yaw_weight = 3;
-//volatile int16_t motor_speed_target[5];
-extern ins_data_t ins_data1;
 
- fp32 chassis_yaw_pid [3]={200,0,0}; //yaw pid数组
+
+
+//volatile int16_t motor_speed_target[5];
+extern  ins_data_t ins_data1;
+extern  ins_data_t ins_data;
+int8_t init_err = 0;
+int8_t start_flag = 0;
+
+fp32 chassis_yaw_pid [3]={200,0,0}; //yaw pid数组
 
 extern pid_struct_t motor_pid_chassis[4];
 
 extern int16_t Wz;
 int yaw_model_flag = 1; 
+ 
 extern UART_HandleTypeDef huart6;
 
 static void Yaw_init();	
@@ -43,6 +51,9 @@ static void Yaw_calc_and_send();
 static void chassis_follow();
 
 static void auto_aim();
+
+static void start_check();
+
 
 void gimbal_yaw_task(void const * argument)
 {
@@ -68,14 +79,9 @@ void gimbal_yaw_task(void const * argument)
 
 }
  
-
-
 static void Yaw_init()	
 {
 	pid_init(&motor_pid_chassis[4], chassis_yaw_pid, 30000, 30000);//电机速度pid
-	
-	
-
 }
 
 static void Yaw_read_imu() //insdata1是云台陀螺仪数据
@@ -90,7 +96,7 @@ static void Yaw_mode_1() //锁云台模式
 	if(!mouse_x)
 	{
 		//遥控器置中，默认锁云台
-		if(rc_ctrl.rc.ch[0] > -50 && rc_ctrl.rc.ch[0] < 50)
+		if((rc_ctrl.rc.ch[0] > -50 && rc_ctrl.rc.ch[0] < 50) && ins_yaw )
 		{
 			if(yaw_model_flag == 1)	
 			{
@@ -176,8 +182,18 @@ static void Yaw_calc_and_send()
 	set_motor_voltage1(1, motor_info_chassis[4].set_current, 0, 0, 0);
 }
 
+static void start_check()
+{
+	while(!start_flag)
+	{
+		init_err = ins_data.angle[1] - ins_data1.angle[1];
 
-
+		if(init_err > -10 && init_err<10)
+		{
+			start_flag = 1;
+		}
+	}
+}
 
 //static void Yaw_mode_2()
 //{

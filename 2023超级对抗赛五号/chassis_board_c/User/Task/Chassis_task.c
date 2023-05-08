@@ -17,8 +17,11 @@ int16_t Temp_Vx;
 int16_t Temp_Vy;
 volatile int16_t motor_speed_target[5];
 volatile int16_t captarget;
- extern RC_ctrl_t rc_ctrl;
- extern ins_data_t ins_data;
+
+extern RC_ctrl_t rc_ctrl;
+ 
+extern ins_data_t ins_data1;
+extern ins_data_t ins_data;
 // Save imu data
 uint16_t Up_ins_yaw; 
  uint16_t Down_ins_yaw = 268;		//必须赋这个初值，不知名Bug
@@ -60,11 +63,10 @@ static void Chassis_choice();
  
    void Chassis_task(void const *pvParameters)
 {
- 			       for (uint8_t i = 0; i < 4; i++)
-			{
-        pid_init(&motor_pid_chassis[i], chassis_motor_pid, 4000, 4000); //init pid parameter, kp=40, ki=3, kd=0, output limit = 16384
-				
-			}   
+ 	for (uint8_t i = 0; i < 4; i++)
+	{
+        pid_init(&motor_pid_chassis[i], chassis_motor_pid, 4000, 4000); //init pid parameter, kp=40, ki=3, kd=0, output limit = 16384			
+	}   
 			//pid_init(&motor_pid_chassis[1], chassis_motor_pid2, 10000, 10000);
 			//pid_init(&motor_pid_chassis[3], chassis_motor_pid2, 3000, 3000);
 			pid_init(&cap, cappid, 2000, 2000); //init pid parameter, kp=40, ki=3, kd=0, output limit = 16384
@@ -174,7 +176,7 @@ static void Get_Err()
 void chassis_motol_speed_calculate()
 {
 	
-	  motor_speed_target[CHAS_LF] =  Vx+Vy+Wz;
+	motor_speed_target[CHAS_LF] =  Vx+Vy+Wz;
     motor_speed_target[CHAS_RF] =  Vx-Vy+Wz;
     motor_speed_target[CHAS_RB] =  -Vy-Vx+Wz; 
     motor_speed_target[CHAS_LB] =  Vy-Vx+Wz;
@@ -259,16 +261,16 @@ static void Chassis_mode_1()
 				for(int i=0;i<4;i++)//减速  slow_down
 				{
                  
-				if(motor_info_chassis[i].rotor_speed>360||motor_info_chassis[i].rotor_speed<-360)
-				{
-					motor_info_chassis[i].set_current = pid_calc(&motor_pid_chassis[i],  motor_info_chassis[i].rotor_speed, 0);
+					if(motor_info_chassis[i].rotor_speed>360||motor_info_chassis[i].rotor_speed<-360)
+					{
+						motor_info_chassis[i].set_current = pid_calc(&motor_pid_chassis[i],  motor_info_chassis[i].rotor_speed, 0);
+					}
+					else
+					{
+						motor_info_chassis[i].set_current=0;
+					}
 				}
-				else
-				{
-					motor_info_chassis[i].set_current=0;
-				}
-			}
-			set_motor_voltage(0, motor_info_chassis[0].set_current, motor_info_chassis[1].set_current, motor_info_chassis[2].set_current, motor_info_chassis[3].set_current);
+
 			}
     
 		// moving	control by remote
@@ -455,5 +457,7 @@ static void Chassis_choice()
 	{
 		Wz = -1000;
 	
-}
 	}
+}
+
+
