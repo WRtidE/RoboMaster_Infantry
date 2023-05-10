@@ -1,0 +1,73 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.25.3.0
+Copyright (C) 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Long Cup, ye, LIC=Z3C6R-KJRCR-GQ70H-WUEXJ-QD6A0-4QKNA
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.18
+Toolchain Path:  D:\keil\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 1 (build 61)
+Assembler:       Armasm.exe V5.06 update 1 (build 61)
+Linker/Locator:  ArmLink.exe V5.06 update 1 (build 61)
+Library Manager: ArmAr.exe V5.06 update 1 (build 61)
+Hex Converter:   FromElf.exe V5.06 update 1 (build 61)
+CPU DLL:         SARMCM3.DLL V5.18
+Dialog DLL:      DCM.DLL V1.13.6.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
+Dialog DLL:      TCM.DLL V1.14.8.0
+ 
+<h2>Project:</h2>
+C:\Users\19668\Desktop\RoboMaster_Infantry\2023超级对抗赛五号\gimbal_board_c\MDK-ARM\YX_UP.uvprojx
+Project File Date:  05/09/2023
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 1 (build 61)', folder: 'D:\keil\ARM\ARMCC\Bin'
+Build target 'YX_UP'
+compiling remote_control.c...
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\DriverLayer\Can_user.h(12): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\Task\INS_task.h(78): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\PotocaLayer\remote_control.c(31): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  void Get_minipc();
+..\User\PotocaLayer\remote_control.c: 6 warnings, 0 errors
+linking...
+Program Size: Code=39990 RO-data=626 RW-data=516 ZI-data=21324  
+FromELF: creating hex file...
+"YX_UP\YX_UP.axf" - 0 Error(s), 6 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.5.0.pack
+                ARM.CMSIS.4.5.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 4.3.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.14.0.pack
+                Keil.STM32F4xx_DFP.2.14.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_YX_UP
+  D:\keil\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
+  D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:4.3.0
+Build Time Elapsed:  00:00:03
+</pre>
+</body>
+</html>
