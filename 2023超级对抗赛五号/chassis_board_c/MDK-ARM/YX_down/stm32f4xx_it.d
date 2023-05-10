@@ -7,7 +7,11 @@ yx_down\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 yx_down\stm32f4xx_it.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 yx_down\stm32f4xx_it.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 yx_down\stm32f4xx_it.o: ../Drivers/CMSIS/Include/core_cm4.h
+<<<<<<< HEAD
 yx_down\stm32f4xx_it.o: D:\keil\ARM\ARMCC\Bin\..\include\stdint.h
+=======
+yx_down\stm32f4xx_it.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+>>>>>>> master
 yx_down\stm32f4xx_it.o: ../Drivers/CMSIS/Include/cmsis_version.h
 yx_down\stm32f4xx_it.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 yx_down\stm32f4xx_it.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -15,7 +19,11 @@ yx_down\stm32f4xx_it.o: ../Drivers/CMSIS/Include/mpu_armv7.h
 yx_down\stm32f4xx_it.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 yx_down\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 yx_down\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
+<<<<<<< HEAD
 yx_down\stm32f4xx_it.o: D:\keil\ARM\ARMCC\Bin\..\include\stddef.h
+=======
+yx_down\stm32f4xx_it.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+>>>>>>> master
 yx_down\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 yx_down\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 yx_down\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
@@ -45,7 +53,11 @@ yx_down\stm32f4xx_it.o: ../User/Task/Chassis_task.h
 yx_down\stm32f4xx_it.o: ../User/Task/INS_task.h
 yx_down\stm32f4xx_it.o: ../Core/Inc/tim.h
 yx_down\stm32f4xx_it.o: ../Core/Inc/spi.h
+<<<<<<< HEAD
 yx_down\stm32f4xx_it.o: D:\keil\ARM\ARMCC\Bin\..\include\math.h
+=======
+yx_down\stm32f4xx_it.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\math.h
+>>>>>>> master
 yx_down\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 yx_down\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 yx_down\stm32f4xx_it.o: ../Core/Inc/FreeRTOSConfig.h

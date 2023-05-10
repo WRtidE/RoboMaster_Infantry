@@ -1,7 +1,12 @@
 yx_down\freertos.o: ../Core/Src/freertos.c
 yx_down\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+<<<<<<< HEAD
 yx_down\freertos.o: D:\keil\ARM\ARMCC\Bin\..\include\stddef.h
 yx_down\freertos.o: D:\keil\ARM\ARMCC\Bin\..\include\stdint.h
+=======
+yx_down\freertos.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+yx_down\freertos.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+>>>>>>> master
 yx_down\freertos.o: ../Core/Inc/FreeRTOSConfig.h
 yx_down\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 yx_down\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
@@ -50,10 +55,17 @@ yx_down\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 yx_down\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 yx_down\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 yx_down\freertos.o: ../User/PotocaLayer/rc_potocal.h
+<<<<<<< HEAD
 yx_down\freertos.o: D:\keil\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\arm_math.h
 yx_down\freertos.o: D:\keil\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\core_cm4.h
 yx_down\freertos.o: D:\keil\ARM\ARMCC\Bin\..\include\string.h
 yx_down\freertos.o: D:\keil\ARM\ARMCC\Bin\..\include\math.h
+=======
+yx_down\freertos.o: F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\arm_math.h
+yx_down\freertos.o: F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm4.h
+yx_down\freertos.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\string.h
+yx_down\freertos.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\math.h
+>>>>>>> master
 yx_down\freertos.o: ../User/Task/INS_task.h
 yx_down\freertos.o: ../User/struct_typedef.h
 yx_down\freertos.o: ../Core/Inc/tim.h

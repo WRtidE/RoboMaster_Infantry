@@ -10,7 +10,11 @@
       <TargetName>YX_down</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+<<<<<<< HEAD
       <pCCUsed>5060061::V5.06 update 1 (build 61)::ARMCC</pCCUsed>
+=======
+      <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
+>>>>>>> master
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -560,7 +564,10 @@
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
                     <uC99>2</uC99>
+<<<<<<< HEAD
                     <uGnu>2</uGnu>
+=======
+>>>>>>> master
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
@@ -636,7 +643,10 @@
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
                     <uC99>2</uC99>
+<<<<<<< HEAD
                     <uGnu>2</uGnu>
+=======
+>>>>>>> master
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>
@@ -879,7 +889,10 @@
                     <uThumb>2</uThumb>
                     <uSurpInc>2</uSurpInc>
                     <uC99>2</uC99>
+<<<<<<< HEAD
                     <uGnu>2</uGnu>
+=======
+>>>>>>> master
                     <useXO>2</useXO>
                     <v6Lang>0</v6Lang>
                     <v6LangP>0</v6LangP>

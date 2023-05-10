@@ -284,7 +284,12 @@ void remote_data_read(uint8_t rx_buffer[])
 {
 	Yaw_minipc = (int)(rx_buffer[1] << 8 | rx_buffer[2]);
 	Pitch_minipc = (int)(rx_buffer[3] << 8 | rx_buffer[4]);
+<<<<<<< HEAD
 	Yaw_minipc = (int)(-Yaw_minipc * 10)/32767;
 	Pitch_minipc = (int)(-Pitch_minipc * 100)/32767;
+=======
+	Yaw_minipc = (int)(Yaw_minipc * 100)/32767;
+	Pitch_minipc = (int)(Pitch_minipc * 100)/32767;
+>>>>>>> master
 }
 

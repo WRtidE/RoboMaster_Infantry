@@ -1,8 +1,15 @@
 yx_down\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c
+<<<<<<< HEAD
 yx_down\event_groups.o: D:\keil\ARM\ARMCC\Bin\..\include\stdlib.h
 yx_down\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 yx_down\event_groups.o: D:\keil\ARM\ARMCC\Bin\..\include\stddef.h
 yx_down\event_groups.o: D:\keil\ARM\ARMCC\Bin\..\include\stdint.h
+=======
+yx_down\event_groups.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+yx_down\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+yx_down\event_groups.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+yx_down\event_groups.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+>>>>>>> master
 yx_down\event_groups.o: ../Core/Inc/FreeRTOSConfig.h
 yx_down\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 yx_down\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
