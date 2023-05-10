@@ -123,7 +123,7 @@ void gimbal_mode_1()
 	  if (rc_ctrl.mouse.y >= -5 && rc_ctrl.mouse.y <= 5) 
 	  {
 		target_speed[4] = 0;
-	  }
+	  }   
 	  else
 	  {
 		if(rc_ctrl.mouse.y <-5 && rc_ctrl.mouse.y >=-16384 && (motor_info[4].rotor_angle < 1500 ||  motor_info[4].rotor_angle > 6500)) //Ò£¿ØÆ÷ÍùÏÂ²¦//Ò£¿ØÆ÷ÍùÏÂ²¦
