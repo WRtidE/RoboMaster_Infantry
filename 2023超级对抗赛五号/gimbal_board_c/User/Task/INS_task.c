@@ -79,7 +79,7 @@ void Kalman_Fliter(float *gx, float *ax)
        angle_2=ins_data.angle[1]+180;
        angle_3=ins_data.angle[2]+180;
        a= uxTaskGetStackHighWaterMark( NULL );
-	   send_ins_data_to_a( angle_1, angle_2, angle_3, Yaw_minipc);
+	     send_ins_data_to_a( angle_1, angle_2, angle_3, Yaw_minipc);
        osDelay(1);
     }
   }

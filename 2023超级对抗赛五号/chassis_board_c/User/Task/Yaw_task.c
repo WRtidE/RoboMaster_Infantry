@@ -65,7 +65,7 @@ void gimbal_yaw_task(void const * argument)
 	  
 	Yaw_read_imu();// 读取云台陀螺仪数据
 
-	if(rc_ctrl.rc.s[1] == 1 && ins_yaw)
+	if(rc_ctrl.rc.s[0] == 1 && ins_yaw)
 	{
 		auto_aim();
 	}
@@ -170,7 +170,7 @@ static void Yaw_mode_1() //锁云台模式
 
 static void auto_aim()
 {
-	motor_speed_target[4] = yaw_data * yaw_weight;
+	motor_speed_target[4] = (yaw_data * 100)/32767 * yaw_weight;
 	Yaw_calc_and_send();
 }
 

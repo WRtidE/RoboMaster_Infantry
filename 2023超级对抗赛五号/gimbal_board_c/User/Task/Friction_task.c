@@ -27,7 +27,7 @@ void Friction_task(void const * argument)
   Friction_init();
   for(;;)
   {
-	if((rc_ctrl.rc.s[1] == 2) || rc_ctrl.mouse.press_l) //·¢Éä
+	if((rc_ctrl.rc.s[1] == 1) || rc_ctrl.mouse.press_l) //·¢Éä
     {
 		shoot_mode_1();
 	}

@@ -3,34 +3,387 @@
 <pre>
 <h1>礦ision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: μVision V5.24.2.0
-Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: A WRtidE, A, LIC=ZB4EI-T5ENT-2Z8W4-FXTPG-57IGT-RIR3M
+IDE-Version: μVision V5.25.3.0
+Copyright (C) 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Long Cup, ye, LIC=Z3C6R-KJRCR-GQ70H-WUEXJ-QD6A0-4QKNA
  
 Tool Versions:
-Toolchain:       MDK-ARM Plus  Version: 5.24.1
-Toolchain Path:  F:\DownLoad\Keil5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.06 update 5 (build 528)
-Assembler:       Armasm.exe V5.06 update 5 (build 528)
-Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
-Library Manager: ArmAr.exe V5.06 update 5 (build 528)
-Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
-CPU DLL:         SARMCM3.DLL V5.24.1
-Dialog DLL:      DCM.DLL V1.16.0.0
-Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
-Dialog DLL:      TCM.DLL V1.32.0.0
+Toolchain:       MDK-ARM Professional  Version: 5.18
+Toolchain Path:  D:\keil\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 1 (build 61)
+Assembler:       Armasm.exe V5.06 update 1 (build 61)
+Linker/Locator:  ArmLink.exe V5.06 update 1 (build 61)
+Library Manager: ArmAr.exe V5.06 update 1 (build 61)
+Hex Converter:   FromElf.exe V5.06 update 1 (build 61)
+CPU DLL:         SARMCM3.DLL V5.18
+Dialog DLL:      DCM.DLL V1.13.6.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
+Dialog DLL:      TCM.DLL V1.14.8.0
  
 <h2>Project:</h2>
-C:\Users\WRtidE\Desktop\2023超级对抗赛五号\gimbal_board_c\MDK-ARM\YX_UP.uvprojx
+C:\Users\19668\Desktop\RoboMaster_Infantry\2023超级对抗赛五号\gimbal_board_c\MDK-ARM\YX_UP.uvprojx
 Project File Date:  05/10/2023
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'F:\DownLoad\Keil5\ARM\ARMCC\Bin'
+*** Using Compiler 'V5.06 update 1 (build 61)', folder: 'D:\keil\ARM\ARMCC\Bin'
 Build target 'YX_UP'
-compiling Friction_task.c...
-../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+assembling startup_stm32f407xx.s...
+compiling tim.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
   #define __FPU_PRESENT             1U       /*!< FPU present                                   */
-../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Core/Src/tim.c: 2 warnings, 0 errors
+compiling spi.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Core/Src/spi.c: 2 warnings, 0 errors
+compiling i2c.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Core/Src/i2c.c: 2 warnings, 0 errors
+compiling gpio.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Core/Src/gpio.c: 2 warnings, 0 errors
+compiling dma.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Core/Src/dma.c: 2 warnings, 0 errors
+compiling usart.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Core/Src/usart.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_msp.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Core/Src/stm32f4xx_hal_msp.c: 2 warnings, 0 errors
+compiling can.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+../Core/Src/can.c: 3 warnings, 0 errors
+compiling pid_imu.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\pid_imu.c: 2 warnings, 0 errors
+compiling PID.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\PID.h(16): warning:  #1-D: last line of file ends without a newline
+  							
+..\User\PID.c: 3 warnings, 0 errors
+compiling stm32f4xx_hal_timebase_tim.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Core/Src/stm32f4xx_hal_timebase_tim.c: 2 warnings, 0 errors
+compiling freertos.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+../User/PID.h(16): warning:  #1-D: last line of file ends without a newline
+  							
+..\User\PotocaLayer\MX_FREERTOS_init.h(2): warning:  #1-D: last line of file ends without a newline
+  void MX_FREERTOS_Init(void);
+..\User\Task\INS_task.h(78): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\Task\Yaw_task.h(21): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/freertos.c: 7 warnings, 0 errors
+compiling stm32f4xx_it.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+../Core/Src/stm32f4xx_it.c(301): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	T+=0.00001;//
+../Core/Src/stm32f4xx_it.c: 4 warnings, 0 errors
+compiling main.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+..\User\DriverLayer\Can_user.h(12): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/main.c: 4 warnings, 0 errors
+compiling bsp_rc.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\bsp_rc.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_rcc_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_cortex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_dma.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_flash_ramfunc.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_flash.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_can.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_exti.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_rcc.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_flash_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_pwr.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_gpio.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_dma_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_pwr_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c: 2 warnings, 0 errors
+compiling croutine.c...
+compiling event_groups.c...
+compiling list.c...
+compiling queue.c...
+compiling stream_buffer.c...
+compiling timers.c...
+compiling tasks.c...
+compiling heap_4.c...
+compiling cmsis_os.c...
+compiling port.c...
+compiling stm32f4xx_hal_i2c.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_spi.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c: 2 warnings, 0 errors
+compiling system_stm32f4xx.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Core/Src/system_stm32f4xx.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_i2c_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c: 2 warnings, 0 errors
+compiling GPIO_User.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\DriverLayer\GPIO_User.h(5): warning:  #1-D: last line of file ends without a newline
+  void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+..\User\DriverLayer\GPIO_User.c(10): warning:  #1-D: last line of file ends without a newline
+  }
+..\User\DriverLayer\GPIO_User.c: 4 warnings, 0 errors
+compiling stm32f4xx_hal_tim_ex.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c: 2 warnings, 0 errors
+compiling remote_control.c...
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\DriverLayer\Can_user.h(12): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\Task\INS_task.h(78): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\PotocaLayer\remote_control.c(31): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  void Get_minipc();
+..\User\PotocaLayer\remote_control.c: 6 warnings, 0 errors
+compiling time_user.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\DriverLayer\time_user.c: 2 warnings, 0 errors
+compiling Can_user.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+..\User\DriverLayer\Can_user.h(12): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\DriverLayer\Can_user.c: 4 warnings, 0 errors
+compiling stm32f4xx_hal_uart.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c: 2 warnings, 0 errors
+compiling StartDefaultTask.c...
+..\User\Task\StartDefaultTask.h(1): warning:  #1-D: last line of file ends without a newline
+   void StartDefaultTask(void const * argument);
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+../User/PID.h(16): warning:  #1-D: last line of file ends without a newline
+  							
+..\User\Task\INS_task.h(78): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\Task\StartDefaultTask.c: 6 warnings, 0 errors
+compiling MX_FREERTOS_Init.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\PotocaLayer\MX_FREERTOS_Init.h(2): warning:  #1-D: last line of file ends without a newline
+  void MX_FREERTOS_Init(void);
+..\User\Task\INS_task.h(78): warning:  #1-D: last line of file ends without a newline
+  #endif
+../User/pid.h(16): warning:  #1-D: last line of file ends without a newline
+  							
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+..\User\Task\Yaw_task.h(21): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\Task\StartDefaultTask.h(1): warning:  #1-D: last line of file ends without a newline
+   void StartDefaultTask(void const * argument);
+..\User\Task\Pitch_task.h(8): warning:  #1295-D: Deprecated declaration gimbal_init - give arg types
+  static void gimbal_init();	
+..\User\Task\Pitch_task.h(11): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\Task\Exchange_task.h(31): warning:  #1295-D: Deprecated declaration Get_keyboard - give arg types
+  void Get_keyboard();
+..\User\PotocaLayer\MX_FREERTOS_Init.c(41): warning:  #1-D: last line of file ends without a newline
+  }
+..\User\PotocaLayer\MX_FREERTOS_Init.c: 12 warnings, 0 errors
+compiling Pitch_task.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+../User/PID.h(16): warning:  #1-D: last line of file ends without a newline
+  							
+..\User\Task\INS_task.h(78): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\Task\Pitch_task.c(21): warning:  #1295-D: Deprecated declaration gimbal_init - give arg types
+  static void gimbal_init();	
+..\User\Task\Pitch_task.c(24): warning:  #1295-D: Deprecated declaration gimbal_read_imu - give arg types
+  static void gimbal_read_imu();
+..\User\Task\Pitch_task.c(27): warning:  #1295-D: Deprecated declaration gimbal_mode_1 - give arg types
+  static void gimbal_mode_1();
+..\User\Task\Pitch_task.c(28): warning:  #1295-D: Deprecated declaration gimbal_mode_2 - give arg types
+  static void gimbal_mode_2();
+..\User\Task\Pitch_task.c(31): warning:  #1295-D: Deprecated declaration gimbal_calc_and_send - give arg types
+  static void gimbal_calc_and_send();
+..\User\Task\Pitch_task.c(34): warning:  #1295-D: Deprecated declaration auto_aim - give arg types
+  static void auto_aim();
+..\User\Task\Pitch_task.c(52): warning:  #111-D: statement is unreachable
+  	osDelay(1);
+..\User\Task\Pitch_task.c(24): warning:  #177-D: function "gimbal_read_imu" was declared but never referenced
+  static void gimbal_read_imu();
+..\User\Task\Pitch_task.c(28): warning:  #177-D: function "gimbal_mode_2" was declared but never referenced
+  static void gimbal_mode_2();
+..\User\Task\Pitch_task.c: 14 warnings, 0 errors
+compiling Friction_task.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
         #define __FPU_USED       1U
 ..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
   extern void Get_minipc();
@@ -51,33 +404,69 @@ compiling Friction_task.c...
 ..\User\Task\Friction_task.c(101): warning:  #1-D: last line of file ends without a newline
   }
 ..\User\Task\Friction_task.c: 11 warnings, 0 errors
+compiling stm32f4xx_hal_tim.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c: 2 warnings, 0 errors
+compiling INS_task.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+..\User\Task\INS_task.h(78): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\PotocaLayer\remote_control.h(64): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+..\User\Task\INS_task.c(26): warning:  #177-D: variable "gxdt" was declared but never referenced
+  	float gxdt,gydt,gzdt,axdt,aydt,azdt;
+..\User\Task\INS_task.c(26): warning:  #177-D: variable "gydt" was declared but never referenced
+  	float gxdt,gydt,gzdt,axdt,aydt,azdt;
+..\User\Task\INS_task.c(26): warning:  #177-D: variable "gzdt" was declared but never referenced
+  	float gxdt,gydt,gzdt,axdt,aydt,azdt;
+..\User\Task\INS_task.c(26): warning:  #177-D: variable "axdt" was declared but never referenced
+  	float gxdt,gydt,gzdt,axdt,aydt,azdt;
+..\User\Task\INS_task.c(26): warning:  #177-D: variable "aydt" was declared but never referenced
+  	float gxdt,gydt,gzdt,axdt,aydt,azdt;
+..\User\Task\INS_task.c(26): warning:  #177-D: variable "azdt" was declared but never referenced
+  	float gxdt,gydt,gzdt,axdt,aydt,azdt;
+..\User\Task\INS_task.c(312): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        accel_offsets_sum[2]-=9.79;
+..\User\Task\INS_task.c(556): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      *yaw = atan2f(2.0f*(q[0]*q[3]+q[1]*q[2]), 2.0f*(q[0]*q[0]+q[1]*q[1])-1.0f)*57.3;
+..\User\Task\INS_task.c(557): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      *pitch = asinf(-2.0f*(q[1]*q[3]-q[0]*q[2]))*57.3;
+..\User\Task\INS_task.c(558): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      *roll = atan2f(2.0f*(q[0]*q[1]+q[2]*q[3]),2.0f*(q[0]*q[0]+q[3]*q[3])-1.0f)*57.3;
+..\User\Task\INS_task.c: 14 warnings, 0 errors
 linking...
-Program Size: Code=40122 RO-data=626 RW-data=516 ZI-data=21324  
+Program Size: Code=40106 RO-data=626 RW-data=516 ZI-data=21324  
 FromELF: creating hex file...
-"YX_UP\YX_UP.axf" - 0 Error(s), 11 Warning(s).
+"YX_UP\YX_UP.axf" - 0 Error(s), 156 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.5.0.1.pack
-                ARM.CMSIS.5.0.1
+                http://www.keil.com/pack/ARM.CMSIS.4.5.0.pack
+                ARM.CMSIS.4.5.0
                 CMSIS (Cortex Microcontroller Software Interface Standard)
-   * Component: CORE Version: 5.0.1
+   * Component: CORE Version: 4.3.0
 
 Package Vendor: Keil
-                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.16.0.pack
-                Keil.STM32F4xx_DFP.2.16.0
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.14.0.pack
+                Keil.STM32F4xx_DFP.2.14.0
                 STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_YX_UP
-  F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include
-  F:\DownLoad\Keil5\ARM\PACK\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+  D:\keil\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
+  D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:04
+   * Component: ARM::CMSIS:CORE:4.3.0
+Build Time Elapsed:  00:00:26
 </pre>
 </body>
 </html>
