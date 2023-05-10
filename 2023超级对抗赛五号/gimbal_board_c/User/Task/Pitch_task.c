@@ -12,15 +12,7 @@
 
 fp32 Err_pitch;
 fp32 target_angle;
-<<<<<<< HEAD
-<<<<<<< HEAD
 fp32 pitch_weight = 0.5;
-=======
-int8_t pitch_weight = 3;
->>>>>>> master
-=======
-fp32 pitch_weight = 0.5;
->>>>>>> master
 uint32_t shoot_flag = 0;
 pid_struct_t pitch_pid[7];
 extern ins_data_t ins_data;
@@ -48,15 +40,7 @@ void Pitch_task(void const * argument)
 	gimbal_init();
 	for(;;)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
 		if(rc_ctrl.mouse.press_r||rc_ctrl.rc.s[0] == 1)//开启自瞄
-=======
-		if(rc_ctrl.mouse.press_r||rc_ctrl.rc.s[1] == 1)//开启自瞄
->>>>>>> master
-=======
-		if(rc_ctrl.mouse.press_r||rc_ctrl.rc.s[0] == 1)//开启自瞄
->>>>>>> master
 		{
 			auto_aim();
 		}
@@ -95,25 +79,11 @@ void auto_aim()
 	Get_minipc();
 	if(Pitch_minipc != 0)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
 		pid_init(&motor_pid[5], 10, 0.1, 0, 30000, 30000);
 		target_speed[4] = Pitch_minipc *  pitch_weight;
 		motor_info[4].set_voltage = pid_calc(&motor_pid[5], target_speed[4], motor_info[4].rotor_speed);
 		set_motor_voltage1( 1, motor_info[4].set_voltage, 0, 0, 0);
 			
-=======
-		target_speed[4] = Pitch_minipc *  pitch_weight;
-	
-		//gimbal_calc_and_send();
->>>>>>> master
-=======
-		pid_init(&motor_pid[5], 10, 0.1, 0, 30000, 30000);
-		target_speed[4] = Pitch_minipc *  pitch_weight;
-		motor_info[4].set_voltage = pid_calc(&motor_pid[5], target_speed[4], motor_info[4].rotor_speed);
-		set_motor_voltage1( 1, motor_info[4].set_voltage, 0, 0, 0);
-			
->>>>>>> master
 		shoot_flag = 2;
 	}
 	else
@@ -168,15 +138,7 @@ void gimbal_mode_1()
 		}
 	  }
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
   gimbal_calc_and_send();
-=======
-  // gimbal_calc_and_send();
->>>>>>> master
-=======
-  gimbal_calc_and_send();
->>>>>>> master
   osDelay(1);
 }
 
@@ -184,14 +146,5 @@ void gimbal_calc_and_send()
 {
 	motor_info[4].set_voltage = pid_calc(&motor_pid[4], target_speed[4], motor_info[4].rotor_speed);
 	set_motor_voltage1( 1, motor_info[4].set_voltage, 0, 0, 0);
-<<<<<<< HEAD
-<<<<<<< HEAD
 }
 
-=======
-}
->>>>>>> master
-=======
-}
-
->>>>>>> master

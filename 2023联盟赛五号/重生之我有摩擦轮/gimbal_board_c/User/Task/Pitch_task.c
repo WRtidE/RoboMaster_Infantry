@@ -40,11 +40,7 @@ void Pitch_task(void const * argument)
 	gimbal_init();
 	for(;;)
 	{
-<<<<<<< HEAD
-		if(rc_ctrl.mouse.press_r||rc_ctrl.rc.s[0] == 1)//开启自瞄
-=======
 		if(rc_ctrl.mouse.press_r||rc_ctrl.rc.s[1] == 1)//开启自瞄
->>>>>>> master
 		{
 			auto_aim();
 		}
@@ -85,11 +81,7 @@ void auto_aim()
 	{
 		target_speed[4] = Pitch_minipc *  pitch_weight;
 	
-<<<<<<< HEAD
-		gimbal_calc_and_send();
-=======
 		//gimbal_calc_and_send();
->>>>>>> master
 		shoot_flag = 2;
 	}
 	else
@@ -144,11 +136,7 @@ void gimbal_mode_1()
 		}
 	  }
   }
-<<<<<<< HEAD
-  gimbal_calc_and_send();
-=======
   // gimbal_calc_and_send();
->>>>>>> master
   osDelay(1);
 }
 

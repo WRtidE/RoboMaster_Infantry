@@ -1,12 +1,7 @@
 yx_down\starttask05.o: ..\RTOS TASK\StartTask05.c
 yx_down\starttask05.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-<<<<<<< HEAD
-yx_down\starttask05.o: D:\keil\ARM\ARMCC\Bin\..\include\stddef.h
-yx_down\starttask05.o: D:\keil\ARM\ARMCC\Bin\..\include\stdint.h
-=======
 yx_down\starttask05.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 yx_down\starttask05.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
->>>>>>> master
 yx_down\starttask05.o: ../Core/Inc/FreeRTOSConfig.h
 yx_down\starttask05.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 yx_down\starttask05.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
@@ -57,15 +52,8 @@ yx_down\starttask05.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_
 yx_down\starttask05.o: ../User/PotocaLayer/rc_potocal.h
 yx_down\starttask05.o: ../User/AlgorithmLayer/PID.h
 yx_down\starttask05.o: ../User/struct_typedef.h
-<<<<<<< HEAD
-yx_down\starttask05.o: D:\keil\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\arm_math.h
-yx_down\starttask05.o: D:\keil\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\core_cm4.h
-yx_down\starttask05.o: D:\keil\ARM\ARMCC\Bin\..\include\string.h
-yx_down\starttask05.o: D:\keil\ARM\ARMCC\Bin\..\include\math.h
-=======
 yx_down\starttask05.o: F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\arm_math.h
 yx_down\starttask05.o: F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm4.h
 yx_down\starttask05.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\string.h
 yx_down\starttask05.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\math.h
->>>>>>> master
 yx_down\starttask05.o: ../User/StartTask05.h

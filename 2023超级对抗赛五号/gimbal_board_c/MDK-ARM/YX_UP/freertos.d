@@ -1,12 +1,7 @@
 yx_up\freertos.o: ../Core/Src/freertos.c
 yx_up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-<<<<<<< HEAD
-yx_up\freertos.o: D:\keil\ARM\ARMCC\Bin\..\include\stddef.h
-yx_up\freertos.o: D:\keil\ARM\ARMCC\Bin\..\include\stdint.h
-=======
 yx_up\freertos.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 yx_up\freertos.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
->>>>>>> master
 yx_up\freertos.o: ../Core/Inc/FreeRTOSConfig.h
 yx_up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 yx_up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
@@ -50,19 +45,11 @@ yx_up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 yx_up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 yx_up\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 yx_up\freertos.o: ../User/struct_typedef.h
-<<<<<<< HEAD
-yx_up\freertos.o: D:\keil\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\arm_math.h
-yx_up\freertos.o: D:\keil\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include\core_cm4.h
-yx_up\freertos.o: D:\keil\ARM\ARMCC\Bin\..\include\string.h
-yx_up\freertos.o: D:\keil\ARM\ARMCC\Bin\..\include\math.h
-yx_up\freertos.o: D:\keil\ARM\ARMCC\Bin\..\include\stdbool.h
-=======
 yx_up\freertos.o: F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\arm_math.h
 yx_up\freertos.o: F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm4.h
 yx_up\freertos.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\string.h
 yx_up\freertos.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\math.h
 yx_up\freertos.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
->>>>>>> master
 yx_up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 yx_up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 yx_up\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h

@@ -101,13 +101,7 @@
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
         <bEvRecOn>1</bEvRecOn>
-<<<<<<< HEAD
-        <bSchkAxf>0</bSchkAxf>
-        <bTchkAxf>0</bTchkAxf>
-        <nTsel>11</nTsel>
-=======
         <nTsel>5</nTsel>
->>>>>>> master
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -149,15 +143,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>ST-LINKIII-KEIL_SWO</Key>
-<<<<<<< HEAD
-<<<<<<< HEAD
           <Name>-U70003400070000544334544E -O206 -S1 -C0 -A0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024.FLM -FS08000000 -FL0100000 -FP0($$Device:STM32F407IGHx$CMSIS\Flash\STM32F4xx_1024.FLM)</Name>
-=======
-          <Name>-U70003400070000544334544E -O206 -SF1800 -C0 -A0 -I0 -HNlocalhost -HP7184 -P2 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024.FLM -FS08000000 -FL0100000 -FP0($$Device:STM32F407IGHx$CMSIS\Flash\STM32F4xx_1024.FLM)</Name>
->>>>>>> master
-=======
-          <Name>-U70003400070000544334544E -O206 -S1 -C0 -A0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024.FLM -FS08000000 -FL0100000 -FP0($$Device:STM32F407IGHx$CMSIS\Flash\STM32F4xx_1024.FLM)</Name>
->>>>>>> master
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -182,10 +168,6 @@
           <WinNumber>1</WinNumber>
           <ItemText>flag</ItemText>
         </Ww>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> master
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
@@ -206,11 +188,6 @@
           <WinNumber>1</WinNumber>
           <ItemText>Yaw_minipc</ItemText>
         </Ww>
-<<<<<<< HEAD
-=======
->>>>>>> master
-=======
->>>>>>> master
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
