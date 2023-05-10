@@ -1,9 +1,17 @@
 yx_up\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
+<<<<<<< HEAD
 yx_up\queue.o: D:\keil\ARM\ARMCC\Bin\..\include\stdlib.h
 yx_up\queue.o: D:\keil\ARM\ARMCC\Bin\..\include\string.h
 yx_up\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 yx_up\queue.o: D:\keil\ARM\ARMCC\Bin\..\include\stddef.h
 yx_up\queue.o: D:\keil\ARM\ARMCC\Bin\..\include\stdint.h
+=======
+yx_up\queue.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+yx_up\queue.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\string.h
+yx_up\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+yx_up\queue.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+yx_up\queue.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+>>>>>>> master
 yx_up\queue.o: ../Core/Inc/FreeRTOSConfig.h
 yx_up\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 yx_up\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

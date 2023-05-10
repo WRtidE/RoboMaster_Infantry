@@ -13,9 +13,13 @@
 fp32 Err_pitch;
 fp32 target_angle;
 <<<<<<< HEAD
+<<<<<<< HEAD
 fp32 pitch_weight = 0.5;
 =======
 int8_t pitch_weight = 3;
+>>>>>>> master
+=======
+fp32 pitch_weight = 0.5;
 >>>>>>> master
 uint32_t shoot_flag = 0;
 pid_struct_t pitch_pid[7];
@@ -45,9 +49,13 @@ void Pitch_task(void const * argument)
 	for(;;)
 	{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if(rc_ctrl.mouse.press_r||rc_ctrl.rc.s[0] == 1)//¿ªÆô×ÔÃé
 =======
 		if(rc_ctrl.mouse.press_r||rc_ctrl.rc.s[1] == 1)//¿ªÆô×ÔÃé
+>>>>>>> master
+=======
+		if(rc_ctrl.mouse.press_r||rc_ctrl.rc.s[0] == 1)//¿ªÆô×ÔÃé
 >>>>>>> master
 		{
 			auto_aim();
@@ -88,6 +96,7 @@ void auto_aim()
 	if(Pitch_minipc != 0)
 	{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		pid_init(&motor_pid[5], 10, 0.1, 0, 30000, 30000);
 		target_speed[4] = Pitch_minipc *  pitch_weight;
 		motor_info[4].set_voltage = pid_calc(&motor_pid[5], target_speed[4], motor_info[4].rotor_speed);
@@ -97,6 +106,13 @@ void auto_aim()
 		target_speed[4] = Pitch_minipc *  pitch_weight;
 	
 		//gimbal_calc_and_send();
+>>>>>>> master
+=======
+		pid_init(&motor_pid[5], 10, 0.1, 0, 30000, 30000);
+		target_speed[4] = Pitch_minipc *  pitch_weight;
+		motor_info[4].set_voltage = pid_calc(&motor_pid[5], target_speed[4], motor_info[4].rotor_speed);
+		set_motor_voltage1( 1, motor_info[4].set_voltage, 0, 0, 0);
+			
 >>>>>>> master
 		shoot_flag = 2;
 	}
@@ -137,7 +153,7 @@ void gimbal_mode_1()
 	  if (rc_ctrl.mouse.y >= -5 && rc_ctrl.mouse.y <= 5) 
 	  {
 		target_speed[4] = 0;
-	  }
+	  }   
 	  else
 	  {
 		if(rc_ctrl.mouse.y <-5 && rc_ctrl.mouse.y >=-16384 && (motor_info[4].rotor_angle < 1500 ||  motor_info[4].rotor_angle > 6500)) //Ò£¿ØÆ÷ÍùÏÂ²¦//Ò£¿ØÆ÷ÍùÏÂ²¦
@@ -153,9 +169,13 @@ void gimbal_mode_1()
 	  }
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
   gimbal_calc_and_send();
 =======
   // gimbal_calc_and_send();
+>>>>>>> master
+=======
+  gimbal_calc_and_send();
 >>>>>>> master
   osDelay(1);
 }
@@ -165,8 +185,13 @@ void gimbal_calc_and_send()
 	motor_info[4].set_voltage = pid_calc(&motor_pid[4], target_speed[4], motor_info[4].rotor_speed);
 	set_motor_voltage1( 1, motor_info[4].set_voltage, 0, 0, 0);
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 =======
 }
+>>>>>>> master
+=======
+}
+
 >>>>>>> master
