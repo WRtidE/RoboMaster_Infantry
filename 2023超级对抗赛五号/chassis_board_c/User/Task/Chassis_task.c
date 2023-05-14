@@ -7,8 +7,8 @@ extern float powerdata[4];
 pid_struct_t motor_pid_chassis[4];
 pid_struct_t cap;
 motor_info_t  motor_info_chassis[7];       //电机信息结构体
- fp32 chassis_motor_pid [3]={40,0.5,10};   //用的原来的pid,30,0.5,10
- fp32 chassis_motor_pid2 [3]={40,1,10};   //用的原来的pid,30,0.5,10
+ fp32 chassis_motor_pid [3]={30,0,0};   //用的原来的pid,30,0.5,10
+ fp32 chassis_motor_pid2 [3]={30,0,0};   //用的原来的pid,30,0.5,10
  fp32 cappid[3]={60,0,10};
 volatile int16_t Vx=0,Vy=0,Wz=0;
  volatile int16_t tempa = 2;
@@ -149,9 +149,9 @@ static void Chassis_loop_Init()
 
 static void Get_Err()
 {
-			Down_ins_yaw = ins_data.angle[0] + 180;
+			Down_ins_yaw   = 360 - (ins_data.angle[0] + 180);
 			Down_ins_pitch = ins_data.angle[1];
-			Down_ins_row = ins_data.angle[2];
+			Down_ins_row   = ins_data.angle[2];
 	
 			//校正陀螺仪漂移
 //			Down_ins_yaw_update = Down_ins_yaw - Drifting_yaw;
@@ -186,7 +186,7 @@ void chassis_motol_speed_calculate()
 {
     uint8_t i=0;
     int16_t max = 0;
-    int16_t temp =0;
+    int16_t temp =0;  
     int16_t max_speed = limit_speed;
     fp32 rate=0;
     for(i = 0; i<4; i++)
@@ -227,25 +227,13 @@ void chassis_current_give()
 
 static void Chassis_following()
 {
-	//先检测云台已经停止转动
-	if((rc_ctrl.rc.ch[0]<=50)&&(rc_ctrl.rc.ch[0]>=-50)	&& ( !q_flag && !e_flag))
+	//阈值判断
+	if(Err_yaw > angle_valve || Err_yaw < -angle_valve)
 	{
-
-			//阈值判断
-			if(Err_yaw > angle_valve || Err_yaw < -angle_valve)
-			{
-				Wz -= Err_yaw * angle_weight;
-			}
+		Wz -= Err_yaw * angle_weight;
 	}
-//	if(((rc_ctrl.rc.ch[4]<=50)&&(rc_ctrl.rc.ch[4]>=-50))	&& ( !q_flag && !e_flag))
-//	{
 
-//			//阈值判断
-//			if(Err_yaw > angle_valve || Err_yaw < -angle_valve)
-//			{
-//				Wz -= Err_yaw * angle_weight;
-//			}
-//	}
+
 }
 
 static void Chassis_mode_1()
@@ -276,8 +264,6 @@ static void Chassis_mode_1()
 		// moving	control by remote
     else if( !w_flag && !s_flag && !a_flag && !d_flag)
     {
-			
-
         Vy= rc_ctrl.rc.ch[3]/660.0*8000;
         Vx= rc_ctrl.rc.ch[2]/660.0*8000;
         Wz= -rc_ctrl.rc.ch[4]/660.0*8000;

@@ -17,6 +17,7 @@ uint32_t shoot_flag = 0;
 pid_struct_t pitch_pid[7];
 extern ins_data_t ins_data;
 
+
 //初始化PID参数
 static void gimbal_init();	
 
@@ -62,19 +63,11 @@ void gimbal_init()
 
 }
 
-//void auto_aim()
-//{
-//	Get_minipc();
-//	
-//	target_angle = motor_info[4].rotor_angle - Pitch_minipc* 8192/360;
-//	motor_info[4].set_voltage = pid_calc(&pitch_pid[4], target_angle, motor_info[4].rotor_angle);	
-//	set_motor_voltage1(1, motor_info[4].set_voltage, 0, 0, 0);
-//	
-//	shoot_flag = 2;
-//	
-//}
+
+
 
 void auto_aim()
+	
 {
 	Get_minipc();
 	if(Pitch_minipc != 0)

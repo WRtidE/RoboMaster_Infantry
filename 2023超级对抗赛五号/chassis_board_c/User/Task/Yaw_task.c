@@ -17,6 +17,7 @@ fp32 ins_roll;
 extern fp32 yaw_data;
 fp32 init_yaw;	
 fp32 err_yaw;
+fp32 target_yaw;
 fp32 angle_weight = 3;	
 uint8_t reset_flag = 0;
 uint8_t yaw_weight = 3;
@@ -122,6 +123,41 @@ static void Yaw_mode_1() //锁云台模式
 			yaw_model_flag = 1;
 			
 		}
+//		if((rc_ctrl.rc.ch[0] > -50 && rc_ctrl.rc.ch[0] < 50) && ins_yaw )
+//		{
+//			if(yaw_model_flag == 1)	
+//			{
+//				init_yaw = ins_yaw;
+//				yaw_model_flag = 0;
+//			}
+
+//			err_yaw = ins_yaw  - init_yaw;
+//			
+//			if(err_yaw > 1 || err_yaw < -1)
+//			{
+//				motor_speed_target[4] = err_yaw * angle_weight;   
+//			}
+//			else
+//			{
+//				motor_speed_target[4] = 0;
+//			}
+//		}
+//		//拨动yaw轴，云台可动
+//		else if(rc_ctrl.rc.ch[0] >= -660 &&rc_ctrl.rc.ch[0]<= 660)
+//		{			
+//			target_yaw = init_yaw  - rc_ctrl.rc.ch[0]/660.0 * 0.0001;  //0.00001有点慢 
+//			
+//			err_yaw  = ins_yaw  -  target_yaw;
+//			
+//			if(err_yaw > 1 || err_yaw < -1)
+//			{
+//				motor_speed_target[4] = err_yaw * angle_weight;   
+//			}
+//			
+
+//			yaw_model_flag = 1;
+//			
+//		}
 	}
 	else
 	{
@@ -195,66 +231,4 @@ static void start_check()
 	}
 }
 
-//static void Yaw_mode_2()
-//{
-//	if (!mouse_x)
-//	{
-//		if (rc_ctrl.rc.ch[0] >= -50 && rc_ctrl.rc.ch[0] <= 50)
-//		{
-//		  if (motor_info[4].rotor_speed > 10 || motor_info[4].rotor_speed < -10) 
-//		  {
-//			motor_speed_target[4] = 0;
-//			motor_info[4].set_voltage = pid_calc(&motor_pid[4], motor_speed_target[4], motor_info[4].rotor_speed);
-//			yaw_model_flag = 1;
-//		  }
-//		  else
-//		  {
-//			motor_info[4].set_voltage = 0;
-//		  }
-//		}
-//		else
-//		{
-//		  if(rc_ctrl.rc.ch[0]>=-660&&rc_ctrl.rc.ch[0]<=660)
-//		  {
-//			motor_speed_target[4] = -((rc_ctrl.rc.ch[0] ) / 660.00 * 100);
-//			motor_info[4].set_voltage = pid_calc(&motor_pid[4], motor_speed_target[4], motor_info[4].rotor_speed);
-//			yaw_model_flag = 1;
-//		  }
-//		}
-//	}
-//	else
-//	{
-//		if (mouse_x >= -5 && mouse_x <= 5)
-//		{
-//		  if (motor_info[4].rotor_speed > 10 || motor_info[4].rotor_speed < -10) 
-//		  {
-//			motor_speed_target[4] = 0;
-//			motor_info[4].set_voltage = pid_calc(&motor_pid[4], motor_speed_target[4], motor_info[4].rotor_speed);
-//			yaw_model_flag = 1;
-//		  }
-//		  else
-//		  {
-//			motor_info[4].set_voltage = 0;
-//		  }
-//		}
-//		else
-//		{
-//		  if(mouse_x>=-16384&&mouse_x<=16384)
-//		  {
-//			motor_speed_target[4] = -((mouse_x ) / 16384.00 * 5000);
-//			yaw_model_flag = 1;
-//		  }else if(mouse_x>16384){
-//				mouse_x = 16384;
-//				motor_speed_target[4] = -((mouse_x ) / 16384.00 * 5000);
-//				yaw_model_flag = 1;
-//		  }else if(mouse_x<-16384){
-//			  mouse_x = -16384;
-//				motor_speed_target[4] = -((mouse_x ) / 16384.00 * 5000);
 
-//				yaw_model_flag = 1;
-//		  }
-//		}
-//	}
-//	Yaw_calc_and_send();
-//    osDelay(1);
-//}

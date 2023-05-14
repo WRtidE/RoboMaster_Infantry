@@ -1,31 +1,43 @@
  #include "INS_task.h"
 #include "remote_control.h"
-float Q_angle=0.005;//角度方差
+
+float Q_angle=0.003;//角度方差
 	float Q_gyro_bias=0.004;//角速度方差
 	float R_measure=0.3;//测量噪声
 float dt = 0.001;
+fp32 magone[3];
 float p[2][2]=
-{0,0,0,0
+{0.5,0.5,0.5,0.5
 };
-static const fp32 imu_temp_PID[3] = {1600, 0.2, 0};	//PID的3个值
+static const fp32 imu_temp_PID[3] = {1000, 20, 0};	//PID的3个值
  pid_type_def  imu_temp_pid;
-fp32 first_temperate;
+fp32 first_temperate=0;
 ins_data_t ins_data;
 volatile float twoKp = twoKpDef;											// 2 * proportional gain (Kp)
 volatile float twoKi = twoKiDef;											// 2 * integral gain (Ki)
 volatile float integralFBx = 0.0f,  integralFBy = 0.0f, integralFBz = 0.0f;	// integral error terms scaled by Ki
 size_t a;
+float Accel[3];
+float accLPFcoef = 0.0085;
+int UpdateCount = 0;
 uint16_t angle_1;
 uint16_t angle_2;
 uint16_t angle_3;
 
+#define BMI088_BOARD_INSTALL_SPIN_MATRIX    \
+    {0.0f, 1.0f, 0.0f},                     \
+    {-1.0f, 0.0f, 0.0f},                     \
+    {0.0f, 0.0f, 1.0f}                      \
+
+		fp32 gyro_scale_factor[3][3] = {BMI088_BOARD_INSTALL_SPIN_MATRIX};
+		fp32 accel_scale_factor[3][3] = {BMI088_BOARD_INSTALL_SPIN_MATRIX};
 //卡尔曼滤波器
 void Kalman_Fliter(float *gx, float *ax)
 {
 	float ax1 = *ax;//方便后续残差计算的角速度初始值
 	float gxdt,gydt,gzdt,axdt,aydt,azdt;
 	
-	float Q_bias=0;//角度偏差
+	float Q_bias=0.0002;//角度偏差
 	float k1;//angle卡尔曼增益
 	float k2;//偏移卡尔曼增益
 	//先验估计
@@ -55,6 +67,61 @@ void Kalman_Fliter(float *gx, float *ax)
 
 	
 }
+/**
+  * @brief          旋转陀螺仪,加速度计和磁力计,并计算零漂,因为设备有不同安装方式
+  * @param[out]     gyro: 加上零漂和旋转
+  * @param[out]     accel: 加上零漂和旋转
+  * @param[out]     mag: 加上零漂和旋转
+  * @param[in]      bmi088: 陀螺仪和加速度计数据
+  * @param[in]      ist8310: 磁力计数据
+  * @retval         none
+  */
+static void imu_cali_slove(fp32 gyro[3], fp32 accel[3])
+{
+    for (uint8_t i = 0; i < 3; i++)
+    {
+        gyro[i] = ins_data.gyro[0] * gyro_scale_factor[i][0] + ins_data.gyro[1] * gyro_scale_factor[i][1] + ins_data.gyro[2] * gyro_scale_factor[i][2] ;
+        accel[i] = ins_data.accel[0] * accel_scale_factor[i][0] + ins_data.accel[1] * accel_scale_factor[i][1] + ins_data.accel[2] * accel_scale_factor[i][2] ;
+        
+    }
+}
+
+float Complementary_Filter_x(float angle_m, float gyro_m)
+{
+	 static float angle;
+	 float K1 =0.02; 
+   angle = K1 * angle_m+ (1-K1) * (angle + gyro_m * dt);
+	 return angle;
+}
+void imu_init()
+{
+	float imu[3][100];
+	for(int val=0;val<50;val++)
+{BMI088_read(ins_data.accel, ins_data.gyro, &ins_data.temp);
+       imu_temp_control(ins_data.temp);
+	if (UpdateCount == 0) // 如果是第一次进入,需要初始化低通滤波
+    {
+      
+    }
+
+
+			Kalman_Fliter(&ins_data.gyro[0], &ins_data.accel[0]);
+			Kalman_Fliter(&ins_data.gyro[1], &ins_data.accel[1]);
+			Kalman_Fliter(&ins_data.gyro[2], &ins_data.accel[2]);
+       MahonyAHRSupdateIMU(ins_data.INS_quat, ins_data.gyro[0]+ins_data.gyro_offset[0], ins_data.gyro[1]+ins_data.gyro_offset[1], ins_data.gyro[2]+ins_data.gyro_offset[2], ins_data.accel[0]+ins_data.accel_offset[0], ins_data.accel[1]+ins_data.accel_offset[1], ins_data.accel[2]+ins_data.accel_offset[2]); 
+       get_angle(ins_data.INS_quat, &ins_data.angle[0], &ins_data.angle[1], &ins_data.angle[2]);
+			Complementary_Filter_x(ins_data.angle[0], ins_data.gyro[0]);
+			Complementary_Filter_x(ins_data.angle[1], ins_data.gyro[1]);
+			Complementary_Filter_x(ins_data.angle[2], ins_data.gyro[2]);
+			osDelay(100);
+			imu[0][val]=ins_data.angle[0];
+			imu[1][val]=ins_data.angle[1];
+			imu[2][val]=ins_data.angle[2];
+	
+}
+
+}
+
   void INS_Task(void const *pvParameters)   
 {
   
@@ -63,26 +130,57 @@ void Kalman_Fliter(float *gx, float *ax)
      BMI088_gyro_init();		//陀螺仪初始化
      ist8310_init();		//磁力计初始化（就是一些根据手册写的读写函数）
      IMU_offset_cali();
-     AHRS_init(& ins_data);	//初始化四元数的值
-     PID_init(&imu_temp_pid, 0, imu_temp_PID, 4500, 4400);//后两位是P和I的MAX限制值
-  
+    AHRS_init(& ins_data);	//初始化四元数的值
+     pid_init(&imu_temp_pid, 0, imu_temp_PID, 4500, 4400);//后两位是P和I的MAX限制值
+		BMI088_read(ins_data.accel, ins_data.gyro, &ins_data.temp);
+		imu_cali_slove(ins_data.gyro,ins_data.accel);
     while(1)
     {
        BMI088_read(ins_data.accel, ins_data.gyro, &ins_data.temp);
+
        imu_temp_control(ins_data.temp);
+			imu_cali_slove(ins_data.gyro,ins_data.accel);
+			if (UpdateCount == 0) // 如果是第一次进入,需要初始化低通滤波
+    {
+        Accel[0] = ins_data.accel[0];
+        Accel[1] = ins_data.accel[1];
+        Accel[2] = ins_data.accel[2];
+    }
+    Accel[0] = Accel[0] * accLPFcoef / (dt + accLPFcoef) + ins_data.accel[0] * dt / (dt + accLPFcoef);
+    Accel[1] = Accel[1] * accLPFcoef / (dt + accLPFcoef) + ins_data.accel[1] * dt / (dt + accLPFcoef);
+    Accel[2] = Accel[2] * accLPFcoef / (dt + accLPFcoef) + ins_data.accel[2] * dt / (dt + accLPFcoef);
+		
+		      ins_data.accel[0]=Accel[0];
+        ins_data.accel[1]=Accel[1];
+         ins_data.accel[2]=Accel[2];
+
 			Kalman_Fliter(&ins_data.gyro[0], &ins_data.accel[0]);
 			Kalman_Fliter(&ins_data.gyro[1], &ins_data.accel[1]);
 			Kalman_Fliter(&ins_data.gyro[2], &ins_data.accel[2]);
        MahonyAHRSupdateIMU(ins_data.INS_quat, ins_data.gyro[0], ins_data.gyro[1], ins_data.gyro[2], ins_data.accel[0], ins_data.accel[1], ins_data.accel[2]); 
        get_angle(ins_data.INS_quat, &ins_data.angle[0], &ins_data.angle[1], &ins_data.angle[2]);
-       angle_1=ins_data.angle[0]+180;
-       angle_2=ins_data.angle[1]+180;
-       angle_3=ins_data.angle[2]+180;
+			Complementary_Filter_x(ins_data.angle[0], ins_data.gyro[0]);
+			Complementary_Filter_x(ins_data.angle[1], ins_data.gyro[1]);
+			Complementary_Filter_x(ins_data.angle[2], ins_data.gyro[2]);
+				UpdateCount++;
        a= uxTaskGetStackHighWaterMark( NULL );
-	   send_ins_data_to_a( angle_1, angle_2, angle_3, Yaw_minipc);
+       	//--------------5号-------------------------
+	    angle_1=ins_data.angle[0]+180;
+		angle_2=ins_data.angle[1]+180;
+		angle_3=ins_data.angle[2]+180;
+	    send_ins_data_to_a( angle_1, angle_2, angle_3, Yaw_minipc);
+		//-----------------------------------------
        osDelay(1);
     }
   }
+
+
+
+  
+
+
+
+
 
 
 #define IMU_temp_PWM(pwm)    __HAL_TIM_SetCompare(&htim10, TIM_CHANNEL_1, pwm)
@@ -93,7 +191,7 @@ void Kalman_Fliter(float *gx, float *ax)
     static uint8_t temp_constant_time = 0;
     if (first_temperate)
     {
-        PID_calc(&imu_temp_pid, temp, 40);
+        pid_calc(&imu_temp_pid, temp, 40);
         if (imu_temp_pid.out < 0.0f)
         {
             imu_temp_pid.out = 0.0f;
@@ -105,7 +203,7 @@ void Kalman_Fliter(float *gx, float *ax)
     {
         //在没有达到设置的温度，一直最大功率加热
         //in beginning, max power
-        if (temp > 40)
+        if (temp < 40)
         {
             temp_constant_time++;
             if (temp_constant_time > 200)
