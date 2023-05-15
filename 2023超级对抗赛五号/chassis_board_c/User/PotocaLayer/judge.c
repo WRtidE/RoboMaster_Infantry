@@ -2,6 +2,7 @@
 #include "CRC.h"
 #include "main.h"
 #include "struct_typedef.h"
+
 extern UART_HandleTypeDef huart6;
 JUDGE_MODULE_DATA Judge_Hero;
 ext_power_heat_data_t powerd;
@@ -19,8 +20,15 @@ extern float powerdata[4];
 uint8_t first_line[30] = {"spin:"};
 uint8_t CliendTxBuffer[200];
 
+//=======================================5号步兵接口===========================================
+JUDGE_MODULE_DATA Judge_Robot;
+robot_data_t infantry;
 
-void Update_data();//定义一些需要用到的变量并实时更新数值方便其他文件调用
+
+void update_data();//定义一些需要用到的变量并实时更新数值方便其他文件调用
+
+void lv_data_set();
+
 void JUDGE_Receive(volatile uint8_t *databuffer,uint8_t length)
 {
     uint8_t pos=0;
@@ -47,72 +55,71 @@ void JUDGE_Receive(volatile uint8_t *databuffer,uint8_t length)
                 { 
                     case 0x0001:
                         data_length = 11;
-                        memcpy((void*)(&Judge_Hero.status), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.status), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x0003:
                         data_length = 32;
-                         memcpy((void*)(&Judge_Hero.robot_hp), (const void*)(&databuffer[pos+7]), data_length);
+                         memcpy((void*)(&Judge_Robot.robot_hp), (const void*)(&databuffer[pos+7]), data_length);
                          break;
                     case 0x0005:
                         data_length = 13;
-                          memcpy((void*)(&Judge_Hero.zone), (const void*)(&databuffer[pos+7]), data_length);
+                          memcpy((void*)(&Judge_Robot.zone), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x0101:
                         data_length = 4;
-                        memcpy((void*)(&Judge_Hero.event_data), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.event_data), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x0102:
                         data_length = 4;
-                         memcpy((void*)(&Judge_Hero.supply_status), (const void*)(&databuffer[pos+7]), data_length);
+                         memcpy((void*)(&Judge_Robot.supply_status), (const void*)(&databuffer[pos+7]), data_length);
                          break;
                     case 0x0104 :
                         data_length = 2;
-                        memcpy((void*)(&Judge_Hero.warning), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.warning), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x0105 :
                         data_length = 1;
-                        memcpy((void*)(&Judge_Hero.dart_remaining_time), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.dart_remaining_time), (const void*)(&databuffer[pos+7]), data_length);
                          break;
                     case 0x0201:
                          data_length = 27;
-                         memcpy((void*)(&Judge_Hero.robot_status), (const void*)(&databuffer[pos+7]), data_length);                    //底盘功率限制上限在这
-                         Determine_ID();
+                         memcpy((void*)(&Judge_Robot.robot_status), (const void*)(&databuffer[pos+7]), data_length);   //底盘功率限制上限在这
                         break;
                     case 0x0202:
                         data_length = 16;
-                        memcpy((void*)(&Judge_Hero.power_heat), (const void*)(&databuffer[pos+7]), data_length);        //含实时功率热量数据
+                        memcpy((void*)(&Judge_Robot.power_heat), (const void*)(&databuffer[pos+7]), data_length);      //含实时功率热量数据
                         break;
                     case 0x0203:
                         data_length = 16;
-                         memcpy((void*)(&Judge_Hero.robot_pos), (const void*)(&databuffer[pos+7]), data_length);
+                         memcpy((void*)(&Judge_Robot.robot_pos), (const void*)(&databuffer[pos+7]), data_length);
                          break;
                     case 0x0204:
                         data_length = 1;
-                        memcpy((void*)(&Judge_Hero.buff), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.buff), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x0205:
                         data_length = 1;
-                        memcpy((void*)(&Judge_Hero.aerial_energy), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.aerial_energy), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x0206:
                         data_length =1;
-                        memcpy((void*)(&Judge_Hero.robot_hurt), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.robot_hurt), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x0207:
                         data_length = 7;
-                        memcpy((void*)(&Judge_Hero.shoot_data), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.shoot_data), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x0208:
                         data_length = 6;
-                        memcpy((void*)(&Judge_Hero.bullet_remain), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.bullet_remain), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x0209:
                         data_length = 4;
-                        memcpy((void*)(&Judge_Hero.rfid_status), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.rfid_status), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     case 0x020A:
                         data_length = 6;
-                        memcpy((void*)(&Judge_Hero.rfid_status), (const void*)(&databuffer[pos+7]), data_length);
+                        memcpy((void*)(&Judge_Robot.rfid_status), (const void*)(&databuffer[pos+7]), data_length);
                         break;
                     default:break;
                 }
@@ -120,14 +127,51 @@ void JUDGE_Receive(volatile uint8_t *databuffer,uint8_t length)
                 continue;
 
             }
+
+
           }
+
         }
+
         pos++;
      
      }
-		 Update_data();
+		 update_data();
 }
 
+
+void update_data()
+{
+	infantry.Robot_id = Judge_Robot.robot_status.robot_id;//ID号
+	infantry.Robot_level = Judge_Robot.robot_status.robot_level;//等级
+	infantry.chassis_power = Judge_Robot.power_heat.chassis_power;   
+	infantry.chassis_power_buffer = Judge_Robot.power_heat.chassis_power_buffer;
+	infantry.total_current = Judge_Robot.power_heat.chassis_current;
+	infantry.shooter_heat = Judge_Robot.power_heat.shooter_id1_17mm_cooling_heat;
+}
+
+void lv_data_set()
+{
+	if(infantry.Robot_level == 1)
+	{
+		
+	}
+	else if(infantry.Robot_level == 2)
+	{
+		
+	}
+	else if(infantry.Robot_level == 2)
+	{
+		
+	}
+	else
+	{
+		
+	}
+}
+
+
+//===============================================================================================
 
 void Update_data()
 {
