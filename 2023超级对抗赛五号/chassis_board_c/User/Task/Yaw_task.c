@@ -114,10 +114,8 @@ static void Yaw_mode_1() //ËøÔÆÌ¨Ä£Ê½
 			
 			detel_calc();
 								
-			//motor_speed_target[4] =  - gimbal_PID_calc(&yaw_angle_pid[4], ins_yaw,init_yaw);
-			motor_speed_target[4] =  10;			
-
-		
+			motor_speed_target[4] =  - gimbal_PID_calc(&yaw_angle_pid[4], ins_yaw,init_yaw);
+					
 			yaw_model_flag = 1;
 			
 		}
@@ -180,10 +178,8 @@ static void auto_aim()
 
 static void Yaw_calc_and_send()
 {
-	//motor_info[4].set_voltage = pid_calc(&motor_pid_chassis[4], motor_speed_target[4], motor_info[4].rotor_speed);
 	motor_info_chassis[4].set_current = pid_calc(&motor_pid_yaw, motor_info_chassis[4].rotor_speed,motor_speed_target[4]);
 	set_motor_voltage1(1, motor_info_chassis[4].set_current, 0, 0, 0);
-
 }
 
 static void detel_calc()
