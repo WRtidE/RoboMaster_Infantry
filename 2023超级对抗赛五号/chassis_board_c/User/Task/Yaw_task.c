@@ -4,6 +4,7 @@
 #include "Chassis_task.h"
 #include "drv_can.h"
 #include "INS_task.h"
+#include "pid.h"
 
 #define valve 100	
 #define base 1024		
@@ -11,14 +12,20 @@
 #define base_min 364
 #define angle_valve 10	
 
+
 fp32 ins_yaw;
 fp32 ins_pitch;
 fp32 ins_roll;
 extern fp32 yaw_data;
-fp32 init_yaw;	
+fp32 init_yaw = 180;	
 fp32 err_yaw;
+fp32 err;
 fp32 target_yaw;
-fp32 angle_weight = 3;	
+//角度环pid
+fp32 angle_pid[3]={10,0,2.5};
+pid_struct_t yaw_angle_pid[5];
+
+fp32 angle_weight = 3;
 uint8_t reset_flag = 0;
 uint8_t yaw_weight = 3;
 
@@ -30,9 +37,10 @@ extern  ins_data_t ins_data;
 int8_t init_err = 0;
 int8_t start_flag = 0;
 
-fp32 chassis_yaw_pid [3]={200,0,0}; //yaw pid数组
+fp32 chassis_yaw_pid [3]={300,0.1,0}; //yaw pid数组
 
-extern pid_struct_t motor_pid_chassis[4];
+
+pid_struct_t motor_pid_yaw;
 
 extern int16_t Wz;
 int yaw_model_flag = 1; 
@@ -55,12 +63,13 @@ static void auto_aim();
 
 static void start_check();
 
+static void detel_calc();
 
 void gimbal_yaw_task(void const * argument)
 {
 
-	Yaw_init();
-  
+  Yaw_init();
+  osDelay(10000);
   for(;;)
   {
 	  
@@ -82,7 +91,8 @@ void gimbal_yaw_task(void const * argument)
  
 static void Yaw_init()	
 {
-	pid_init(&motor_pid_chassis[4], chassis_yaw_pid, 30000, 30000);//电机速度pid
+	pid_init(&motor_pid_yaw, chassis_yaw_pid, 30000, 30000);//电机速度pid
+	pid_init(&yaw_angle_pid[4],angle_pid,30000,30000);      //角度环pid
 }
 
 static void Yaw_read_imu() //insdata1是云台陀螺仪数据
@@ -96,68 +106,22 @@ static void Yaw_mode_1() //锁云台模式
 {
 	if(!mouse_x)
 	{
-		//遥控器置中，默认锁云台
-		if((rc_ctrl.rc.ch[0] > -50 && rc_ctrl.rc.ch[0] < 50) && ins_yaw )
-		{
-			if(yaw_model_flag == 1)	
-			{
-				init_yaw = ins_yaw;
-				yaw_model_flag = 0;
-			}
 
-			err_yaw = ins_yaw  - init_yaw;
+		
+		if(rc_ctrl.rc.ch[0] >= -660 &&rc_ctrl.rc.ch[0]<= 660)
+		{			
+			init_yaw = init_yaw  + rc_ctrl.rc.ch[0]/660.0 * 0.5 + ((mouse_x ) / 16384.00 * 0.5); 
 			
-			if(err_yaw > 1 || err_yaw < -1)
-			{
-				motor_speed_target[4] = err_yaw * angle_weight;   
-			}
-			else
-			{
-				motor_speed_target[4] = 0;
-			}
-		}
-		//拨动yaw轴，云台可动
-		else if(rc_ctrl.rc.ch[0] > -660 &&rc_ctrl.rc.ch[0]<= 660)
-		{
-			motor_speed_target[4] = -(rc_ctrl.rc.ch[0] / 660.00 * 100);
+			detel_calc();
+								
+			//motor_speed_target[4] =  - gimbal_PID_calc(&yaw_angle_pid[4], ins_yaw,init_yaw);
+			motor_speed_target[4] =  10;			
+
+		
 			yaw_model_flag = 1;
 			
 		}
-//		if((rc_ctrl.rc.ch[0] > -50 && rc_ctrl.rc.ch[0] < 50) && ins_yaw )
-//		{
-//			if(yaw_model_flag == 1)	
-//			{
-//				init_yaw = ins_yaw;
-//				yaw_model_flag = 0;
-//			}
-
-//			err_yaw = ins_yaw  - init_yaw;
-//			
-//			if(err_yaw > 1 || err_yaw < -1)
-//			{
-//				motor_speed_target[4] = err_yaw * angle_weight;   
-//			}
-//			else
-//			{
-//				motor_speed_target[4] = 0;
-//			}
-//		}
-//		//拨动yaw轴，云台可动
-//		else if(rc_ctrl.rc.ch[0] >= -660 &&rc_ctrl.rc.ch[0]<= 660)
-//		{			
-//			target_yaw = init_yaw  - rc_ctrl.rc.ch[0]/660.0 * 0.0001;  //0.00001有点慢 
-//			
-//			err_yaw  = ins_yaw  -  target_yaw;
-//			
-//			if(err_yaw > 1 || err_yaw < -1)
-//			{
-//				motor_speed_target[4] = err_yaw * angle_weight;   
-//			}
-//			
-
-//			yaw_model_flag = 1;
-//			
-//		}
+		
 	}
 	else
 	{
@@ -171,6 +135,9 @@ static void Yaw_mode_1() //锁云台模式
 			}
 
 			err_yaw = ins_yaw  - init_yaw;
+			
+
+			
 			if(err_yaw > 1 || err_yaw < -1)
 			{
 				motor_speed_target[4] = err_yaw * angle_weight;
@@ -214,21 +181,23 @@ static void auto_aim()
 static void Yaw_calc_and_send()
 {
 	//motor_info[4].set_voltage = pid_calc(&motor_pid_chassis[4], motor_speed_target[4], motor_info[4].rotor_speed);
-	motor_info_chassis[4].set_current = pid_calc(&motor_pid_chassis[4], motor_info_chassis[4].rotor_speed,motor_speed_target[4]);
+	motor_info_chassis[4].set_current = pid_calc(&motor_pid_yaw, motor_info_chassis[4].rotor_speed,motor_speed_target[4]);
 	set_motor_voltage1(1, motor_info_chassis[4].set_current, 0, 0, 0);
+
 }
 
-static void start_check()
+static void detel_calc()
 {
-	while(!start_flag)
+	if(init_yaw >360)
 	{
-		init_err = ins_data.angle[1] - ins_data1.angle[1];
-
-		if(init_err > -10 && init_err<10)
-		{
-			start_flag = 1;
-		}
+		init_yaw -=360;
 	}
+	
+	else if(init_yaw<0)
+	{
+		init_yaw += 360;
+	}
+	
 }
 
 

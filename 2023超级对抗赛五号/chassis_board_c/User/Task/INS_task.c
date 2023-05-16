@@ -1,5 +1,6 @@
  #include "INS_task.h"
 
+
 float Q_angle=0.003;//角度方差
 	float Q_gyro_bias=0.004;//角速度方差
 	float R_measure=0.3;//测量噪声
@@ -8,7 +9,7 @@ fp32 magone[3];
 float p[2][2]=
 {0.5,0.5,0.5,0.5
 };
-static const fp32 imu_temp_PID[3] = {1000, 20, 0};	//PID的3个值
+static const fp32 imu_temp_PID[3] = {1000, 20, 0};	//PID�?3个�?
  pid_type_def  imu_temp_pid;
 fp32 first_temperate=0;
 ins_data_t ins_data;
@@ -16,6 +17,7 @@ volatile float twoKp = twoKpDef;											// 2 * proportional gain (Kp)
 volatile float twoKi = twoKiDef;											// 2 * integral gain (Ki)
 volatile float integralFBx = 0.0f,  integralFBy = 0.0f, integralFBz = 0.0f;	// integral error terms scaled by Ki
 size_t a;
+float tem = 0;
 float Accel[3];
 float accLPFcoef = 0.0085;
 int UpdateCount = 0;
@@ -24,36 +26,43 @@ float yaw_angle;
     {0.0f, 1.0f, 0.0f},                     \
     {-1.0f, 0.0f, 0.0f},                     \
     {0.0f, 0.0f, 1.0f}                      \
+		//加速度计低通滤�?
+static fp32 accel_fliter_1[3] = {0.0f, 0.0f, 0.0f};
+static fp32 accel_fliter_2[3] = {0.0f, 0.0f, 0.0f};
+static fp32 accel_fliter_3[3] = {0.0f, 0.0f, 0.0f};
+static const fp32 fliter_num[3] = {1.929454039488895f, -0.93178349823448126f, 0.002329458745586203f};
 
 		fp32 gyro_scale_factor[3][3] = {BMI088_BOARD_INSTALL_SPIN_MATRIX};
 		fp32 accel_scale_factor[3][3] = {BMI088_BOARD_INSTALL_SPIN_MATRIX};
+
+
 //卡尔曼滤波器
 void Kalman_Fliter(float *gx, float *ax)
 {
-	float ax1 = *ax;//方便后续残差计算的角速度初始值
+	float ax1 = *ax;//方便后续残差计算的角速度初始�?
 	float gxdt,gydt,gzdt,axdt,aydt,azdt;
 	
 	float Q_bias=0.0002;//角度偏差
-	float k1;//angle卡尔曼增益
-	float k2;//偏移卡尔曼增益
+	float k1;//angle卡尔曼增�?
+	float k2;//偏移卡尔曼增�?
 	//先验估计
 	*ax = *ax - Q_bias + *gx *dt;
 	Q_bias = Q_bias;
-	//预测协方差
+	//预测协方�?
 	p[0][0]= p[0][0]+(p[1][1]*dt+Q_angle-p[0][1]-p[1][0]) *dt;
 	p[0][1]= p[0][1]-p[1][1];
 	p[1][0]= p[1][0]-p[1][1];
 	p[1][1]=p[1][1] + Q_gyro_bias *dt;
-	//卡尔曼增益
+	//卡尔曼增�?
 	k1 = p[0][0]/(p[0][0] + R_measure);
 	k2 = p[1][0]/(p[0][0] + R_measure);
 	//计算残差
 	float z = ax1;
 	float y = z - *ax;
-	//状态更新
+	//状态更�?
 	*ax = *ax + k1 * y;//角度
 	Q_bias = Q_bias + k2 * y;//偏移
-	//协方差矩阵更新
+	//协方差矩阵更�?
 	p[0][0]=p[0][0]*(1-k1);
 	p[0][1]=p[0][1]*(1-k1);
 	p[1][0]=p[1][0]-p[0][0] * k2;
@@ -64,12 +73,12 @@ void Kalman_Fliter(float *gx, float *ax)
 	
 }
 /**
-  * @brief          旋转陀螺仪,加速度计和磁力计,并计算零漂,因为设备有不同安装方式
-  * @param[out]     gyro: 加上零漂和旋转
-  * @param[out]     accel: 加上零漂和旋转
-  * @param[out]     mag: 加上零漂和旋转
-  * @param[in]      bmi088: 陀螺仪和加速度计数据
-  * @param[in]      ist8310: 磁力计数据
+  * @brief          旋转陀螺仪,加速度计和磁力�?,并计算零�?,因为设备有不同安装方�?
+  * @param[out]     gyro: 加上零漂和旋�?
+  * @param[out]     accel: 加上零漂和旋�?
+  * @param[out]     mag: 加上零漂和旋�?
+  * @param[in]      bmi088: 陀螺仪和加速度计数�?
+  * @param[in]      ist8310: 磁力计数�?
   * @retval         none
   */
 static void imu_cali_slove(fp32 gyro[3], fp32 accel[3])
@@ -95,7 +104,7 @@ void imu_init()
 	for(int val=0;val<50;val++)
 {BMI088_read(ins_data.accel, ins_data.gyro, &ins_data.temp);
        imu_temp_control(ins_data.temp);
-	if (UpdateCount == 0) // 如果是第一次进入,需要初始化低通滤波
+	if (UpdateCount == 0) // 如果是第一次进�?,需要初始化低通滤�?
     {
       
     }
@@ -123,41 +132,100 @@ void imu_init()
   
      osDelay(7);
      BMI088_accel_init();		//加速度计初始化
-     BMI088_gyro_init();		//陀螺仪初始化
+     BMI088_gyro_init();		//陀螺仪初始�?
      ist8310_init();		//磁力计初始化（就是一些根据手册写的读写函数）
      IMU_offset_cali();
-    AHRS_init(& ins_data);	//初始化四元数的值
-     pid_init(&imu_temp_pid, 0, imu_temp_PID, 4500, 4400);//后两位是P和I的MAX限制值
+    AHRS_init(& ins_data);	//初始化四元数的�?
+     pid_init(&imu_temp_pid, 0, imu_temp_PID, 4500, 4400);//后两位是P和I的MAX限制�?
 		BMI088_read(ins_data.accel, ins_data.gyro, &ins_data.temp);
 		imu_cali_slove(ins_data.gyro,ins_data.accel);
+		 accel_fliter_1[0] = accel_fliter_2[0] = accel_fliter_3[0] = ins_data.accel[0];
+    accel_fliter_1[1] = accel_fliter_2[1] = accel_fliter_3[1] = ins_data.accel[1];
+    accel_fliter_1[2] = accel_fliter_2[2] = accel_fliter_3[2] = ins_data.accel[2];
+
     while(1)
     {
        BMI088_read(ins_data.accel, ins_data.gyro, &ins_data.temp);
 
        imu_temp_control(ins_data.temp);
-			imu_cali_slove(ins_data.gyro,ins_data.accel);
-			if (UpdateCount == 0) // 如果是第一次进入,需要初始化低通滤波
+			//imu_cali_slove(ins_data.gyro,ins_data.accel);
+	/**		if (UpdateCount == 0) // 如果是第一次进�?,需要初始化低通滤�?
     {
         Accel[0] = ins_data.accel[0];
         Accel[1] = ins_data.accel[1];
         Accel[2] = ins_data.accel[2];
     }
+		else{
     Accel[0] = Accel[0] * accLPFcoef / (dt + accLPFcoef) + ins_data.accel[0] * dt / (dt + accLPFcoef);
     Accel[1] = Accel[1] * accLPFcoef / (dt + accLPFcoef) + ins_data.accel[1] * dt / (dt + accLPFcoef);
     Accel[2] = Accel[2] * accLPFcoef / (dt + accLPFcoef) + ins_data.accel[2] * dt / (dt + accLPFcoef);
-		
+		}
 		      ins_data.accel[0]=Accel[0];
         ins_data.accel[1]=Accel[1];
-         ins_data.accel[2]=Accel[2];
+         ins_data.accel[2]=Accel[2];  */
+	/**	if (UpdateCount == 0) // 如果是第一次进�?,需要初始化低通滤�?
+{
+    Accel[0] = ins_data.accel[0];
+    Accel[1] = ins_data.accel[1];
+    Accel[2] = ins_data.accel[2];
+}
+else
+{
+    const float alpha = dt / (dt + 2 * accLPFcoef);
+    const float alphaSquare = alpha * alpha;
+  
+    // 计算二阶低通滤�?
+    const float prevAccel0 = Accel[0];
+    const float prevAccel1 = Accel[1];
+    const float prevAccel2 = Accel[2];
+  
+    Accel[0] = alphaSquare * ins_data.accel[0] + 2 * alpha * prevAccel0 + (1 - 2 * alpha) * Accel[0];
+    Accel[1] = alphaSquare * ins_data.accel[1] + 2 * alpha * prevAccel1 + (1 - 2 * alpha) * Accel[1];
+    Accel[2] = alphaSquare * ins_data.accel[2] + 2 * alpha * prevAccel2 + (1 - 2 * alpha) * Accel[2];
+  
+    ins_data.accel[0] = Accel[0];
+    ins_data.accel[1] = Accel[1];
+    ins_data.accel[2] = Accel[2];
+} 
+			//加速度计低通滤�?
+        //accel low-pass filter
+				// ��ʼ��EKF
+    
 
-			Kalman_Fliter(&ins_data.gyro[0], &ins_data.accel[0]);
+    
+    // ִ��EKF���²���*/
+						/**		Kalman_Fliter(&ins_data.gyro[0], &ins_data.accel[0]);
 			Kalman_Fliter(&ins_data.gyro[1], &ins_data.accel[1]);
-			Kalman_Fliter(&ins_data.gyro[2], &ins_data.accel[2]);
+			Kalman_Fliter(&ins_data.gyro[2], &ins_data.accel[2]);*/
+        accel_fliter_1[0] = accel_fliter_2[0];
+        accel_fliter_2[0] = accel_fliter_3[0];
+
+        accel_fliter_3[0] = accel_fliter_2[0] * fliter_num[0] + accel_fliter_1[0] * fliter_num[1] + ins_data.accel[0] * fliter_num[2];
+
+        accel_fliter_1[1] = accel_fliter_2[1];
+        accel_fliter_2[1] = accel_fliter_3[1];
+
+        accel_fliter_3[1] = accel_fliter_2[1] * fliter_num[0] + accel_fliter_1[1] * fliter_num[1] + ins_data.accel[1] * fliter_num[2];
+
+        accel_fliter_1[2] = accel_fliter_2[2];
+        accel_fliter_2[2] = accel_fliter_3[2];
+
+        accel_fliter_3[2] = accel_fliter_2[2] * fliter_num[0] + accel_fliter_1[2] * fliter_num[1] + ins_data.accel[2] * fliter_num[2];
+        			     ins_data.accel[0] = accel_fliter_3[0];
+
+
+		
+
+
        MahonyAHRSupdateIMU(ins_data.INS_quat, ins_data.gyro[0], ins_data.gyro[1], ins_data.gyro[2], ins_data.accel[0], ins_data.accel[1], ins_data.accel[2]); 
+
+			 
        get_angle(ins_data.INS_quat, &ins_data.angle[0], &ins_data.angle[1], &ins_data.angle[2]);
 			Complementary_Filter_x(ins_data.angle[0], ins_data.gyro[0]);
-			Complementary_Filter_x(ins_data.angle[1], ins_data.gyro[1]);
-			Complementary_Filter_x(ins_data.angle[2], ins_data.gyro[2]);
+			//Complementary_Filter_x(ins_data.angle[1], ins_data.gyro[1]);
+			//Complementary_Filter_x(ins_data.angle[2], ins_data.gyro[2]);
+		ins_data.angle[0] += 0.000015;
+		tem += 0.00001;
 				UpdateCount++;
 			yaw_angle = ins_data.angle[0];
        a= uxTaskGetStackHighWaterMark( NULL );
@@ -168,6 +236,9 @@ void imu_init()
 
 
   
+
+
+
 
 
 
@@ -192,14 +263,14 @@ void imu_init()
     }
     else
     {
-        //在没有达到设置的温度，一直最大功率加热
+        //在没有达到设置的温度，一直最大功率加�?
         //in beginning, max power
         if (temp < 40)
         {
             temp_constant_time++;
             if (temp_constant_time > 200)
             {
-                //达到设置温度，将积分项设置为一半最大功率，加速收敛
+                //达到设置温度，将积分项设置为一半最大功率，加速收�?
                 //
                 first_temperate = 1;
                 imu_temp_pid.Iout = 5000 / 2.0f;
@@ -292,9 +363,9 @@ void imu_init()
      void BMI088_gyro_init ()
   {
     // taskENTER_CRITICAL();
-    BMI088_gyro_write_single(0x14,0xB6);//�???????螺仪软复位，等待30ms
+    BMI088_gyro_write_single(0x14,0xB6);//�????????螺仪软复位，等待30ms
      HAL_Delay(30);
-    BMI088_gyro_write_single(0x0F,0x00);//满量�???????2000°每秒
+    BMI088_gyro_write_single(0x0F,0x00);//满量�????????2000°每秒
      HAL_Delay(10);
     BMI088_gyro_write_single(0x16,(0x00<<1)|(0x00<<0));
      HAL_Delay(10);
@@ -319,7 +390,7 @@ void imu_init()
         while (i < len)
      {
         HAL_SPI_Receive(&hspi1, &pRxData, 1, 1000);    //Bit #16-23���Ĵ���0x12��ֵ��Ȼ���ǼĴ���0x13��0x14��0x15��0x16��0x17��ֵ
-    	  while(HAL_SPI_GetState(&hspi1)==HAL_SPI_STATE_BUSY_RX);    //�ȴ�SPI�������???????
+    	  while(HAL_SPI_GetState(&hspi1)==HAL_SPI_STATE_BUSY_RX);    //�ȴ�SPI�������????????
     	  buf[i] = pRxData;
         i++;
      }
@@ -418,11 +489,11 @@ void BMI088_read(fp32 *accel,fp32 *gyro,fp32* temp)
      HAL_Delay(50);
      HAL_GPIO_WritePin(GPIOG, GPIO_PIN_6, GPIO_PIN_SET);
      HAL_Delay(50);
-   // ist8310_IIC_write_single_reg(0x0B,0x08);   //�??????启中断，并设置成低电�??????
+   // ist8310_IIC_write_single_reg(0x0B,0x08);   //�???????启中断，并设置成低电�???????
    //  HAL_Delay(150);
     ist8310_IIC_write_single_reg(0x41,0x09);   //平均采样两次
      HAL_Delay(150);
-     ist8310_IIC_write_single_reg(0x42,0xC0);  //必须�??????0xC0
+     ist8310_IIC_write_single_reg(0x42,0xC0);  //必须�???????0xC0
      HAL_Delay(150);
     ist8310_IIC_write_single_reg(0x0A,0x0B);  //200Hz输出频率
      HAL_Delay(150);
