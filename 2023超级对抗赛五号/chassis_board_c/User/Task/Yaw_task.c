@@ -115,8 +115,6 @@ static void Yaw_mode_1() //ËøÔÆÌ¨Ä£Ê½
 			detel_calc();
 								
 			motor_speed_target[4] =  - gimbal_PID_calc(&yaw_angle_pid[4], ins_yaw,init_yaw);
-					
-			yaw_model_flag = 1;
 			
 		}
 		
