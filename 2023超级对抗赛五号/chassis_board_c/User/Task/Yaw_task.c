@@ -75,7 +75,7 @@ void gimbal_yaw_task(void const * argument)
 	  
 	Yaw_read_imu();// 读取云台陀螺仪数据
 
-	if(rc_ctrl.rc.s[1] == 1 && ins_yaw)
+	if((rc_ctrl.rc.s[1] == 1 || press_right) && ins_yaw)
 	{
 		auto_aim();
 	}
@@ -104,69 +104,21 @@ static void Yaw_read_imu() //insdata1是云台陀螺仪数据
 
 static void Yaw_mode_1() //锁云台模式
 {
-	if(!mouse_x)
-	{
-
-		
+	
 		if(rc_ctrl.rc.ch[0] >= -660 &&rc_ctrl.rc.ch[0]<= 660)
 		{			
-			init_yaw = init_yaw  + rc_ctrl.rc.ch[0]/660.0 * 0.5 + ((mouse_x ) / 16384.00 * 0.5); 
+			init_yaw = init_yaw  + rc_ctrl.rc.ch[0]/660.0 * 0.5 + ((mouse_x ) / 16384.00 * 10); 
 			
 			detel_calc();
 								
 			motor_speed_target[4] =  - gimbal_PID_calc(&yaw_angle_pid[4], ins_yaw,init_yaw);
 			
 		}
-		
-	}
-	else
-	{
-		//鼠标置中，默认锁云台
-		if(mouse_x >= -5 && mouse_x <= 5)
-		{
-			if(yaw_model_flag == 1)	
-			{
-				init_yaw = ins_yaw;
-				yaw_model_flag = 0;
-			}
-
-			err_yaw = ins_yaw  - init_yaw;
-			
-
-			
-			if(err_yaw > 1 || err_yaw < -1)
-			{
-				motor_speed_target[4] = err_yaw * angle_weight;
-			}
-			else
-			{
-				motor_speed_target[4] = 0;
-			}
-		}
-		//移动鼠标，云台可动
-		else if(mouse_x>=-16384&&mouse_x<=16384)
-		{
-			motor_speed_target[4] = -((mouse_x ) / 16384.00 * 5000);
-			yaw_model_flag = 1;
-		}
-		else if(mouse_x>16384)
-		{
-			mouse_x = 16384;
-			motor_speed_target[4] = -((mouse_x ) / 16384.00 * 5000);
-			yaw_model_flag = 1;
-		}
-		else if(mouse_x<-16384)
-		{
-			mouse_x = -16384;
-			motor_speed_target[4] = -((mouse_x ) / 16384.00 * 5000);
-			yaw_model_flag = 1;
-		}
-	}
 
 	Yaw_calc_and_send();
     osDelay(1);
 }
-
+ 
 static void auto_aim()
 {
 	motor_speed_target[4] = yaw_data * yaw_weight;
