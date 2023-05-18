@@ -107,7 +107,7 @@ static void Yaw_mode_1() //ËøÔÆÌ¨Ä£Ê½
 	
 		if(rc_ctrl.rc.ch[0] >= -660 &&rc_ctrl.rc.ch[0]<= 660)
 		{			
-			init_yaw = init_yaw  + rc_ctrl.rc.ch[0]/660.0 * 0.5 + ((mouse_x ) / 16384.00 * 10); 
+			init_yaw = init_yaw  + rc_ctrl.rc.ch[0]/660.0 * 0.5 + ((mouse_x ) / 16384.00 * 20); 
 			
 			detel_calc();
 								

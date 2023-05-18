@@ -4,6 +4,8 @@
 #include  "drv_can.h"
 extern float newpower;
 extern float powerdata[4];
+//陀螺仪矫正
+fp32 imu_err = 0;
 
 //pid
 pid_struct_t motor_pid_chassis[4];
@@ -36,6 +38,7 @@ fp32 Down_ins_pitch;
 fp32 Down_ins_row;
 fp32 sin_a;		
 fp32 cos_a;
+uint8_t insflag;
 int8_t chassis_choice_flag = 0;
 int8_t chassis_mode = 1;
 int flag[1] = {0};//是否使用超级电容，否填0，是填1
@@ -67,6 +70,9 @@ static void Chassis_mode_3();
 //模式选择
 static void chassis_choice();
 
+//陀螺仪矫正
+static void imu_reset();
+
 #define angle_valve 5
 #define angle_weight 55
  
@@ -81,6 +87,9 @@ void Chassis_task(void const *pvParameters)
 	 chassis_choice();
 	 chassis_motol_speed_calculate();
 	 chassis_current_give();
+	 imu_reset();
+		
+	
      osDelay(1);
 
     }
@@ -129,7 +138,18 @@ static void Get_Err()
 	Down_ins_pitch = ins_data.angle[1];
 	Down_ins_row = ins_data.angle[2];	
 
-	Up_ins_yaw = ins_data1.angle[0];
+	Up_ins_yaw = ins_data1.angle[0] + imu_err;
+	
+	if(Up_ins_yaw > 360)
+	{
+		Up_ins_yaw -= 360;
+	}
+	else if(Up_ins_yaw < 0)
+	{
+		Up_ins_yaw += 360;
+	}
+	
+	 
 	Err_yaw = -(Up_ins_yaw -Down_ins_yaw);
 
 	//越界处理,保证转动方向不变
@@ -197,6 +217,7 @@ static void Chassis_following()
 	//阈值判断
 	Get_Err();
 	
+	
 	if(Err_yaw > angle_valve || Err_yaw < -angle_valve)
 	{
 		Wz -= Err_yaw * angle_weight;
@@ -207,7 +228,7 @@ static void Chassis_mode_1()
 {
 
 	if( (rc_ctrl.rc.ch[2]>=-50&&rc_ctrl.rc.ch[2]<=50)&&((rc_ctrl.rc.ch[3]>=-50)&&(rc_ctrl.rc.ch[3]<=50))&&(rc_ctrl.rc.ch[4]<=50)&&(rc_ctrl.rc.ch[4]>=-50)
-		&& ( !w_flag && !s_flag && !a_flag && !d_flag) && (Err_yaw <= angle_valve) && (Err_yaw >= -angle_valve))
+		&& ( !w_flag && !s_flag && !a_flag && !d_flag &&!q_flag && !e_flag) && (Err_yaw <= angle_valve) && (Err_yaw >= -angle_valve))
 	{
 
 		for(int i=0;i<4;i++)//减速  slow_down
@@ -228,9 +249,9 @@ static void Chassis_mode_1()
 	// moving	control by remote
     else
     {
-        Vy=  rc_ctrl.rc.ch[3]/660.0*8000 + w_flag * 2000 - s_flag * 2000;
-        Vx=  rc_ctrl.rc.ch[2]/660.0*8000 - a_flag * 500  + d_flag * 500;
-        Wz= -rc_ctrl.rc.ch[4]/660.0*8000 - q_flag * 2000 + e_flag * 2000;
+        Vy=  rc_ctrl.rc.ch[3]/660.0*8000 + w_flag/w_flag * 2000 - s_flag/s_flag * 2000;
+        Vx=  rc_ctrl.rc.ch[2]/660.0*8000 - a_flag/a_flag * 2000 + d_flag/d_flag * 2000;
+        Wz= -rc_ctrl.rc.ch[4]/660.0*8000 - q_flag/q_flag * 2000 + e_flag/e_flag * 2000;
     }
 			
 	Chassis_following();
@@ -255,28 +276,26 @@ static void Chassis_mode_2()
 			
 
 	// moving	control by remote
-    if( !w_flag && !s_flag && !a_flag && !d_flag)
-    {
-    
-        Vy=  rc_ctrl.rc.ch[3]/660.0*8000 + w_flag * 2000 - s_flag * 2000;
-        Vx=  rc_ctrl.rc.ch[2]/660.0*8000 - a_flag * 500 + d_flag * 500;
 
-		//curl matrix * V
-		Temp_Vx = Vx;
-		Temp_Vy = Vy;
-		Vx = Temp_Vx*cos_a - Temp_Vy*sin_a;
-		Vy = Temp_Vx*sin_a + Temp_Vy*cos_a;
-		Vx = Vx/tempa;
-		Vy = Vy/tempa;
+    
+	Vy=  rc_ctrl.rc.ch[3]/660.0*8000 + w_flag * 2000 - s_flag * 2000;
+	Vx=  rc_ctrl.rc.ch[2]/660.0*8000 - a_flag * 500 + d_flag * 500;
+
+	//curl matrix * V
+	Temp_Vx = Vx;
+	Temp_Vy = Vy;
+	Vx = Temp_Vx*cos_a - Temp_Vy*sin_a;
+	Vy = Temp_Vx*sin_a + Temp_Vy*cos_a;
+	Vx = Vx/tempa;
+	Vy = Vy/tempa;
 			
-    }
 		
 }
 
 static void Chassis_mode_3()
 {
 	if( (rc_ctrl.rc.ch[2]>=-50&&rc_ctrl.rc.ch[2]<=50)&&((rc_ctrl.rc.ch[3]>=-50)&&(rc_ctrl.rc.ch[3]<=50))&&(rc_ctrl.rc.ch[4]<=50)&&(rc_ctrl.rc.ch[4]>=-50)
-		&& ( !w_flag && !s_flag && !a_flag && !d_flag) && (Err_yaw <= angle_valve) && (Err_yaw >= -angle_valve))
+		&& ( !w_flag && !s_flag && !a_flag && !d_flag && !q_flag && !e_flag) && (Err_yaw <= angle_valve) && (Err_yaw >= -angle_valve))
 	{
 
 		for(int i=0;i<4;i++)//减速  slow_down
@@ -297,11 +316,19 @@ static void Chassis_mode_3()
 	// moving	control by remote
     else
     {
-        Vy=  rc_ctrl.rc.ch[3]/660.0*8000 + w_flag * 2000 - s_flag * 2000;
-        Vx=  rc_ctrl.rc.ch[2]/660.0*8000 - a_flag * 500 + d_flag * 500;
-        Wz= -rc_ctrl.rc.ch[4]/660.0*8000 - q_flag * 2000 + e_flag * 2000;
+        Vy=  rc_ctrl.rc.ch[3]/660.0*8000 + w_flag/w_flag * 2000 - s_flag/s_flag * 2000;
+        Vx=  rc_ctrl.rc.ch[2]/660.0*8000 - a_flag/a_flag * 2000 + d_flag/d_flag * 2000;
+        Wz= -rc_ctrl.rc.ch[4]/660.0*8000 - q_flag/q_flag * 2000 + e_flag/e_flag * 2000;
     }
 	
+}
+
+static void imu_reset()
+{
+	if(x_flag)
+	{
+		imu_err = ( 360 -(ins_data.angle[0] + 180)) - ins_data1.angle[0];  //底盘 - 云台
+	}
 }
 
 

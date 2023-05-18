@@ -63,17 +63,6 @@ void gimbal_init()
 
 }
 
-//void auto_aim()
-//{
-//	Get_minipc();
-//	
-//	target_angle = motor_info[4].rotor_angle - Pitch_minipc* 8192/360;
-//	motor_info[4].set_voltage = pid_calc(&pitch_pid[4], target_angle, motor_info[4].rotor_angle);	
-//	set_motor_voltage1(1, motor_info[4].set_voltage, 0, 0, 0);
-//	
-//	shoot_flag = 2;
-//	
-//}
 
 void auto_aim()
 {
@@ -98,48 +87,17 @@ void auto_aim()
 
 void gimbal_mode_1()
 {
-	
-  if (!rc_ctrl.mouse.y)
-  {
-	  if (rc_ctrl.rc.ch[1] >= -50 && rc_ctrl.rc.ch[1] <= 50) 
+	  if ((rc_ctrl.rc.ch[1] >= -50 && rc_ctrl.rc.ch[1] <= 50) && (!rc_ctrl.mouse.y)) 
 	  {
 		target_speed[4] = 0;
 	  }
 	  else
 	  {
-		if(rc_ctrl.rc.ch[1] >= -660&&rc_ctrl.rc.ch[1]<=-200 && (motor_info[4].rotor_angle < 1500 ||  motor_info[4].rotor_angle > 6500)) //Ò£¿ØÆ÷ÍùÏÂ²¦//Ò£¿ØÆ÷ÍùÏÂ²¦
-		{
-			target_speed[4]  = -((rc_ctrl.rc.ch[1]) / 660.0 * 16);
+			target_speed[4]  = -((rc_ctrl.rc.ch[1]) / 660.0*16) + rc_ctrl.mouse.y / 16384.00 *1000;
 			shoot_flag = 2;
-		}
-		if(rc_ctrl.rc.ch[1] <= 660 && (motor_info[4].rotor_angle > 7000 || motor_info[4].rotor_angle < 3000 )) //Ò£¿ØÆ÷ÍùÉÏ²¦
-		{
-			target_speed[4] = -((rc_ctrl.rc.ch[1]) / 660.0*16);
-			shoot_flag = 2;
-		}
+
 	  }
-  }
-  else
-  {
-	  if (rc_ctrl.mouse.y >= -5 && rc_ctrl.mouse.y <= 5) 
-	  {
-		target_speed[4] = 0;
-	  }   
-	  else
-	  {
-		if(rc_ctrl.mouse.y <-5 && rc_ctrl.mouse.y >=-16384 && (motor_info[4].rotor_angle < 1500 ||  motor_info[4].rotor_angle > 6500)) //Ò£¿ØÆ÷ÍùÏÂ²¦//Ò£¿ØÆ÷ÍùÏÂ²¦
-		{
-			target_speed[4] =  rc_ctrl.mouse.y / 16384.00 * 3000;
-			shoot_flag = 2;
-		}
-		if(rc_ctrl.mouse.y>5 && rc_ctrl.mouse.y <= 16384 && (motor_info[4].rotor_angle > 7000 || motor_info[4].rotor_angle < 3000 )) //Ò£¿ØÆ÷ÍùÉÏ²¦
-		{
-			target_speed[4] =  rc_ctrl.mouse.y / 16384.00 *3000;
-			shoot_flag = 2;
-		}
-	  }
-  }
-  
+ 
   gimbal_calc_and_send();
   osDelay(1);
 }

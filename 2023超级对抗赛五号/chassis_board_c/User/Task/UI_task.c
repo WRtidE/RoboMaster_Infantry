@@ -62,7 +62,7 @@ void UI_Task(void const* argument)
     
     while (1)
     {
-          userUI_init();
+        userUI_init();
         osDelay(USERUI_TASK_CONTROL_TIME_MS);
     }
 }

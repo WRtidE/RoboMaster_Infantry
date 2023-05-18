@@ -7,7 +7,7 @@ JUDGE_MODULE_DATA Judge_Hero;
 ext_power_heat_data_t powerd;
 float newpower;
 extern uint8_t seq;
-uint8_t Hero_level;
+uint8_t Hero_level;  
 uint8_t Hero_id;
 uint16_t Hero_42mm_speed_limit;
 uint16_t Hero_chassis_power_limit;
