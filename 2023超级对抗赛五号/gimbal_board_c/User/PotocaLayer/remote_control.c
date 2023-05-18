@@ -32,6 +32,25 @@ void Get_minipc();
 void remote_data_read(uint8_t rx_buffer[]);
 extern ins_data_t ins_data;
 
+uint16_t w_flag;
+uint16_t s_flag;
+uint16_t a_flag;
+uint16_t d_flag;
+uint16_t q_flag;
+uint16_t e_flag;
+uint16_t shift_flag;
+uint16_t ctrl_flag;
+uint8_t press_left;
+uint8_t press_right;
+uint16_t r_flag;
+uint16_t f_flag;
+uint16_t g_flag;
+uint16_t z_flag;
+uint16_t x_flag;
+uint16_t c_flag;
+uint16_t v_flag;
+uint16_t b_flag;
+
 extern UART_HandleTypeDef huart3;
 extern DMA_HandleTypeDef hdma_usart3_rx;
 extern uint16_t angle_1;
@@ -212,6 +231,25 @@ static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl)
     rc_ctrl->rc.ch[2] -= RC_CH_VALUE_OFFSET;
     rc_ctrl->rc.ch[3] -= RC_CH_VALUE_OFFSET;
     rc_ctrl->rc.ch[4] -= RC_CH_VALUE_OFFSET;
+	
+		
+	r_flag=(sbus_buf[15]&0x01);
+	f_flag=(sbus_buf[15]&0x02);
+	g_flag=(sbus_buf[15]&0x04);
+	z_flag=(sbus_buf[15]&0x08);
+	x_flag=(sbus_buf[15]&0x10);
+	c_flag=(sbus_buf[15]&0x20);
+	v_flag=(sbus_buf[15]&0x40);
+	b_flag=(sbus_buf[15]&0x80);
+	
+	w_flag=(sbus_buf[14]&0x01);
+	s_flag=(sbus_buf[14]&0x02);
+	a_flag=(sbus_buf[14]&0x04);
+	d_flag=(sbus_buf[14]&0x08);
+	q_flag=(sbus_buf[14]&0x40);
+	e_flag=(sbus_buf[14]&0x80);
+	shift_flag=(sbus_buf[14]&0x10);
+	ctrl_flag=(sbus_buf[14]&0x20);
 	
 	can_rc_forward(*rc_ctrl);
 }

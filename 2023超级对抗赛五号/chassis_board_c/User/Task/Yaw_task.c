@@ -75,11 +75,11 @@ void gimbal_yaw_task(void const * argument)
 	  
 	Yaw_read_imu();// 读取云台陀螺仪数据
 
-	if((rc_ctrl.rc.s[1] == 1 || press_right) && ins_yaw)
+	if((rc_ctrl.rc.s[0]== 1 || press_right) && ins_yaw)
 	{
 		auto_aim();
 	}
-	else
+	else 
 	{
 		Yaw_mode_1();
 	}

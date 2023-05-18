@@ -139,6 +139,7 @@ void gimbal_mode_1()
 		}
 	  }
   }
+  
   gimbal_calc_and_send();
   osDelay(1);
 }

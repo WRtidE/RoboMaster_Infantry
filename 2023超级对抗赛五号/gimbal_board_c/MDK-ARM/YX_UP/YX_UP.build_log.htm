@@ -1,0 +1,87 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.24.2.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: A WRtidE, A, LIC=ZB4EI-T5ENT-2Z8W4-FXTPG-57IGT-RIR3M
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.24.1
+Toolchain Path:  F:\DownLoad\Keil5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 5 (build 528)
+Assembler:       Armasm.exe V5.06 update 5 (build 528)
+Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
+Library Manager: ArmAr.exe V5.06 update 5 (build 528)
+Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
+CPU DLL:         SARMCM3.DLL V5.24.1
+Dialog DLL:      DCM.DLL V1.16.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
+Dialog DLL:      TCM.DLL V1.32.0.0
+ 
+<h2>Project:</h2>
+C:\Users\WRtidE\Desktop\2023超级对抗赛五号\gimbal_board_c\MDK-ARM\YX_UP.uvprojx
+Project File Date:  05/10/2023
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'F:\DownLoad\Keil5\ARM\ARMCC\Bin'
+Build target 'YX_UP'
+compiling Friction_task.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
+        #define __FPU_USED       1U
+..\User\PotocaLayer\remote_control.h(66): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+  extern void Get_minipc();
+../User/PID.h(16): warning:  #1-D: last line of file ends without a newline
+  							
+..\User\Task\Exchange_task.h(31): warning:  #1295-D: Deprecated declaration Get_keyboard - give arg types
+  void Get_keyboard();
+..\User\Task\Friction_task.c(14): warning:  #1295-D: Deprecated declaration Friction_init - give arg types
+  static void Friction_init();
+..\User\Task\Friction_task.c(17): warning:  #1295-D: Deprecated declaration shoot_mode_1 - give arg types
+  static void shoot_mode_1();
+..\User\Task\Friction_task.c(19): warning:  #1295-D: Deprecated declaration shoot_mode_2 - give arg types
+  static void shoot_mode_2();
+..\User\Task\Friction_task.c(22): warning:  #1295-D: Deprecated declaration magazine_task - give arg types
+  static void magazine_task();
+..\User\Task\Friction_task.c(23): warning:  #1295-D: Deprecated declaration magazine_init - give arg types
+  static void magazine_init();
+..\User\Task\Friction_task.c(31): warning:  #1295-D: Deprecated declaration shoot_data_send - give arg types
+  static void shoot_data_send();
+..\User\Task\Friction_task.c(52): warning:  #111-D: statement is unreachable
+    osDelay(1);
+..\User\Task\Friction_task.c(134): warning:  #1-D: last line of file ends without a newline
+  }
+..\User\Task\Friction_task.c: 13 warnings, 0 errors
+linking...
+Program Size: Code=40290 RO-data=638 RW-data=668 ZI-data=21372  
+FromELF: creating hex file...
+"YX_UP\YX_UP.axf" - 0 Error(s), 13 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.0.1.pack
+                ARM.CMSIS.5.0.1
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.0.1
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.16.0.pack
+                Keil.STM32F4xx_DFP.2.16.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_YX_UP
+  F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include
+  F:\DownLoad\Keil5\ARM\PACK\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.0.1
+Build Time Elapsed:  00:00:04
+</pre>
+</body>
+</html>

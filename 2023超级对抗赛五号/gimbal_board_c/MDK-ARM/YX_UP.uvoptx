@@ -195,6 +195,26 @@
           <WinNumber>2</WinNumber>
           <ItemText>angle_1,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>w_flag</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>r_flag</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>press_left</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>count</ItemText>
+        </Ww>
       </WatchWindow2>
       <Tracepoint>
         <THDelay>0</THDelay>
