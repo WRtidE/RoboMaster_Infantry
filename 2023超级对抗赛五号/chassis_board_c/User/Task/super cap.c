@@ -7,6 +7,7 @@
 #include "arm_math.h"
 #include "super_cap.h"
 #include  "drv_can.h"
+#include  "drv_usart.h"
 #include "judge.h"
 extern uint8_t Hero_level;
 #include "Chassis_task.h"
@@ -21,20 +22,20 @@ for(;;)
     {  
 if(Hero_level==1)
 {
-	supercap(5500);
+	supercap(50);
 }
 if(Hero_level==2)
 {
-	supercap(6000);
+	supercap(60);
 }
 if(Hero_level==3)
 {
-	supercap(6500);
+	supercap(70);
 }
 else
 {
 
-	supercap(5500);
+	supercap(50);
 }
 
 		//can_remote(sbuss_buf,0x33);

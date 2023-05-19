@@ -114,6 +114,7 @@ extern float small;
 extern float angle_limit;
 
 extern uint8_t rx_data[8];
+extern uint8_t supercap_buffer[100];
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

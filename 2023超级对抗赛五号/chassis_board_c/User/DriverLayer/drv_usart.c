@@ -5,6 +5,7 @@
 #include  "judge.h"
 extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart6;
+extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart6_rx;
 extern DMA_HandleTypeDef hdma_usart6_tx;
 #define USART3_RX_DATA_FRAME_LEN	(18u)	// 串口3数据帧长度
@@ -13,6 +14,11 @@ extern DMA_HandleTypeDef hdma_usart6_tx;
 uint8_t usart3_dma_rxbuf[2][USART3_RX_BUF_LEN];
 volatile uint8_t judge_dma_buffer[2][USART6_RX_BUF_LEN] ={0}  ;
 uint8_t judge_receive_length=0;
+
+supercap_struct supercap_info;
+fp32 supercap_Vi;fp32 supercap_Vo;fp32 supercap_Pi;fp32 supercap_Ii;fp32 supercap_Io;fp32 supercap_Ps;
+//输入电压（电池电压）   输出电压         输入功率         输入电流         输出电流      参考恒功率值
+uint8_t supercap_temp[51];
 
 void USART3_Init(void)
 {
@@ -231,8 +237,65 @@ static HAL_StatusTypeDef DMAEx_MultiBufferStart_NoIT(DMA_HandleTypeDef *hdma, \
 }
 
 
+void supercap(uint8_t a)
+{
+//	uint32_t CAN_TX_MAILBOX01;
+//	CAN_TxHeaderTypeDef tx_header;
 
+//		uint8_t power[2];
+//	tx_header.StdId = 0x210;
+//	tx_header.IDE   = CAN_ID_STD;//标准帧
+//	tx_header.RTR   = CAN_RTR_DATA;//数据帧
+//	
+//	tx_header.DLC   = 2;		//发送数据长度（字节）
+//		power[0] = a >> 8;
+//		power[1] = a;
+//		HAL_CAN_AddTxMessage(&hcan2, &tx_header, power,(uint32_t*)CAN_TX_MAILBOX0);
+//	//if(HAL_CAN_AddTxMessage(&hcan2, &tx_header, power,(uint32_t*)CAN_TX_MAILBOX0) == HAL_OK)
+//	//{HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_12);}
+	switch(a){
+    case 50:
+		   HAL_UART_Transmit_IT(&huart1,"P050P",5);
+       break; 
+    case 60  :
+        HAL_UART_Transmit_IT(&huart1,"P060P",5);
+       break; 
+    case 70  :
+			HAL_UART_Transmit_IT(&huart1,"P070P",5);
+       break; 
+    default : 
+       HAL_UART_Transmit_IT(&huart1,"P050P",5);
+}
+}
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart = &huart1)
+	{
+		uint8_t i;
+		uint8_t j;
+		for(i = 0;i<50;i++)
+		{
+			if(supercap_buffer[i] == 86 && supercap_buffer[i+1] == 105)
+			{
+				j = i;
+				break;
+			}
+		}
+			for (i = 0;i<50;i++)
+			{
+				supercap_temp[i] = supercap_buffer[j];
+				j++;
+			}
+			supercap_info.Vi = (supercap_temp[3]-48) + (supercap_temp[5]-48)/10.0 + (supercap_temp[6]-48)/100.0;//对supercap_buffer进行处理
+			supercap_info.Vo = (supercap_temp[11]-48) + (supercap_temp[13]-48)/10.0 + (supercap_temp[14]-48)/100.0;
+			supercap_info.Pi = (supercap_temp[19]-48) + (supercap_temp[21]-48)/10.0 + (supercap_temp[22]-48)/100.0;
+			supercap_info.Ii = (supercap_temp[27]-48) + (supercap_temp[29]-48)/10.0 + (supercap_temp[30]-48)/100.0;
+			supercap_info.Io = (supercap_temp[35]-48) + (supercap_temp[37]-48)/10.0 + (supercap_temp[38]-48)/100.0;
+			supercap_info.Ps = (supercap_temp[43]-48) + (supercap_temp[45]-48)/10.0 + (supercap_temp[46]-48)/100.0;
+			HAL_UART_Receive_IT(&huart1,supercap_buffer,100);//重新开启接收中断
+	}
+}
 
  
 

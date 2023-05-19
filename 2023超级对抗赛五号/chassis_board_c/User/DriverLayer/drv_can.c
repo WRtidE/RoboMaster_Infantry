@@ -288,21 +288,3 @@ void get_key()
 }
 
 
-void supercap(a)
-{
-	uint32_t CAN_TX_MAILBOX01;
-	CAN_TxHeaderTypeDef tx_header;
-
-    uint8_t power[2];
-  tx_header.StdId = 0x210;
-  tx_header.IDE   = CAN_ID_STD;//标准帧
-  tx_header.RTR   = CAN_RTR_DATA;//数据帧
-	
-  tx_header.DLC   = 2;		//发送数据长度（字节）
-		power[0] = a >> 8;
-		power[1] = a;
-    HAL_CAN_AddTxMessage(&hcan2, &tx_header, power,(uint32_t*)CAN_TX_MAILBOX0);
-	//if(HAL_CAN_AddTxMessage(&hcan2, &tx_header, power,(uint32_t*)CAN_TX_MAILBOX0) == HAL_OK)
-	//{HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_12);}
-	
-}

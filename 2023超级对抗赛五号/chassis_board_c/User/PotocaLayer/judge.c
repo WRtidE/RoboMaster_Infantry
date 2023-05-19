@@ -2,7 +2,8 @@
 #include "CRC.h"
 #include "main.h"
 #include "struct_typedef.h"
-extern UART_HandleTypeDef huart6;
+extern UART_HandleTypeDef huart6
+;
 JUDGE_MODULE_DATA Judge_Hero;
 ext_power_heat_data_t powerd;
 float newpower;
@@ -134,6 +135,7 @@ void Update_data()
 	Hero_level = Judge_Hero.robot_status.robot_level;//等级
 	Hero_42mm_speed_limit = Judge_Hero.robot_status.shooter_id1_42mm_speed_limit;
 	Hero_chassis_power_limit = Judge_Hero.robot_status.chassis_power_limit;
+	
 	newpower = powerd.chassis_power;
 	if(Judge_Hero.shoot_data.bullet_speed)
 	{

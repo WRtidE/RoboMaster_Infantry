@@ -98,6 +98,8 @@ float small;
 float angle_limit =8191;//转角的最大值
 
 uint8_t rx_data[8];
+uint8_t supercap_buffer[100];//或37
+
 /* USER CODE END 0 */
 
 /**
@@ -149,6 +151,8 @@ int main(void)
   CAN2_Init();
   USART6_Init();
 	USART3_Init();
+
+	HAL_UART_Receive_IT(&huart1,supercap_buffer,100);
 	HAL_TIM_Base_Start_IT(&htim1);//开启定时器1并打开中断,记得修改优先级
   /* USER CODE END 2 */
 
