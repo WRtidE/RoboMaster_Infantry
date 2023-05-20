@@ -59,5 +59,6 @@ yx_up\friction_task.o: ..\User\PotocaLayer\remote_control.h
 yx_up\friction_task.o: ../User/bsp_rc.h
 yx_up\friction_task.o: ../User/PID.h
 yx_up\friction_task.o: ../Core/Inc/can.h
+yx_up\friction_task.o: ..\User\DriverLayer\Can_user.h
 yx_up\friction_task.o: ..\User\Task\Friction_task.h
 yx_up\friction_task.o: ..\User\Task\Exchange_task.h

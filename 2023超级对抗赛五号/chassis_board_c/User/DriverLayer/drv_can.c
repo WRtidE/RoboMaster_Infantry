@@ -306,3 +306,24 @@ void supercap(a)
 	//{HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_12);}
 	
 }
+
+void judge_data_send(int16_t heat, int16_t heat_limit, int16_t level, int16_t v4)
+{
+    CAN_TxHeaderTypeDef tx_header;
+    uint8_t tx_data[8];
+
+    tx_header.StdId = 0x305; 
+    tx_header.IDE = CAN_ID_STD;                            //标准帧
+    tx_header.RTR = CAN_RTR_DATA;                          //数据帧
+    tx_header.DLC = 8;                                     //发送数据长度（字节）
+
+    tx_data[0] = (heat >> 8) & 0xff; //枪口热量
+    tx_data[1] = (heat)&0xff;
+    tx_data[2] = (heat_limit >> 8) & 0xff; //枪口热量上限
+    tx_data[3] = (heat_limit)&0xff;
+    tx_data[4] = (level)&0xff; //子弹射速 单位m/s
+    tx_data[5] = 0;
+    tx_data[6] = (v4 >> 8) & 0xff; 
+    tx_data[7] = (v4)&0xff;
+    HAL_CAN_AddTxMessage(&hcan1, &tx_header, tx_data, (uint32_t *)CAN_TX_MAILBOX0);
+}

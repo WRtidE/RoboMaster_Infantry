@@ -6,26 +6,34 @@
 #include "PID.h"
 #include "arm_math.h"
 #include "can.h"
+#include "Can_user.h"
 #include "Friction_task.h"
 #include "Exchange_task.h"
 #include "struct_typedef.h"
 
+fp32 target_angle1;
+uint8_t r_model= 0; //判断弹仓盖模式 0静止 1打开 2关闭
+
+fp32 count = 0;
+fp32 heat_warning = 0;
+
+
 //PID初始化
 static void Friction_init();
 
+//模式选择
+static void model_choice();
+
 //模式定义
 static void shoot_mode_1();
-
 static void shoot_mode_2();
 
 //弹仓
 static void magazine_task();
 static void magazine_init();
 
-fp32 target_angle1;
-uint8_t r_model= 0; //判断弹仓盖模式 0静止 1打开 2关闭
-
-fp32 count = 0;
+//枪口热量限制
+static void heat_limit();
 
 //can发送
 static void shoot_data_send();
@@ -34,20 +42,13 @@ void Friction_task(void const * argument)
 {
   Friction_init();
   magazine_init();
-	
-  for(;;)
-  {
-	if((rc_ctrl.rc.s[1] == 1) || rc_ctrl.mouse.press_l) //发射
-    {
-		shoot_mode_1();
-	}
-	else //其余情况电机转速置0
-	{
-		shoot_mode_2();
-		magazine_task();
-	}
 		
-	
+  for(;;)
+  {	  
+	model_choice();
+	magazine_task();
+	heat_limit();
+	shoot_data_send();	  
   }
   osDelay(1);
 }
@@ -55,6 +56,18 @@ void Friction_task(void const * argument)
 static void Friction_init()
 {
 
+}
+
+static void model_choice()
+{
+	if((rc_ctrl.rc.s[1] == 1) || rc_ctrl.mouse.press_l) //发射
+    {
+		shoot_mode_1();
+	}
+	else //其余情况电机转速置0
+	{
+		shoot_mode_2();
+	}
 }
 
 static void shoot_mode_1()
@@ -78,8 +91,6 @@ static void shoot_mode_1()
     motor_info[4].set_voltage = pid_calc(&pitch_pid[4], target_angle1, motor_info[4].rotor_angle);
     
 	shoot_flag = 1;
-	shoot_data_send();
-
 }
 
 static void shoot_mode_2()
@@ -102,7 +113,6 @@ static void shoot_mode_2()
 	motor_info[4].set_voltage = pid_calc(&pitch_pid[4], target_angle1, motor_info[4].rotor_angle);
 	
 	shoot_flag = 1;
-	shoot_data_send();
 }
 
 static void magazine_task()
@@ -118,8 +128,7 @@ static void magazine_task()
 	else //弹仓盖静止
 	{
 		target_speed[3] = 0;
-	}
-	motor_info[3].set_voltage = pid_calc(&motor_pid[3], target_speed[3], motor_info[3].rotor_speed);	
+	}	
 }
 
 static void magazine_init()
@@ -130,6 +139,30 @@ static void magazine_init()
 static void shoot_data_send()
 {
     set_motor_voltage(0, motor_info[0].set_voltage, motor_info[1].set_voltage,motor_info[2].set_voltage,motor_info[3].set_voltage);
-    
+    motor_info[3].set_voltage = pid_calc(&motor_pid[3], target_speed[3], motor_info[3].rotor_speed);
     osDelay(1);		
+}
+
+static void heat_limit()
+{
+  if(infantry.heat_limit && (!q_flag))
+  {
+	  if(infantry.shooter_heat > infantry.heat_limit )
+	  {
+		  motor_info[4].set_voltage *= 0;
+		  
+	  }
+	  if(infantry.shooter_heat > infantry.heat_limit * 0.9)
+	  {
+		  motor_info[4].set_voltage *= 0.5;
+	  }
+	  else
+	  {
+		//do nothing
+	  }	  
+  }
+  else
+  {
+	  //do nothing
+  }
 }

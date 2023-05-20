@@ -523,7 +523,7 @@ typedef __packed struct
 
 
 
-extern JUDGE_MODULE_DATA Judge_Hero;
+extern JUDGE_MODULE_DATA Judge_Robot;
 
 
 

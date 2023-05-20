@@ -25,6 +25,20 @@ typedef struct
     int16_t  torque_current;		//实际转矩电流
     uint8_t  temp;		//电机温度
 }motor_info_t;
+
+typedef struct ROBOT_DATA
+{
+	uint8_t Robot_level;
+	uint8_t Robot_id;
+	fp32 chassis_power;   //底盘功率
+    fp32 chassis_power_buffer;  //底盘功率缓冲区
+    fp32 total_current_limit;   //底盘输出电流限制
+    fp32 total_current;          //底盘输出电流
+	fp32 shooter_heat;			//枪口热量
+	fp32 shooter_heat_limit;
+} robot_data_t;
+
+extern robot_data_t infantry;
 #endif
 
 

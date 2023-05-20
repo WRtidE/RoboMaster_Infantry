@@ -8,26 +8,24 @@
 #include "super_cap.h"
 #include  "drv_can.h"
 #include "judge.h"
-extern uint8_t Hero_level;
 #include "Chassis_task.h"
 extern int flag[1];
 extern float powerdata[4];
 
 void super_cap(void const *pvParameters)//≥¨º∂µÁ»›
-	
-
 {
+	
 for(;;)
     {  
-if(Hero_level==1)
+if(infantry.Robot_level==1)
 {
 	supercap(5500);
 }
-if(Hero_level==2)
+if(infantry.Robot_level==2)
 {
 	supercap(6000);
 }
-if(Hero_level==3)
+if(infantry.Robot_level==3)
 {
 	supercap(6500);
 }
@@ -43,3 +41,5 @@ else
 		}
 
 }
+
+

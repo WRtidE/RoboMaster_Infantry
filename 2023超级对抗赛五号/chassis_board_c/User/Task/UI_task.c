@@ -7,7 +7,7 @@ uint8_t referee_uart_tx_buf[2][150];    //裁判系统学生串口发送DMA缓冲池
 uint8_t referee_tx_fifo = 0;            //正在使用的缓存池
 
 
-extern JUDGE_MODULE_DATA Judge_Hero;
+extern JUDGE_MODULE_DATA Judge_Robot;
 extern UART_HandleTypeDef huart6;
 static uint8_t usart6_tx_dma_is_busy = 0;
 
@@ -626,18 +626,18 @@ void clear_usart6_tx_dma_busy_sign(void)
 
 uint8_t get_robot_id(void)
 {
-    return Judge_Hero.robot_status.robot_id;
+    return Judge_Robot.robot_status.robot_id;
 }
 
 uint16_t get_client_id(void)
 {
-    if (Judge_Hero.robot_status.robot_id < 100)
+    if (Judge_Robot.robot_status.robot_id < 100)
     {
-        return 0x100 + Judge_Hero.robot_status.robot_id;
+        return 0x100 + Judge_Robot.robot_status.robot_id;
     }
     else
     {
-        return 0x164 + (Judge_Hero.robot_status.robot_id - 100);
+        return 0x164 + (Judge_Robot.robot_status.robot_id - 100);
     }
 }
 

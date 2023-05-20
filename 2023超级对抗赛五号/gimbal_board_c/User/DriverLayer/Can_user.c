@@ -15,6 +15,9 @@ uint8_t test[8];
 
 uint16_t rc_tmp[5];
 
+robot_data_t infantry;
+
+
 void can_1_user_init(CAN_HandleTypeDef* hcan )
 {
   CAN_FilterTypeDef  can_filter;
@@ -60,19 +63,13 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     // Can 接收中断回调
     if (hcan == &hcan1)
     {
-        // HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &can1_RxHeader, can1_RxData); //将数据传输到RxData中
-        // //usart_printf("%d\n",can1_RxHeader.StdId);
-        // if (can1_RxHeader.StdId == 0x300)
-        // {
-        //     rc_tmp[0] = (can1_RxData[0] << 8) | can1_RxData[1];
-        //     rc_tmp[1] = (can1_RxData[2] << 8) | can1_RxData[3];
-        //     rc_tmp[2] = (can1_RxData[4] << 8) | can1_RxData[5];
-        //     rc_tmp[3] = (can1_RxData[6] << 8) | can1_RxData[7];
-        // }
-        // else if (can1_RxHeader.StdId == 0x301)
-        // {
-        //     usart_printf("ch0:%d,ch1:%d,ch2:%d,ch3:%d,ch4:%d\n", rc_tmp[0], rc_tmp[1], rc_tmp[2], rc_tmp[3], ((can1_RxData[0] << 8) | can1_RxData[1]), can1_RxData[2], can1_RxData[3]);
-        // }
+        HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &can1_RxHeader, can1_RxData); //将数据传输到RxData中
+        if (can1_RxHeader.StdId == 0x305)
+        {
+             infantry.shooter_heat = (can1_RxData[0] << 8) | can1_RxData[1]; //枪口热量
+             infantry.heat_limit   = (can1_RxData[2] << 8) | can1_RxData[3]; //枪口热量上限
+             infantry.Robot_level =  can1_RxData[4]; //机器人等级
+         }
     }
     else if (hcan == &hcan2)
     {
