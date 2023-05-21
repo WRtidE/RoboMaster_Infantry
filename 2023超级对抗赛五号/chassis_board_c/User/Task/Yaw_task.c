@@ -40,7 +40,6 @@ int8_t start_flag = 0;
 
 fp32 chassis_yaw_pid [3]={300,0.1,0}; //yaw pid数组
 
-
 pid_struct_t motor_pid_yaw;
 
 extern int16_t Wz;
@@ -60,7 +59,7 @@ static void auto_aim();
 
 static void start_check();
 
-static void detel_calc(fp32 angle);
+static void detel_calc(fp32 *angle);
 
 void gimbal_yaw_task(void const * argument)
 {
@@ -107,9 +106,9 @@ static void Yaw_mode_1() //锁云台模式
 		{			
 			init_yaw = init_yaw  + rc_ctrl.rc.ch[0]/660.0 * 0.5 + ((mouse_x ) / 16384.00 * 20); 
 			
-			detel_calc(init_yaw);
+			detel_calc(&init_yaw);
 								
-			motor_speed_target[4] =  - gimbal_PID_calc(&yaw_angle_pid[4], ins_yaw,init_yaw);
+			motor_speed_target[4] =  - gimbal_PID_calc(&yaw_angle_pid[4], ins_yaw, init_yaw);
 			
 		}
 
@@ -123,7 +122,7 @@ static void auto_aim()
 	
 	init_yaw = ins_yaw;
 	
-	detel_calc(aim_target);
+	detel_calc(&aim_target);
 								
 	motor_speed_target[4] =  - gimbal_PID_calc(&yaw_angle_pid[4], ins_yaw,aim_target);
 	
@@ -136,16 +135,16 @@ static void Yaw_calc_and_send()
 	set_motor_voltage1(1, motor_info_chassis[4].set_current, 0, 0, 0);
 }
 
-static void detel_calc(fp32 angle)
+static void detel_calc(fp32 *angle)
 {
-	if(angle >360)
+	if(*angle > 360)
 	{
-		angle -=360;
+		*angle -=360;
 	}
 	
-	else if(angle<0)
+	else if(*angle<0)
 	{
-		angle += 360;
+		*angle += 360;
 	}
 	
 }

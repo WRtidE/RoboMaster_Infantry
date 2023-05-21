@@ -42,14 +42,5 @@ yx_up\stm32f4xx_it.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\string.h
 yx_up\stm32f4xx_it.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\math.h
 yx_up\stm32f4xx_it.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 yx_up\stm32f4xx_it.o: ../Core/Inc/stm32f4xx_it.h
-yx_up\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-yx_up\stm32f4xx_it.o: ../Core/Inc/FreeRTOSConfig.h
-yx_up\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
-yx_up\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
-yx_up\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
-yx_up\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
-yx_up\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
-yx_up\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
-yx_up\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 yx_up\stm32f4xx_it.o: ..\User\PotocaLayer\remote_control.h
 yx_up\stm32f4xx_it.o: ../User/bsp_rc.h

@@ -1,6 +1,8 @@
 #include "UI_task.h"
 #include "CRC.h"
 #include "judge.h"
+#include "Chassis_task.h"
+
 uint8_t UI_Seq;                         //包序号
 
 uint8_t referee_uart_tx_buf[2][150];    //裁判系统学生串口发送DMA缓冲池
@@ -37,8 +39,14 @@ void userUI_draw_background(void);
   * @param[in]      缩放比例
   * @retval         none
   */
+
+//**************************************************************************************************************
 void userUI_draw_foresight(int16_t delta_x, int16_t delta_y, fp32 scale);
 
+//小陀螺模式
+void userUI_draw_wipping(uint8_t refresh, uint8_t display);
+
+void userUI_draw_robot_control_mode(uint8_t en, uint8_t refresh, robot_data_t infantry);
 
 //将要显示的图形
 Graph_Data graph1, graph2, graph3, graph4, graph5, graph6, graph7;
@@ -64,6 +72,12 @@ void UI_Task(void const* argument)
     {
         userUI_init();
         osDelay(USERUI_TASK_CONTROL_TIME_MS);
+		
+		   //4. 绘制机器人小陀螺状态（只有发生改变时才绘制，或每秒绘制一次）
+        userUI_draw_wipping(UI_NEED_REFRESH, infantry.chassis_rovolve);
+
+        //5. 绘制机器人行为模式（只有发生改变时才绘制，或每秒绘制一次）
+        userUI_draw_robot_control_mode(UI_IS_EXTERN, UI_NEED_REFRESH, infantry);
     }
 }
 
@@ -81,6 +95,8 @@ void userUI_init(void)
 
     //绘制密位靶（图层1）
     userUI_draw_foresight(0, 0, 1.0f);
+	//绘制背景元素（图层0，本场比赛不再变动）
+    userUI_draw_background();
 }
 
 
@@ -106,12 +122,73 @@ void userUI_draw_foresight(int16_t delta_x, int16_t delta_y, fp32 scale)
 }
 
 
+void userUI_draw_background(void)
+{
+    //画行车辅助线
+    
+	Line_Draw(&graph6, "RC1", UI_Graph_ADD, 0, UI_Color_Green, 2, 400, 0, 800, 400);
+    Line_Draw(&graph7, "RC2", UI_Graph_ADD, 0, UI_Color_Green, 2, 1520, 0, 1120, 400);
+    ui_display_7_graph(&graph1, &graph2, &graph3, &graph4, &graph5, &graph6, &graph7);
+
+    //画“MODE:"
+    string_Draw(&ui_str, "MDT", UI_Graph_ADD, 0, UI_Color_Green, 2, 20, 550, 155, "MODE:");
+    ui_display_string(&ui_str);
+}
+
+/**
+  * @brief          自定义UI绘制小陀螺状态（画在图层2上）
+  * @param[in]      强制刷新使能
+  * @param[in]      显示使能
+  * @retval         none
+  */
+void userUI_draw_wipping(uint8_t refresh, uint8_t display)
+{
+    static uint8_t is_working = 0;
+
+    if (display == 1)
+    {
+        if (is_working == 0 || refresh)
+        {
+            is_working = 1;
+            string_Draw(&ui_str, "ROT", UI_Graph_ADD, 2, UI_Color_Yellow, 2, 20, 1200, 155, "ROTATING");
+            ui_display_string(&ui_str);
+        }
+    }
+    else
+    {
+        if (is_working == 1 || refresh)
+        {
+            is_working = 0;
+            string_Draw(&ui_str, "ROT", UI_Graph_Del, 2, UI_Color_Yellow, 2, 20, 1200, 155, "ROTATING");
+            ui_display_string(&ui_str);
+        }
+    }
+}
+
+/**
+  * @brief          自定义UI绘制机器人控制模式（画在图层6上）
+  * @param[in]      控件存在标志    0：将添加该控件    1：将修改该控件
+  * @param[in]      强制刷新使能
+  * @param[in]      底盘行为模式
+  * @retval         none
+  */
+void userUI_draw_robot_control_mode(uint8_t en, uint8_t refresh, robot_data_t infantry)
+{
+    
+	if(infantry.chassis_follow)
+	{
+		string_Draw(&ui_str, "CTM", en == 0 ? UI_Graph_ADD : UI_Graph_Change, 6, UI_Color_Yellow, 3, 20, 650, 155, "CHASSIS_FOLLOW");
+	}
+	else
+	{
+		string_Draw(&ui_str, "CTM", en == 0 ? UI_Graph_ADD : UI_Graph_Change, 6, UI_Color_Yellow, 3, 20, 650, 155, "CHASSIS_FREE");
+	}
+	
+    ui_display_string(&ui_str);
+}
 
 
-
-
-
-
+//********************************************************************************************************************
 
 
 /**

@@ -19,12 +19,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "can.h"
-#include "remote_control.h"
+
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
 
-
+CAN_HandleTypeDef hcan1;
+CAN_HandleTypeDef hcan2;
 
 /* CAN1 init function */
 void MX_CAN1_Init(void)
@@ -218,4 +219,6 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
   }
 }
 
+/* USER CODE BEGIN 1 */
 
+/* USER CODE END 1 */

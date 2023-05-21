@@ -4,6 +4,8 @@
 #include  "drv_can.h"
 #include  "math.h"
 
+//底盘电机状态
+
 
 //陀螺仪矫正
 fp32 imu_err = 0;
@@ -25,8 +27,8 @@ pid_struct_t cap;
 volatile int16_t Vx=0,Vy=0,Wz=0;
 volatile int16_t tempa = 2;
 
-int16_t Temp_Vx;
-int16_t Temp_Vy;
+fp32 Temp_Vx;
+fp32 Temp_Vy;
 motor_info_t  motor_info_chassis[7];       //电机信息结构体
 volatile int16_t motor_speed_target[5];
 
@@ -46,8 +48,8 @@ fp32 Err_yaw_hudu;
 fp32 Err_accident = 0;	//mechanical err 
 fp32 Down_ins_pitch;
 fp32 Down_ins_row;
-fp32 sin_a;		
-fp32 cos_a;
+fp64 sin_a;		
+fp64 cos_a;
 
 //功率限制算法的变量定义
 float Watch_Power_Max;
@@ -107,6 +109,10 @@ static void Chassis_Power_Limit(double Chassis_pidout_target_limit);
 //速度限制
 void Motor_Speed_limiting(volatile int16_t *motor_speed,int16_t limit_speed);
 
+//速度pid
+void speed_pid_calc();
+
+
 
 #define angle_valve 3
 #define angle_weight 55
@@ -121,8 +127,10 @@ void Chassis_task(void const *pvParameters)
 	 Chassis_loop_Init();
 	 chassis_choice();                //控制模式选择
 	 chassis_motol_speed_calculate(); //速度计算
-	 Motor_Speed_limiting(motor_speed_target,8000); //速度限制
-	 Chassis_Power_Limit(32000);      //功率限制
+	 speed_pid_calc();
+	 Motor_Speed_limiting(motor_speed_target,10000); //速度限制  //6800 —— ok
+	 Chassis_Power_Limit(10000 * 4);      //功率限制
+		//speed_pid_calc();
 	 chassis_current_give();          //发送底盘电流
 	 imu_reset();                     //重置陀螺仪
 	
@@ -152,6 +160,7 @@ void chassis_choice()
 	else if(rc_ctrl.rc.s[0] == 3)
 	{
 		Chassis_mode_3(); //正常模式
+
 	}
 	else
 	{
@@ -186,7 +195,7 @@ static void Get_Err()
 	}
 	
 	 
-	Err_yaw = -(Up_ins_yaw -Down_ins_yaw);
+	Err_yaw = -(Up_ins_yaw -Down_ins_yaw);  //等效于 底盘 - 云台
 
 	//越界处理,保证转动方向不变
 	if(Err_yaw < -180)	//	越界时：180 -> -180
@@ -207,6 +216,7 @@ void chassis_motol_speed_calculate()
     motor_speed_target[CHAS_RF] =   Vx-Vy+Wz;
     motor_speed_target[CHAS_RB] =  -Vy-Vx+Wz; 
     motor_speed_target[CHAS_LB] =   Vy-Vx+Wz;
+	
 }
 
  void Motor_Speed_limiting(volatile int16_t *motor_speed,int16_t limit_speed)  
@@ -239,13 +249,18 @@ void chassis_motol_speed_calculate()
 
 void chassis_current_give() 
 {
-	     
-    for( uint8_t i=0 ; i<4; i++)
+
+
+	set_motor_voltage(0, motor_info_chassis[0].set_current, motor_info_chassis[1].set_current, motor_info_chassis[2].set_current, motor_info_chassis[3].set_current);
+ 
+}
+
+void speed_pid_calc()
+{
+	 for( uint8_t i=0 ; i<4; i++)
     {
         motor_info_chassis[i].set_current = pid_calc(&motor_pid_chassis[i], motor_info_chassis[i].rotor_speed,motor_speed_target[i]);
-    }
-    	set_motor_voltage(0, motor_info_chassis[0].set_current, motor_info_chassis[1].set_current, motor_info_chassis[2].set_current, motor_info_chassis[3].set_current);
- 
+    }	
 }
 
 static void Chassis_following()
@@ -273,7 +288,12 @@ static void Chassis_following()
 
 static void Chassis_mode_1()
 {
-
+	//更新模式标志位
+	infantry.chassis_free = 0;
+	infantry.chassis_follow = 1;
+	infantry.chassis_rovolve= 0;
+	
+	
 	if( (rc_ctrl.rc.ch[2]>=-50&&rc_ctrl.rc.ch[2]<=50)&&((rc_ctrl.rc.ch[3]>=-50)&&(rc_ctrl.rc.ch[3]<=50))&&(rc_ctrl.rc.ch[4]<=50)&&(rc_ctrl.rc.ch[4]>=-50)
 		&& ( !w_flag && !s_flag && !a_flag && !d_flag &&!q_flag && !e_flag) && (Err_yaw <= angle_valve) && (Err_yaw >= -angle_valve))
 	{
@@ -305,11 +325,18 @@ static void Chassis_mode_1()
 	Chassis_following();
 }	
 
-static void Chassis_mode_2()
+static void Chassis_mode_2() //小陀螺模式
 {
+	
+	//更新模式标志位
+	Get_Err();
+	infantry.chassis_free = 0;
+	infantry.chassis_follow = 0;
+	infantry.chassis_rovolve= 1;
+	
 	Wz = 5000;
 
-	Err_yaw_hudu = Err_yaw/57.3f;
+	Err_yaw_hudu = Err_yaw/57.3f; //添加负号的err相当于云台减底盘
 			
 	//calculate sin and cos
 	cos_a = cos(Err_yaw_hudu);
@@ -318,23 +345,24 @@ static void Chassis_mode_2()
 
 	// moving	control by remote
 
-    
-	Vy=  rc_ctrl.rc.ch[3]/660.0*8000 + w_flag/w_flag * 2000 - s_flag/s_flag * 2000;
-	Vx=  rc_ctrl.rc.ch[2]/660.0*8000 - a_flag/a_flag * 500 +  d_flag/d_flag * 500;
+	 speed_ramp();
+     Vy=  rc_ctrl.rc.ch[3]/660.0*8000 +  ramp[0] -  ramp[1];
+     Vx=  rc_ctrl.rc.ch[2]/660.0*8000 -  ramp[2] +  ramp[3];
 
 	//curl matrix * V
 	Temp_Vx = Vx;
 	Temp_Vy = Vy;
 	Vx = Temp_Vx*cos_a - Temp_Vy*sin_a;
-	Vy = Temp_Vx*sin_a + Temp_Vy*cos_a;
-	Vx = Vx/tempa;
-	Vy = Vy/tempa;
-			
+	Vy = Temp_Vx*sin_a + Temp_Vy*cos_a;		
 		
 }
 
 static void Chassis_mode_3()
 {
+	//更新模式标志位
+	infantry.chassis_free = 1;
+	infantry.chassis_follow = 0;
+	infantry.chassis_rovolve= 0;
 	if( (rc_ctrl.rc.ch[2]>=-50&&rc_ctrl.rc.ch[2]<=50)&&((rc_ctrl.rc.ch[3]>=-50)&&(rc_ctrl.rc.ch[3]<=50))&&(rc_ctrl.rc.ch[4]<=50)&&(rc_ctrl.rc.ch[4]>=-50)
 		&& ( !w_flag && !s_flag && !a_flag && !d_flag && !q_flag && !e_flag) && (Err_yaw <= angle_valve) && (Err_yaw >= -angle_valve))
 	{
@@ -357,7 +385,7 @@ static void Chassis_mode_3()
 	// moving	control by remote
     else
     {
-speed_ramp();
+        speed_ramp();
         Vy=  rc_ctrl.rc.ch[3]/660.0*8000 +  ramp[0] -  ramp[1];
         Vx=  rc_ctrl.rc.ch[2]/660.0*8000 -  ramp[2] +  ramp[3];
        // Wz= -rc_ctrl.rc.ch[4]/660.0*8000 - q_flag/q_flag * 2000 + e_flag/e_flag * 2000;
@@ -377,9 +405,9 @@ static void imu_reset()
 
 static void speed_ramp()
 {
-	fp32 speed_max = 4000;
+	fp32 speed_max = 10000;
 	uint8_t start = 10;
-	uint8_t slow = 100;
+	uint16_t slow = 300;
 	//前进
 	if(w_flag)
 	{
@@ -452,7 +480,7 @@ static void Chassis_Power_Limit(double Chassis_pidout_target_limit)
 	//819.2/A，假设最大功率为120W，那么能够通过的最大电流为5A，取一个保守值：800.0 * 5 = 4000
 	Watch_Power_Max = Klimit;	
 	Watch_Power     = infantry.chassis_power;	
-	Watch_Buffer    = infantry.chassis_power_buffer;//限制值，功率值，缓冲能量值，初始值是1，0，0
+    Watch_Buffer    = infantry.chassis_power_buffer;//限制值，功率值，缓冲能量值，初始值是1，0，0
 	//get_chassis_power_and_buffer(&Power, &Power_Buffer, &Power_Max);//通过裁判系统和编码器值获取（限制值，实时功率，实时缓冲能量）
 
 		Chassis_pidout_max=61536;//32768，40，960			15384 * 4，取了4个3508电机最大电流的一个保守值

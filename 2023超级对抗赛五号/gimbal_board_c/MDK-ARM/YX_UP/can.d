@@ -42,5 +42,3 @@ yx_up\can.o: F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm4.h
 yx_up\can.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\string.h
 yx_up\can.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\math.h
 yx_up\can.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
-yx_up\can.o: ..\User\PotocaLayer\remote_control.h
-yx_up\can.o: ../User/bsp_rc.h

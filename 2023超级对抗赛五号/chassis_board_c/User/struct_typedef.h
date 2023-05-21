@@ -36,6 +36,13 @@ typedef struct ROBOT_DATA
     fp32 total_current;          //底盘输出电流
 	fp32 shooter_heat;			//枪口热量
 	fp32 shooter_heat_limit;
+	
+	
+	
+	//机器人状态
+	uint8_t chassis_follow;  //底盘跟随模式
+	uint8_t chassis_free;    //底盘自由模式
+	uint8_t chassis_rovolve; //小陀螺
 } robot_data_t;
 
 extern robot_data_t infantry;

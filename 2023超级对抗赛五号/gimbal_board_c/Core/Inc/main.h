@@ -176,6 +176,8 @@ extern float Kp, Ki;
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define Laser_Pin GPIO_PIN_8
+#define Laser_GPIO_Port GPIOC
 #define IST8310_RST_Pin GPIO_PIN_6
 #define IST8310_RST_GPIO_Port GPIOG
 #define IST8310_DRDY_Pin GPIO_PIN_3

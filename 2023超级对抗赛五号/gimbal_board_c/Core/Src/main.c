@@ -37,8 +37,8 @@
 /* USER CODE BEGIN PTD */
 //全局变量
 
- CAN_HandleTypeDef hcan1;
- CAN_HandleTypeDef hcan2;
+// CAN_HandleTypeDef hcan1;
+// CAN_HandleTypeDef hcan2;
 uint16_t can_cnt_1;
 uint16_t can_cnt_2;
 float target_speed[7];//实测最大空载转速320rpm

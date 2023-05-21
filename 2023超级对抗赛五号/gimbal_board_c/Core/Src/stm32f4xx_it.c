@@ -20,8 +20,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_it.h"
-#include "FreeRTOS.h"
-#include "task.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -357,13 +355,25 @@ void USART1_IRQHandler(void)
 		recv_end_flag_uart1 = 1;	// 接受完成标志位置1	
 	 }
   /* USER CODE END USART1_IRQn 0 */
-  HAL_UART_IRQHandler(&huart1);;
+  HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
 
   /* USER CODE END USART1_IRQn 1 */
 }
 
+/**
+  * @brief This function handles USART3 global interrupt.
+  */
+__weak void USART3_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART3_IRQn 0 */
 
+  /* USER CODE END USART3_IRQn 0 */
+  HAL_UART_IRQHandler(&huart3);
+  /* USER CODE BEGIN USART3_IRQn 1 */
+
+  /* USER CODE END USART3_IRQn 1 */
+}
 
 /**
   * @brief This function handles TIM8 break interrupt and TIM12 global interrupt.
