@@ -37,8 +37,8 @@ yx_down\judge.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 yx_down\judge.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 yx_down\judge.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 yx_down\judge.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-yx_down\judge.o: ../User/AlgorithmLayer/CRC.h
 yx_down\judge.o: ../User/struct_typedef.h
+yx_down\judge.o: ../User/AlgorithmLayer/CRC.h
 yx_down\judge.o: ../User/DriverLayer/drv_can.h
 yx_down\judge.o: ../User/Task/Chassis_task.h
 yx_down\judge.o: ../User/AlgorithmLayer/pid.h

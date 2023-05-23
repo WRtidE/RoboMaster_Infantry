@@ -7,39 +7,36 @@
 #include "arm_math.h"
 #include "super_cap.h"
 #include  "drv_can.h"
+#include  "drv_usart.h"
 #include "judge.h"
 #include "Chassis_task.h"
+
 extern int flag[1];
 extern float powerdata[4];
 
-void super_cap(void const *pvParameters)//≥¨º∂µÁ»›
+void super_cap(void const *pvParameters)//≥¨µÁ
 {
-	
-for(;;)
-    {  
-if(infantry.Robot_level==1)
-{
-	supercap(5500);
-}
-if(infantry.Robot_level==2)
-{
-	supercap(6000);
-}
-if(infantry.Robot_level==3)
-{
-	supercap(6500);
-}
-else
-{
+	for(;;)
+		{  
+	if(infantry.Robot_id==1)
+	{
+		supercap_uart_send(60);
+	}
+	if(infantry.Robot_id==2)
+	{
+		supercap_uart_send(80);
+	}
+	if(infantry.Robot_id==3)
+	{
+		supercap_uart_send(100);
+	}
+	else
+	{
 
-	supercap(5500);
-}
+		supercap_uart_send(50);
+	}
 
-		//can_remote(sbuss_buf,0x33);
-		//CAN_rc_forward(power,power1);
 			osDelay(1);
 		}
 
 }
-
-

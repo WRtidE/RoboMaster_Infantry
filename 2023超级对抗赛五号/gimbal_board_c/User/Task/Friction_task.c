@@ -82,46 +82,33 @@ static void model_choice()
 
 static void shoot_mode_1()
 {
-	//此函数用来读取发射时的编码值，当初始化/pitch移动时记录编码电机编码值
-	if( (shoot_flag == 0)||shoot_flag == 2)
-    {
-      target_angle1 = motor_info[4].rotor_angle;
-    }
 
 	pid_init(&motor_pid[0], 15, 0, 0, 16384, 16384); 
     pid_init(&motor_pid[1], 15, 0, 0, 16384, 16384); 
 	pid_init(&motor_pid[2], 1 , 0.01, 0, 16384, 16384);
-	pid_init(&pitch_pid[4], 60, 1, 0, 16384, 16384);
-	//7000 弹速11
+
     target_speed[0] = -9000;
     target_speed[1] =  9000;
     target_speed[2] =  1600;
     motor_info[0].set_voltage = pid_calc(&motor_pid[0], target_speed[0], motor_info[0].rotor_speed);
     motor_info[1].set_voltage = pid_calc(&motor_pid[1], target_speed[1], motor_info[1].rotor_speed);
     motor_info[2].set_voltage = pid_calc(&motor_pid[2], target_speed[2], motor_info[2].rotor_speed);
-    motor_info[4].set_voltage = pid_calc(&pitch_pid[4], target_angle1, motor_info[4].rotor_angle);
     
 	shoot_flag = 1;
 }
 
 static void shoot_mode_2()
-{
-	if( (shoot_flag == 0)||shoot_flag == 2)
-    {
-      target_angle1 = motor_info[4].rotor_angle;
-    }
-	
+{	
 	pid_init(&motor_pid[0], 30,   0, 0, 16384, 16384); 
 	pid_init(&motor_pid[1], 30,   0, 0, 16384, 16384);
 	pid_init(&motor_pid[2], 1, 0.01, 0, 16384, 16384);	
-	pid_init(&pitch_pid[4], 30, 0.1, 10, 16384, 16384);
+
     target_speed[0] = 0;
     target_speed[1] = 0;
     target_speed[2] = 0;
     motor_info[0].set_voltage = pid_calc(&motor_pid[0], target_speed[0], motor_info[0].rotor_speed);
     motor_info[1].set_voltage = pid_calc(&motor_pid[1], target_speed[1], motor_info[1].rotor_speed);
     motor_info[2].set_voltage = pid_calc(&motor_pid[2], target_speed[2], motor_info[2].rotor_speed);
-	motor_info[4].set_voltage = pid_calc(&pitch_pid[4], target_angle1, motor_info[4].rotor_angle);
 	
 	shoot_flag = 1;
 }
@@ -154,18 +141,19 @@ static void shoot_data_send()
     osDelay(1);		
 }
 
+
 static void heat_limit()
 {
   if(infantry.heat_limit && (!q_flag))
   {
 	  if(infantry.shooter_heat > infantry.heat_limit )
 	  {
-		  motor_info[4].set_voltage *= 0;
+		  motor_info[3].set_voltage *= 0;
 		  
 	  }
 	  if(infantry.shooter_heat > infantry.heat_limit * 0.9)
 	  {
-		  motor_info[4].set_voltage *= 0.5;
+		  motor_info[3].set_voltage *= 0.5;
 	  }
 	  else
 	  {

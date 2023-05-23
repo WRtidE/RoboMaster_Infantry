@@ -2,6 +2,7 @@
 #include "cmsis_os.h"
 #include "INS_task.h"
 #include  "drv_can.h"
+#include  "drv_usart.h"
 #include  "math.h"
 
 //底盘电机状态
@@ -22,6 +23,7 @@ pid_struct_t cap;
  //超级电容变量
  fp32    cap_target; //使用超电
  fp32 no_cap_target; //不用超电
+ fp32    target_cap;
  
 
 volatile int16_t Vx=0,Vy=0,Wz=0;
@@ -52,6 +54,7 @@ fp64 sin_a;
 fp64 cos_a;
 
 //功率限制算法的变量定义
+fp32  speed_limit = 10000;
 float Watch_Power_Max;
 float Watch_Power;
 float Watch_Buffer;
@@ -114,6 +117,7 @@ void speed_pid_calc();
 
 
 
+
 #define angle_valve 3
 #define angle_weight 55
  
@@ -128,15 +132,15 @@ void Chassis_task(void const *pvParameters)
 	 chassis_choice();                //控制模式选择
 	 chassis_motol_speed_calculate(); //速度计算
 	 speed_pid_calc();
-	 Motor_Speed_limiting(motor_speed_target,10000); //速度限制  //6800 —— ok
-	 Chassis_Power_Limit(10000 * 4);      //功率限制
+	 Motor_Speed_limiting(motor_speed_target,speed_limit); //速度限制 
+	 Chassis_Power_Limit(speed_limit * 4);      //功率限制
 		//speed_pid_calc();
 	 chassis_current_give();          //发送底盘电流
 	 imu_reset();                     //重置陀螺仪
 	
      osDelay(1);
 
-    }
+    }  
 
 }
 
@@ -157,7 +161,7 @@ void chassis_choice()
 	{
 		Chassis_mode_2();
 	}
-	else if(rc_ctrl.rc.s[0] == 3)
+	else if(rc_ctrl.rc.s[0] == 3||rc_ctrl.rc.s[0] == 1)
 	{
 		Chassis_mode_3(); //正常模式
 
@@ -182,7 +186,7 @@ static void Get_Err()
 	Down_ins_yaw = 360 -(ins_data.angle[0] + 180);
 	Down_ins_pitch = ins_data.angle[1];
 	Down_ins_row = ins_data.angle[2];	
-
+	
 	Up_ins_yaw = ins_data1.angle[0] + imu_err;
 	
 	if(Up_ins_yaw > 360)
@@ -360,7 +364,7 @@ static void Chassis_mode_2() //小陀螺模式
 static void Chassis_mode_3()
 {
 	//更新模式标志位
-	infantry.chassis_free = 1;
+	infantry.chassis_free   = 1;
 	infantry.chassis_follow = 0;
 	infantry.chassis_rovolve= 0;
 	if( (rc_ctrl.rc.ch[2]>=-50&&rc_ctrl.rc.ch[2]<=50)&&((rc_ctrl.rc.ch[3]>=-50)&&(rc_ctrl.rc.ch[3]<=50))&&(rc_ctrl.rc.ch[4]<=50)&&(rc_ctrl.rc.ch[4]>=-50)
@@ -461,13 +465,18 @@ static void speed_ramp()
 
 static void super_cap_task()
 {
+
+	target_cap = pid_calc(&cap,supercap_info.Vo ,14);
 	if(shift_flag)
-	{
-		 Motor_Speed_limiting(motor_speed_target,3300+cap_target);
+	{ 
+		HAL_UART_Transmit_IT(&huart1,"PVONP",5);
+		Motor_Speed_limiting(motor_speed_target,speed_limit +  target_cap); //速度限制 
+		
 	}
-	else
-	{
-		 Motor_Speed_limiting(motor_speed_target,3300);
+	else  
+	{	
+		HAL_UART_Transmit_IT(&huart1,"PVOFP",5);
+		Motor_Speed_limiting(motor_speed_target,speed_limit); //速度限制 
 	}
 }
 

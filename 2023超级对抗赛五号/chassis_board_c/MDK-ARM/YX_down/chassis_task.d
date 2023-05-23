@@ -61,3 +61,4 @@ yx_down\chassis_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event
 yx_down\chassis_task.o: ../User/pid_imu.h
 yx_down\chassis_task.o: ../User/PotocaLayer/rc_potocal.h
 yx_down\chassis_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+yx_down\chassis_task.o: ../User/DriverLayer/drv_usart.h

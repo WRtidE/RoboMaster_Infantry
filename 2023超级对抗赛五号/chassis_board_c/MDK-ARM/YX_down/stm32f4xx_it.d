@@ -37,8 +37,8 @@ yx_down\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex
 yx_down\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 yx_down\stm32f4xx_it.o: ../Core/Inc/stm32f4xx_it.h
 yx_down\stm32f4xx_it.o: ../User/DriverLayer/drv_usart.h
-yx_down\stm32f4xx_it.o: ../User/Task/Chassis_task.h
 yx_down\stm32f4xx_it.o: ../User/struct_typedef.h
+yx_down\stm32f4xx_it.o: ../User/Task/Chassis_task.h
 yx_down\stm32f4xx_it.o: ../User/AlgorithmLayer/pid.h
 yx_down\stm32f4xx_it.o: ../User/DriverLayer/drv_can.h
 yx_down\stm32f4xx_it.o: ../User/Task/Chassis_task.h

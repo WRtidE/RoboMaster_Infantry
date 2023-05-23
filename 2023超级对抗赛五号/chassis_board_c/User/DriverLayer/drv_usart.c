@@ -5,6 +5,7 @@
 #include  "judge.h"
 extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart6;
+extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart6_rx;
 extern DMA_HandleTypeDef hdma_usart6_tx;
 #define USART3_RX_DATA_FRAME_LEN	(18u)	// 串口3数据帧长度
@@ -13,6 +14,18 @@ extern DMA_HandleTypeDef hdma_usart6_tx;
 uint8_t usart3_dma_rxbuf[2][USART3_RX_BUF_LEN];
 volatile uint8_t judge_dma_buffer[2][USART6_RX_BUF_LEN] ={0}  ;
 uint8_t judge_receive_length=0;
+
+supercap_struct supercap_info;
+fp32 supercap_Vi; //输入电压（电池电压）
+fp32 supercap_Vo; //输出电压
+fp32 supercap_Pi; //输入功率 
+fp32 supercap_Ii; //输入电流
+fp32 supercap_Io; //输出电流
+fp32 supercap_Ps; //参考恒功率值
+                                   
+uint8_t supercap_temp[51];
+uint8_t supercap_buffer[100];//或37
+
 
 void USART3_Init(void)
 {
@@ -230,6 +243,56 @@ static HAL_StatusTypeDef DMAEx_MultiBufferStart_NoIT(DMA_HandleTypeDef *hdma, \
 	return status; 	
 }
 
+extern void supercap_uart_send(uint8_t a)
+{
+	switch(a)
+	{
+    case 60:
+		HAL_UART_Transmit_IT(&huart1,"P060P",5);
+        break; 
+    case 80  :
+        HAL_UART_Transmit_IT(&huart1,"P080P",5);
+        break; 
+    case 100  :
+		HAL_UART_Transmit_IT(&huart1,"P100P",5);
+        break; 
+    default : 
+        HAL_UART_Transmit_IT(&huart1,"P050P",5);
+}
+}
+
+
+//超级电容串口收
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart == &huart1)
+	{
+		uint8_t i;
+		uint8_t j;
+		for(i = 0;i<50;i++)
+		{
+			if(supercap_buffer[i] == 86 && supercap_buffer[i+1] == 105)
+			{
+				j = i;
+				break;
+			}  
+		}
+			for (i = 0;i<50;i++)
+			{
+				supercap_temp[i] = supercap_buffer[j];
+				j++;
+			}
+			supercap_info.Vi = (supercap_temp[3]-48)  + (supercap_temp[5]-48)/10.0 + (supercap_temp[6]-48)/100.0;//对supercap_buffer进行处理
+			supercap_info.Vo = (supercap_temp[11]-48) + (supercap_temp[13]-48)/10.0 + (supercap_temp[14]-48)/100.0;
+			supercap_info.Pi = (supercap_temp[19]-48) + (supercap_temp[21]-48)/10.0 + (supercap_temp[22]-48)/100.0;
+			supercap_info.Ii = (supercap_temp[27]-48) + (supercap_temp[29]-48)/10.0 + (supercap_temp[30]-48)/100.0;
+			supercap_info.Io = (supercap_temp[35]-48) + (supercap_temp[37]-48)/10.0 + (supercap_temp[38]-48)/100.0;
+			supercap_info.Ps = (supercap_temp[43]-48) + (supercap_temp[45]-48)/10.0 + (supercap_temp[46]-48)/100.0;
+			
+			HAL_UART_Receive_IT(&huart1,supercap_buffer,100);//重新开启接收中断
+			
+	}
+}
 
 
 

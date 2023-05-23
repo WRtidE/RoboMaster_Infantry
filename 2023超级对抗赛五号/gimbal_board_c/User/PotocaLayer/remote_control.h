@@ -62,6 +62,8 @@ extern volatile uint8_t rx_len_uart1;  //接收一帧数据的长度
 extern volatile uint8_t recv_end_flag_uart1; //一帧数据接收完成标志
 extern int16_t Yaw_minipc;
 extern int16_t Pitch_minipc;
+extern fp32 Yaw_minipc_fp;
+extern fp32 Pitch_minipc_fp;
 extern uint8_t rx_buffer[100];
 extern void Get_minipc();
 extern RC_ctrl_t rc_ctrl;
@@ -71,5 +73,6 @@ extern void set_motor_voltage(uint8_t id_range, int16_t v1, int16_t v2, int16_t 
 extern void remote_control_init(void);
 extern const RC_ctrl_t *get_remote_control_point(void);
 extern void set_motor_voltage1(uint8_t id_range, int16_t v1,int16_t v2,int16_t v3,int16_t v4);
-extern void send_ins_data_to_a(int16_t ins_yaw,int16_t  ins_pitch,int16_t   ins_roll,int16_t  yaw_data);
+extern void send_ins_data_to_a(int16_t ins_yaw, int16_t ins_pitch, int16_t ins_roll,int16_t ins_ygro);
+extern void send_minipc_data_to_a(int16_t minipc_yaw);
 #endif

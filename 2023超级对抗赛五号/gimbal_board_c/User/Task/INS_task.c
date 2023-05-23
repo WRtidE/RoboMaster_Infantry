@@ -26,7 +26,8 @@ float yaw_angle;
 uint16_t angle_1;
 uint16_t angle_2;
 uint16_t angle_3;
-
+fp32 yaw_ygro;
+fp32 yaw_minipc;
 #define BMI088_BOARD_INSTALL_SPIN_MATRIX    \
     {0.0f, 1.0f, 0.0f},                     \
     {-1.0f, 0.0f, 0.0f},                     \
@@ -236,8 +237,10 @@ else
        angle_1=ins_data.angle[0]+180;
        angle_2=ins_data.angle[1]+180;
        angle_3=ins_data.angle[2]+180;
+	   yaw_ygro = (ins_data.gyro[2] + 30.f ) * 100.f; //保证数据传输正确
+	   yaw_minipc = (Yaw_minipc_fp + 30.f) * 50.f; //保证数据传输正确
        a= uxTaskGetStackHighWaterMark( NULL );
-	   send_ins_data_to_a( angle_1, angle_2, angle_3, Yaw_minipc);
+	   send_ins_data_to_a( angle_1, angle_2, yaw_minipc, yaw_ygro);
        osDelay(1);
     }
   }
@@ -259,7 +262,7 @@ else
  void imu_temp_control(fp32 temp)
 {
     uint16_t tempPWM;
-    static uint8_t temp_constant_time = 0;
+	static uint8_t temp_constant_time = 0;
     if (first_temperate)
     {
         pid_calc(&imu_temp_pid, temp, 40);

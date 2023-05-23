@@ -184,9 +184,13 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
             //接收c板陀螺仪数据
             ins_data1.angle[0] = (can1_RxData[0] << 8) | can1_RxData[1];
             ins_data1.angle[1] = (can1_RxData[2] << 8) | can1_RxData[3];
-            ins_data1.angle[2] = (can1_RxData[4] << 8) | can1_RxData[5];
-            yaw_data = (can1_RxData[6] << 8) | can1_RxData[7];
+            yaw_data           = (can1_RxData[4] << 8) | can1_RxData[5];
+            ins_data1.gyro[2]  = (can1_RxData[6] << 8) | can1_RxData[7];
         }
+////		else if(can1_RxHeader.StdId == 0x55)
+////		{
+////			yaw_data = (can1_RxData[0] << 8) | can1_RxData[1];
+////		}
     }
     else if (hcan == &hcan2)	
     {

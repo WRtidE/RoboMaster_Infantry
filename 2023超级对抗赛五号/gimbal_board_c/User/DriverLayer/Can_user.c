@@ -173,7 +173,7 @@ void can_rc_forward(RC_ctrl_t rc_ctrl)
 
 
 //can发送陀螺仪数据和minipc数据
-void send_ins_data_to_a(int16_t ins_yaw, int16_t ins_pitch, int16_t ins_roll,int16_t yaw_data)
+void send_ins_data_to_a(int16_t ins_yaw, int16_t ins_pitch, int16_t ins_roll,int16_t ins_ygro)
 {
     uint32_t send_mail_box;
 	
@@ -187,7 +187,24 @@ void send_ins_data_to_a(int16_t ins_yaw, int16_t ins_pitch, int16_t ins_roll,int
     test[3] = ins_pitch & 0xFF;
     test[4] = (ins_roll >> 8) & 0xFF;
     test[5] = ins_roll & 0xFF;
-    test[6] = (yaw_data >> 8) & 0xFF;
-    test[7] = yaw_data & 0xFF;
+    test[6] = (ins_ygro >> 8) & 0xFF;
+    test[7] = ins_ygro & 0xFF;
+	
+    HAL_CAN_AddTxMessage(&hcan1, &can1_TxHeader, test, &send_mail_box);
+}
+
+//发送minipc的值
+void send_minipc_data_to_a(int16_t minipc_yaw)
+{
+    uint32_t send_mail_box;
+	
+	can1_TxHeader.StdId = 0x55;
+    can1_TxHeader.IDE = CAN_ID_STD;
+    can1_TxHeader.RTR = CAN_RTR_DATA;
+    can1_TxHeader.DLC = 0x02;
+    test[0] = (minipc_yaw >> 8) & 0xFF;
+    test[1] = minipc_yaw & 0xFF;
+
+	
     HAL_CAN_AddTxMessage(&hcan1, &can1_TxHeader, test, &send_mail_box);
 }

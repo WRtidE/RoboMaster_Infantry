@@ -1016,6 +1016,11 @@
           <GroupName>DriverLayer</GroupName>
           <Files>
             <File>
+              <FileName>drv_can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\DriverLayer\drv_can.c</FilePath>
+            </File>
+            <File>
               <FileName>drv_usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\DriverLayer\drv_usart.c</FilePath>
@@ -1025,11 +1030,6 @@
         <Group>
           <GroupName>PotocaLayer</GroupName>
           <Files>
-            <File>
-              <FileName>drv_can.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\DriverLayer\drv_can.c</FilePath>
-            </File>
             <File>
               <FileName>judge.c</FileName>
               <FileType>1</FileType>

@@ -22,51 +22,49 @@ Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
 C:\Users\WRtidE\Desktop\2023超级对抗赛五号\gimbal_board_c\MDK-ARM\YX_UP.uvprojx
-Project File Date:  05/10/2023
+Project File Date:  05/23/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'F:\DownLoad\Keil5\ARM\ARMCC\Bin'
 Build target 'YX_UP'
-compiling Friction_task.c...
+compiling Pitch_task.c...
 ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
   #define __FPU_PRESENT             1U       /*!< FPU present                                   */
 ../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
         #define __FPU_USED       1U
-..\User\PotocaLayer\remote_control.h(66): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
+..\User\PotocaLayer\remote_control.h(68): warning:  #1295-D: Deprecated declaration Get_minipc - give arg types
   extern void Get_minipc();
-../User/PID.h(16): warning:  #1-D: last line of file ends without a newline
+../User/PID.h(17): warning:  #1-D: last line of file ends without a newline
   							
-..\User\DriverLayer\Can_user.h(23): warning:  #1-D: last line of file ends without a newline
+..\User\Task\INS_task.h(78): warning:  #1-D: last line of file ends without a newline
   #endif
-..\User\Task\Exchange_task.h(31): warning:  #1295-D: Deprecated declaration Get_keyboard - give arg types
-  void Get_keyboard();
-..\User\Task\Friction_task.c(22): warning:  #1295-D: Deprecated declaration Friction_init - give arg types
-  static void Friction_init();
-..\User\Task\Friction_task.c(25): warning:  #1295-D: Deprecated declaration model_choice - give arg types
-  static void model_choice();
-..\User\Task\Friction_task.c(28): warning:  #1295-D: Deprecated declaration shoot_mode_1 - give arg types
-  static void shoot_mode_1();
-..\User\Task\Friction_task.c(29): warning:  #1295-D: Deprecated declaration shoot_mode_2 - give arg types
-  static void shoot_mode_2();
-..\User\Task\Friction_task.c(32): warning:  #1295-D: Deprecated declaration magazine_task - give arg types
-  static void magazine_task();
-..\User\Task\Friction_task.c(33): warning:  #1295-D: Deprecated declaration magazine_init - give arg types
-  static void magazine_init();
-..\User\Task\Friction_task.c(36): warning:  #1295-D: Deprecated declaration heat_limit - give arg types
-  static void heat_limit();
-..\User\Task\Friction_task.c(39): warning:  #1295-D: Deprecated declaration shoot_data_send - give arg types
-  static void shoot_data_send();
-..\User\Task\Friction_task.c(42): warning:  #1295-D: Deprecated declaration laser_init - give arg types
-  static void laser_init();
-..\User\Task\Friction_task.c(58): warning:  #111-D: statement is unreachable
-    osDelay(1);
-..\User\Task\Friction_task.c(166): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	  if(infantry.shooter_heat > infantry.heat_limit * 0.9)
-..\User\Task\Friction_task.c: 17 warnings, 0 errors
+..\User\Task\Pitch_task.c(30): warning:  #1295-D: Deprecated declaration gimbal_init - give arg types
+  static void gimbal_init();	
+..\User\Task\Pitch_task.c(33): warning:  #1295-D: Deprecated declaration gimbal_read_imu - give arg types
+  static void gimbal_read_imu();
+..\User\Task\Pitch_task.c(36): warning:  #1295-D: Deprecated declaration gimbal_mode_1 - give arg types
+  static void gimbal_mode_1();
+..\User\Task\Pitch_task.c(37): warning:  #1295-D: Deprecated declaration gimbal_mode_2 - give arg types
+  static void gimbal_mode_2();
+..\User\Task\Pitch_task.c(40): warning:  #1295-D: Deprecated declaration gimbal_calc_and_send - give arg types
+  static void gimbal_calc_and_send();
+..\User\Task\Pitch_task.c(43): warning:  #1295-D: Deprecated declaration auto_aim - give arg types
+  static void auto_aim();
+..\User\Task\Pitch_task.c(46): warning:  #1295-D: Deprecated declaration err_calc - give arg types
+  static void err_calc();
+..\User\Task\Pitch_task.c(70): warning:  #111-D: statement is unreachable
+  	osDelay(1);
+..\User\Task\Pitch_task.c(90): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		pitch_target_angle = motor_info[4].rotor_angle - Pitch_minipc_fp/360.0 * 8191; 
+..\User\Task\Pitch_task.c(33): warning:  #177-D: function "gimbal_read_imu"  was declared but never referenced
+  static void gimbal_read_imu();
+..\User\Task\Pitch_task.c(37): warning:  #177-D: function "gimbal_mode_2"  was declared but never referenced
+  static void gimbal_mode_2();
+..\User\Task\Pitch_task.c: 16 warnings, 0 errors
 linking...
-Program Size: Code=40638 RO-data=638 RW-data=672 ZI-data=21384  
+Program Size: Code=41286 RO-data=638 RW-data=684 ZI-data=21124  
 FromELF: creating hex file...
-"YX_UP\YX_UP.axf" - 0 Error(s), 17 Warning(s).
+"YX_UP\YX_UP.axf" - 0 Error(s), 16 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -89,7 +87,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:08
 </pre>
 </body>
 </html>

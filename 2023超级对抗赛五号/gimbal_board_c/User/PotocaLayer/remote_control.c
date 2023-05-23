@@ -25,9 +25,15 @@
 extern UART_HandleTypeDef huart1;
 volatile uint8_t rx_len_uart1 = 0;  //接收一帧数据的长度
 volatile uint8_t recv_end_flag_uart1 = 0; //一帧数据接收完成标志
+
+
 uint8_t rx_buffer[100]={0};  //接收数据缓存数组
 int16_t Yaw_minipc;
 int16_t Pitch_minipc;
+fp32 Yaw_minipc_fp;
+fp32 Pitch_minipc_fp;
+
+
 void Get_minipc();
 void remote_data_read(uint8_t rx_buffer[]);
 extern ins_data_t ins_data;
@@ -322,7 +328,9 @@ void remote_data_read(uint8_t rx_buffer[])
 {
 	Yaw_minipc = (int)(rx_buffer[1] << 8 | rx_buffer[2]);
 	Pitch_minipc = (int)(rx_buffer[3] << 8 | rx_buffer[4]);
-	Yaw_minipc = (int)(-Yaw_minipc * 10)/32767;
-	Pitch_minipc = (int)(-Pitch_minipc * 100)/32767;
+	Yaw_minipc_fp = (float)(Yaw_minipc * 100)/32767; 
+	Pitch_minipc_fp = (float)(Pitch_minipc * 100)/32767;
+//	Yaw_minipc = (int)(Yaw_minipc * 100)/32767;
+//	Pitch_minipc = (int)(Pitch_minipc * 100)/32767;
 }
 

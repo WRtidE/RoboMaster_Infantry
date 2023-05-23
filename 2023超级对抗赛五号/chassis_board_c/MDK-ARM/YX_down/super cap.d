@@ -66,5 +66,5 @@ yx_down\super cap.o: ../Core/Inc/tim.h
 yx_down\super cap.o: ../Core/Inc/spi.h
 yx_down\super cap.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 yx_down\super cap.o: ../User/pid_imu.h
-yx_down\super cap.o: ../User/PotocaLayer/judge.h
 yx_down\super cap.o: ../User/DriverLayer/drv_usart.h
+yx_down\super cap.o: ../User/PotocaLayer/judge.h
