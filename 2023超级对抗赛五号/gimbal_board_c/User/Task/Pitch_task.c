@@ -22,6 +22,8 @@ uint32_t shoot_flag = 0;
 pid_struct_t pitch_angle_pid;
 //速度环pid
 pid_struct_t pitch_speed_pid;
+//自瞄速度环pid
+pid_struct_t aim_speed_pid;
 
 extern ins_data_t ins_data;
 
@@ -73,6 +75,7 @@ void Pitch_task(void const * argument)
 void gimbal_init()
 {
 	pid_init(&pitch_speed_pid, 85, 0, 10, 30000, 30000); // init pid parameter, kp=40, ki=3, kd=0, output limit = 30000  
+	pid_init(&aim_speed_pid,   20, 0, 0, 30000, 30000);
 	pid_init(&pitch_angle_pid, 1, 0, 0, 1000, 1000);
 	
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE); //使能IDLE中断
@@ -108,7 +111,7 @@ void auto_aim()
 void gimbal_mode_1()
 {
 
-	pitch_target_angle =  pitch_target_angle -((rc_ctrl.rc.ch[1]) / 660.0 * 4) + rc_ctrl.mouse.y / 16384.00 *1000; 
+	pitch_target_angle =  pitch_target_angle -((rc_ctrl.rc.ch[1]) / 660.0 * 10) + rc_ctrl.mouse.y / 16384.00 *1000; 
 	
 	err_calc();
 	
@@ -119,7 +122,15 @@ void gimbal_mode_1()
 
 void gimbal_calc_and_send()
 {
-	motor_info[4].set_voltage = pid_calc(&pitch_speed_pid, target_speed[4], motor_info[4].rotor_speed);
+	if(rc_ctrl.mouse.press_r||rc_ctrl.rc.s[0] == 1)//开启自瞄
+	{
+		motor_info[4].set_voltage = pid_calc(&aim_speed_pid, target_speed[4], motor_info[4].rotor_speed);	
+	}
+	else
+	{
+		motor_info[4].set_voltage = pid_calc(&pitch_speed_pid, target_speed[4], motor_info[4].rotor_speed);
+	}
+	
 	set_motor_voltage1( 1, motor_info[4].set_voltage, 0, 0, 0);
 }
 

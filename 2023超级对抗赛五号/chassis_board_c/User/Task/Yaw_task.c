@@ -25,8 +25,13 @@ fp32 err_yaw;
 fp32 err;
 fp32 target_yaw;
 //角度环pid
-fp32 angle_pid[3]={5,0,30};    //2,0,80
+fp32 angle_pid[3]={5,0,0};    //2,0,80
 pid_struct_t yaw_angle_pid[5];
+//自瞄速度环pid
+pid_struct_t aim_speed_pid;
+fp32 auto_speed_pid[3] = {100,0,0};
+
+
 
 fp32 angle_weight = 3;
 uint8_t reset_flag = 0;
@@ -36,12 +41,12 @@ fp32 aim_target;
 
 
 //volatile int16_t motor_speed_target[5];
-extern  ins_data_t ins_data1;
+extern  ins_data_t ins_data1;  
 extern  ins_data_t ins_data;
 int8_t init_err = 0;
 int8_t start_flag = 0;
 
-fp32 chassis_yaw_pid [3]={400,0.1,0}; //yaw pid数组  100,40,0
+fp32 chassis_yaw_pid [3]={300,0,10}; //yaw pid数组  100,40,0
 
 pid_struct_t motor_pid_yaw;
 
@@ -94,6 +99,8 @@ static void Yaw_init()
 {
 	pid_init(&motor_pid_yaw, chassis_yaw_pid, 15000, 15000);//电机速度pid
 	pid_init(&yaw_angle_pid[4],angle_pid,15000,15000);      //角度环pid
+	pid_init(&aim_speed_pid,auto_speed_pid,15000,15000);
+	
 }
 
 static void Yaw_read_imu() //insdata1是云台陀螺仪数据
@@ -153,7 +160,14 @@ static void auto_aim()
 
 static void Yaw_calc_and_send()
 {
-	motor_info_chassis[4].set_current = pid_calc(&motor_pid_yaw, ins_gyro,motor_speed_target[4]);
+	if((rc_ctrl.rc.s[0]== 1 || press_right) && ins_yaw)
+	{
+		motor_info_chassis[4].set_current = pid_calc(&aim_speed_pid, ins_gyro,motor_speed_target[4]);
+	}
+	else
+	{
+		motor_info_chassis[4].set_current = pid_calc(&motor_pid_yaw, ins_gyro,motor_speed_target[4]);
+	}
 	set_motor_voltage1(1, motor_info_chassis[4].set_current, 0, 0, 0);
 }
 
