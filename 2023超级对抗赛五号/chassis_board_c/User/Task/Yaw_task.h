@@ -11,7 +11,7 @@
 extern pid_struct_t motor_pid_chassis[4];
 extern int16_t Drifting_yaw;
 extern uint16_t Down_ins_yaw;
-extern 
+extern fp32 yaw_data;
 
 void Chassis_task(void const *pvParameters);
 void RC_to_Vector(void);

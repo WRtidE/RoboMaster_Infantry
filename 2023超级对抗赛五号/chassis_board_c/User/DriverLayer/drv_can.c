@@ -311,7 +311,7 @@ void supercap(a)
 	
 }
 
-void judge_data_send(int16_t heat, int16_t heat_limit, int16_t level, int16_t v4)
+void judge_data_send(int16_t heat, int16_t heat_limit, int16_t level, int16_t shoot_speed)
 {
     CAN_TxHeaderTypeDef tx_header;
     uint8_t tx_data[8];
@@ -325,9 +325,9 @@ void judge_data_send(int16_t heat, int16_t heat_limit, int16_t level, int16_t v4
     tx_data[1] = (heat)&0xff;
     tx_data[2] = (heat_limit >> 8) & 0xff; //枪口热量上限
     tx_data[3] = (heat_limit)&0xff;
-    tx_data[4] = (level)&0xff; //子弹射速 单位m/s
+    tx_data[4] = (level)&0xff; //等级 
     tx_data[5] = 0;
-    tx_data[6] = (v4 >> 8) & 0xff; 
-    tx_data[7] = (v4)&0xff;
+    tx_data[6] = (shoot_speed>> 8) & 0xff; 
+    tx_data[7] = (shoot_speed)&0xff;
     HAL_CAN_AddTxMessage(&hcan1, &tx_header, tx_data, (uint32_t *)CAN_TX_MAILBOX0);
 }

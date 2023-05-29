@@ -3,38 +3,38 @@
 <pre>
 <h1>礦ision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: μVision V5.24.2.0
-Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: A WRtidE, A, LIC=ZB4EI-T5ENT-2Z8W4-FXTPG-57IGT-RIR3M
+IDE-Version: μVision V5.25.3.0
+Copyright (C) 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Long Cup, ye, LIC=Z3C6R-KJRCR-GQ70H-WUEXJ-QD6A0-4QKNA
  
 Tool Versions:
-Toolchain:       MDK-ARM Plus  Version: 5.24.1
-Toolchain Path:  F:\DownLoad\Keil5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.06 update 5 (build 528)
-Assembler:       Armasm.exe V5.06 update 5 (build 528)
-Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
-Library Manager: ArmAr.exe V5.06 update 5 (build 528)
-Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
-CPU DLL:         SARMCM3.DLL V5.24.1
-Dialog DLL:      DCM.DLL V1.16.0.0
-Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
-Dialog DLL:      TCM.DLL V1.32.0.0
+Toolchain:       MDK-ARM Professional  Version: 5.18
+Toolchain Path:  D:\keil\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 1 (build 61)
+Assembler:       Armasm.exe V5.06 update 1 (build 61)
+Linker/Locator:  ArmLink.exe V5.06 update 1 (build 61)
+Library Manager: ArmAr.exe V5.06 update 1 (build 61)
+Hex Converter:   FromElf.exe V5.06 update 1 (build 61)
+CPU DLL:         SARMCM3.DLL V5.18
+Dialog DLL:      DCM.DLL V1.13.6.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
+Dialog DLL:      TCM.DLL V1.14.8.0
  
 <h2>Project:</h2>
-C:\Users\WRtidE\Desktop\2023超级对抗赛五号\chassis_board_c\MDK-ARM\YX_down.uvprojx
-Project File Date:  05/23/2023
+C:\Users\19668\Desktop\RoboMaster_Infantry\2023超级对抗赛五号\chassis_board_c\MDK-ARM\YX_down.uvprojx
+Project File Date:  05/25/2023
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'F:\DownLoad\Keil5\ARM\ARMCC\Bin'
+*** Using Compiler 'V5.06 update 1 (build 61)', folder: 'D:\keil\ARM\ARMCC\Bin'
 Build target 'YX_down'
 compiling Yaw_task.c...
 ../User/DriverLayer/drv_can.h(70): warning:  #1-D: last line of file ends without a newline
   #endif
 ../User/PotocaLayer/rc_potocal.h(55): warning:  #1-D: last line of file ends without a newline
   //#endif
-../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
   #define __FPU_PRESENT             1U       /*!< FPU present                                   */
-../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
         #define __FPU_USED       1U
 ../User/Task/INS_task.h(78): warning:  #1-D: last line of file ends without a newline
   #endif
@@ -58,36 +58,84 @@ compiling Yaw_task.c...
   static void start_check();
 ..\User\Task\Yaw_task.c(111): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   	ins_gyro  = -(ins_data1.gyro[2] / 100.f  - 30.f) * 19.8;
-..\User\Task\Yaw_task.c(68): warning:  #177-D: function "start_check"  was declared but never referenced
+..\User\Task\Yaw_task.c(68): warning:  #177-D: function "start_check" was declared but never referenced
   static void start_check();
 ..\User\Task\Yaw_task.c: 16 warnings, 0 errors
+compiling Chassis_task.c...
+../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h(51): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT"
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+../Drivers/CMSIS/Include/core_cm4.h(79): warning:  #47-D: incompatible redefinition of macro "__FPU_USED"
+        #define __FPU_USED       1U
+../User/Task/INS_task.h(78): warning:  #1-D: last line of file ends without a newline
+  #endif
+../User/DriverLayer/drv_can.h(70): warning:  #1-D: last line of file ends without a newline
+  #endif
+../User/PotocaLayer/rc_potocal.h(55): warning:  #1-D: last line of file ends without a newline
+  //#endif
+../User/DriverLayer/drv_usart.h(34): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\User\Task\Chassis_task.c(76): warning:  #1295-D: Deprecated declaration chassis_init - give arg types
+  static void chassis_init();	
+..\User\Task\Chassis_task.c(79): warning:  #1295-D: Deprecated declaration Get_Err - give arg types
+  static void Get_Err(); 
+..\User\Task\Chassis_task.c(82): warning:  #1295-D: Deprecated declaration Chassis_loop_Init - give arg types
+  static void Chassis_loop_Init(); 
+..\User\Task\Chassis_task.c(85): warning:  #1295-D: Deprecated declaration Chassis_following - give arg types
+  static void Chassis_following();
+..\User\Task\Chassis_task.c(88): warning:  #1295-D: Deprecated declaration Chassis_mode_1 - give arg types
+  static void Chassis_mode_1();
+..\User\Task\Chassis_task.c(91): warning:  #1295-D: Deprecated declaration Chassis_mode_2 - give arg types
+  static void Chassis_mode_2();
+..\User\Task\Chassis_task.c(94): warning:  #1295-D: Deprecated declaration Chassis_mode_3 - give arg types
+  static void Chassis_mode_3();
+..\User\Task\Chassis_task.c(97): warning:  #1295-D: Deprecated declaration chassis_choice - give arg types
+  static void chassis_choice();
+..\User\Task\Chassis_task.c(100): warning:  #1295-D: Deprecated declaration imu_reset - give arg types
+  static void imu_reset();
+..\User\Task\Chassis_task.c(103): warning:  #1295-D: Deprecated declaration super_cap_task - give arg types
+  static void super_cap_task();
+..\User\Task\Chassis_task.c(106): warning:  #1295-D: Deprecated declaration speed_ramp - give arg types
+  static void speed_ramp();
+..\User\Task\Chassis_task.c(116): warning:  #1295-D: Deprecated declaration speed_pid_calc - give arg types
+  void speed_pid_calc();
+..\User\Task\Chassis_task.c(119): warning:  #1295-D: Deprecated declaration vector_in_gimbal - give arg types
+  void vector_in_gimbal();
+..\User\Task\Chassis_task.c(199): warning:  #186-D: pointless comparison of unsigned integer with zero
+  	else if(Up_ins_yaw < 0)
+..\User\Task\Chassis_task.c(544): warning:  #1-D: last line of file ends without a newline
+  }
+..\User\Task\Chassis_task.c(445): warning:  #177-D: function "super_cap_task" was declared but never referenced
+  static void super_cap_task()
+..\User\Task\Chassis_task.c(107): warning:  #177-D: function "ramp_calc" was declared but never referenced
+  static void ramp_calc(fp32 ramp,uint16_t key,uint16_t speed_max);
+..\User\Task\Chassis_task.c: 23 warnings, 0 errors
 linking...
-Program Size: Code=40608 RO-data=1756 RW-data=568 ZI-data=21928  
+Program Size: Code=40956 RO-data=1752 RW-data=568 ZI-data=21936  
 FromELF: creating hex file...
-"YX_down\YX_down.axf" - 0 Error(s), 16 Warning(s).
+"YX_down\YX_down.axf" - 0 Error(s), 39 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.5.0.1.pack
-                ARM.CMSIS.5.0.1
+                http://www.keil.com/pack/ARM.CMSIS.4.5.0.pack
+                ARM.CMSIS.4.5.0
                 CMSIS (Cortex Microcontroller Software Interface Standard)
-   * Component: CORE Version: 5.0.1
+   * Component: CORE Version: 4.3.0
 
 Package Vendor: Keil
-                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.16.0.pack
-                Keil.STM32F4xx_DFP.2.16.0
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.14.0.pack
+                Keil.STM32F4xx_DFP.2.14.0
                 STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_YX_down
-  F:\DownLoad\Keil5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include
-  F:\DownLoad\Keil5\ARM\PACK\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+  D:\keil\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
+  D:\keil\ARM\PACK\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:03
+   * Component: ARM::CMSIS:CORE:4.3.0
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

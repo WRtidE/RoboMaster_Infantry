@@ -67,7 +67,7 @@ void Pitch_task(void const * argument)
 			gimbal_mode_1();
 		}
 		
-	gimbal_calc_and_send();
+    	gimbal_calc_and_send();  
 	}
 	osDelay(1);
 }
@@ -77,6 +77,8 @@ void gimbal_init()
 	pid_init(&pitch_speed_pid, 85, 0, 10, 30000, 30000); // init pid parameter, kp=40, ki=3, kd=0, output limit = 30000  
 	pid_init(&aim_speed_pid,   20, 0, 0, 30000, 30000);
 	pid_init(&pitch_angle_pid, 1, 0, 0, 1000, 1000);
+	
+	 pitch_target_angle = 2900;
 	
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE); //使能IDLE中断
 	HAL_UART_Receive_DMA(&huart1,rx_buffer,100); //开启接收,接受minipc的数据
@@ -113,7 +115,7 @@ void gimbal_mode_1()
 
 	pitch_target_angle =  pitch_target_angle -((rc_ctrl.rc.ch[1]) / 660.0 * 10) + rc_ctrl.mouse.y / 16384.00 *1000; 
 	
-	err_calc();
+	err_calc();//就改了这
 	
 	target_speed[4] = pid_pitch_calc(&pitch_angle_pid,  pitch_target_angle,  motor_info[4].rotor_angle);
 	
@@ -145,12 +147,12 @@ static void err_calc()
 		pitch_target_angle += 8191;
 	}
 	
-	if(6000 < pitch_target_angle && pitch_target_angle<7000 )
+	if(pitch_target_angle<1500 )
 	{
-		pitch_target_angle = 7000;
+		pitch_target_angle = 1500;
 	}
-	else if (700 < pitch_target_angle && pitch_target_angle<2000)
+	else if (pitch_target_angle > 3600)
 	{
-		pitch_target_angle = 700;
+		pitch_target_angle = 3600;
 	}
 }

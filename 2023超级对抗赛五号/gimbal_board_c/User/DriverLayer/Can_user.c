@@ -69,6 +69,8 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
              infantry.shooter_heat = (can1_RxData[0] << 8) | can1_RxData[1]; //枪口热量
              infantry.heat_limit   = (can1_RxData[2] << 8) | can1_RxData[3]; //枪口热量上限
              infantry.Robot_level =  can1_RxData[4]; //机器人等级
+						 infantry.speed_limit   = (can1_RxData[6] << 8) | can1_RxData[7]; //射速上限
+					
          }
     }
     else if (hcan == &hcan2)

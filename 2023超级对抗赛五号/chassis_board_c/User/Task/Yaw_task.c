@@ -89,7 +89,7 @@ void gimbal_yaw_task(void const * argument)
 		Yaw_mode_1();
 	}
 	
-	Yaw_calc_and_send();
+	  Yaw_calc_and_send();
     osDelay(1);
   }
 

@@ -117,7 +117,7 @@ void JUDGE_Receive(volatile uint8_t *databuffer,uint8_t length)
      
      }
 	update_data();
-	judge_data_send(infantry.shooter_heat, infantry.shooter_heat_limit ,infantry.Robot_level,0);
+	judge_data_send(infantry.shooter_heat, infantry.shooter_heat_limit ,infantry.Robot_level,infantry.shoot_speed_limit);
 	
 }
 
@@ -131,6 +131,8 @@ void update_data()
 	infantry.total_current = Judge_Robot.power_heat.chassis_current; //底盘电流
 	infantry.shooter_heat = Judge_Robot.power_heat.shooter_id1_17mm_cooling_heat; //枪口热量
 	infantry.shooter_heat_limit = Judge_Robot.robot_status.shooter_id1_17mm_cooling_limit; //枪口热量上限
+	infantry.shoot_speed_limit = Judge_Robot.robot_status.shooter_id1_17mm_speed_limit;
+	
 }
 
 

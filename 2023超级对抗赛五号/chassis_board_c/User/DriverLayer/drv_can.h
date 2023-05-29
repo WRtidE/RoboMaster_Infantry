@@ -61,7 +61,7 @@ extern void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
 extern void CAN_cmd_chassis(int16_t motor1, int16_t motor2, int16_t motor3, int16_t motor4);
 extern void set_motor_voltage(uint8_t id_range, int16_t v1, int16_t v2, int16_t v3, int16_t v4);
 extern void set_motor_voltage1(uint8_t id_range, int16_t v1, int16_t v2, int16_t v3, int16_t v4);
-extern void judge_data_send(int16_t heat, int16_t heat_limit, int16_t level, int16_t v4);
+extern void judge_data_send(int16_t heat, int16_t heat_limit, int16_t level, int16_t shoot_speed);
 extern ins_data_t ins_data1;
 
 extern volatile int16_t motor_speed_target[5];

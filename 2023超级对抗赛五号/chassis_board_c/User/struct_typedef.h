@@ -36,6 +36,7 @@ typedef struct ROBOT_DATA
     fp32 total_current;          //底盘输出电流
 	fp32 shooter_heat;			//枪口热量
 	fp32 shooter_heat_limit;
+	fp32 shoot_speed_limit; //枪口射速上限
 	
 	
 	

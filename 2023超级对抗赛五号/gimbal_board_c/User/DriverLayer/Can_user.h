@@ -16,6 +16,7 @@ typedef struct ROBOT_DATA
 	uint8_t Robot_id;
 	fp32 shooter_heat;			//枪口热量
 	fp32 heat_limit;			//枪口热量上限
+	fp32 speed_limit;      //枪口射速上限
 	
 
 } robot_data_t;

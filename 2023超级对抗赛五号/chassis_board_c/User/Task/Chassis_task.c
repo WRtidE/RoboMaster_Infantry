@@ -115,11 +115,14 @@ void Motor_Speed_limiting(volatile int16_t *motor_speed,int16_t limit_speed);
 //速度pid
 void speed_pid_calc();
 
+//云台坐标系运动
+void vector_in_gimbal();
+
 
 
 
 #define angle_valve 3
-#define angle_weight 55
+#define angle_weight 80
  
  
 void Chassis_task(void const *pvParameters)
@@ -216,7 +219,7 @@ static void Get_Err()
 void chassis_motol_speed_calculate()
 {
 	
-	motor_speed_target[CHAS_LF] =   Vx+Vy+Wz;
+		motor_speed_target[CHAS_LF] =   Vx+Vy+Wz;
     motor_speed_target[CHAS_RF] =   Vx-Vy+Wz;
     motor_speed_target[CHAS_RB] =  -Vy-Vx+Wz; 
     motor_speed_target[CHAS_LB] =   Vy-Vx+Wz;
@@ -270,7 +273,7 @@ void speed_pid_calc()
 static void Chassis_following()
 {
 	//阈值判断
-	fp32 Wz_max = 5000;
+	fp32 Wz_max = 6000;
 	Get_Err();
 	
 	
@@ -320,10 +323,7 @@ static void Chassis_mode_1()
 	// moving	control by remote
     else
     {
-		speed_ramp();
-        Vy=  rc_ctrl.rc.ch[3]/660.0*8000 +  ramp[0] -  ramp[1];
-        Vx=  rc_ctrl.rc.ch[2]/660.0*8000 -  ramp[2] +  ramp[3];
-       // Wz= -rc_ctrl.rc.ch[4]/660.0*8000 - q_flag/q_flag * 2000 + e_flag/e_flag * 2000;
+				vector_in_gimbal();
     }
 			
 	Chassis_following();
@@ -333,31 +333,13 @@ static void Chassis_mode_2() //小陀螺模式
 {
 	
 	//更新模式标志位
-	Get_Err();
 	infantry.chassis_free = 0;
 	infantry.chassis_follow = 0;
 	infantry.chassis_rovolve= 1;
 	
 	Wz = 5000;
-
-	Err_yaw_hudu = Err_yaw/57.3f; //添加负号的err相当于云台减底盘
-			
-	//calculate sin and cos
-	cos_a = cos(Err_yaw_hudu);
-	sin_a = sin(Err_yaw_hudu);
-			
-
-	// moving	control by remote
-
-	 speed_ramp();
-     Vy=  rc_ctrl.rc.ch[3]/660.0*8000 +  ramp[0] -  ramp[1];
-     Vx=  rc_ctrl.rc.ch[2]/660.0*8000 -  ramp[2] +  ramp[3];
-
-	//curl matrix * V
-	Temp_Vx = Vx;
-	Temp_Vy = Vy;
-	Vx = Temp_Vx*cos_a - Temp_Vy*sin_a;
-	Vy = Temp_Vx*sin_a + Temp_Vy*cos_a;		
+	
+    vector_in_gimbal();
 		
 }
 
@@ -389,10 +371,7 @@ static void Chassis_mode_3()
 	// moving	control by remote
     else
     {
-        speed_ramp();
-        Vy=  rc_ctrl.rc.ch[3]/660.0*8000 +  ramp[0] -  ramp[1];
-        Vx=  rc_ctrl.rc.ch[2]/660.0*8000 -  ramp[2] +  ramp[3];
-       // Wz= -rc_ctrl.rc.ch[4]/660.0*8000 - q_flag/q_flag * 2000 + e_flag/e_flag * 2000;
+				vector_in_gimbal();
     }
 	
 }
@@ -538,4 +517,28 @@ static void Chassis_Power_Limit(double Chassis_pidout_target_limit)
 
 	}
 
+}
+
+void vector_in_gimbal()
+{
+			Get_Err();
+	
+	Err_yaw_hudu = Err_yaw/57.3f; //添加负号的err相当于云台减底盘
+			
+	//calculate sin and cos
+	cos_a = cos(Err_yaw_hudu);
+	sin_a = sin(Err_yaw_hudu);
+			
+
+	// moving	control by remote
+
+	 speed_ramp();
+     Vy=  rc_ctrl.rc.ch[3]/660.0*8000 +  ramp[0] -  ramp[1];
+     Vx=  rc_ctrl.rc.ch[2]/660.0*8000 -  ramp[2] +  ramp[3];
+
+	//curl matrix * V
+	Temp_Vx = Vx;
+	Temp_Vy = Vy;
+	Vx = Temp_Vx*cos_a - Temp_Vy*sin_a;
+	Vy = Temp_Vx*sin_a + Temp_Vy*cos_a;	
 }

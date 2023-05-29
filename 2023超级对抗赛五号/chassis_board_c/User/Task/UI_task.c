@@ -2,6 +2,12 @@
 #include "CRC.h"
 #include "judge.h"
 #include "Chassis_task.h"
+#include "Yaw_task.h"
+#include "struct_typedef.h"
+#include "cmsis_os.h"
+#include "drv_can.h"
+#include "INS_task.h"
+#include "pid.h"
 
 uint8_t UI_Seq;                         //包序号
 
@@ -25,6 +31,7 @@ static uint8_t usart6_tx_dma_is_busy = 0;
   */
 void userUI_init(void);
 
+
 /**
   * @brief          自定义UI绘制背景元素
   * @param[in]      none
@@ -46,7 +53,9 @@ void userUI_draw_foresight(int16_t delta_x, int16_t delta_y, fp32 scale);
 //小陀螺模式
 void userUI_draw_wipping(uint8_t refresh, uint8_t display);
 
-void userUI_draw_robot_control_mode(uint8_t en, uint8_t refresh, robot_data_t infantry);
+void userUI_draw_robot_control_mode(uint8_t en, uint8_t refresh, robot_data_t infntry);
+
+void userUI_draw_auto_aim(uint8_t en, uint8_t refresh,fp32 get_minipc);
 
 //将要显示的图形
 Graph_Data graph1, graph2, graph3, graph4, graph5, graph6, graph7;
@@ -70,15 +79,44 @@ void UI_Task(void const* argument)
     
     while (1)
     {
-        userUI_init();
-        osDelay(USERUI_TASK_CONTROL_TIME_MS);
-		
-		   //4. 绘制机器人小陀螺状态（只有发生改变时才绘制，或每秒绘制一次）
+			  if (v_flag)
+        {
+            userUI_control.all_refresh_key_press_time += USERUI_TASK_CONTROL_TIME_MS;
+            //当手动刷新按键被按下一段时间后，执行UI全部重绘
+            if (userUI_control.all_refresh_key_press_time > USERUI_MANUAL_REFRESH_CONTROL_TIME && userUI_control.all_refresh_flag == 0)
+            {
+                userUI_control.all_refresh_flag = 1;
+                userUI_init();
+            }
+            //防止计时器溢出
+            else if (userUI_control.all_refresh_key_press_time > 60000)
+            {
+                userUI_control.all_refresh_key_press_time = 0;
+            }
+        }
+        else
+        {
+            userUI_control.all_refresh_key_press_time = 0;
+            userUI_control.all_refresh_flag = 0;
+        }
+				
+
+				
+			 //*******************以下为自己定义动态ui******************************
+		   //4. 绘制机器人小陀螺状态（只有发生改变时才绘制）
         userUI_draw_wipping(UI_NEED_REFRESH, infantry.chassis_rovolve);
 
-        //5. 绘制机器人行为模式（只有发生改变时才绘制，或每秒绘制一次）
+        //5. 绘制机器人行为模式（只有发生改变时才绘制）
         userUI_draw_robot_control_mode(UI_IS_EXTERN, UI_NEED_REFRESH, infantry);
-    }
+				
+				//绘制自瞄状态
+				userUI_draw_auto_aim(UI_IS_EXTERN, UI_NEED_REFRESH,yaw_data);
+			  //********************以上为自己定义动态ui*************
+				
+				userUI_control.module_extern_flag = 1;
+        userUI_init();
+        osDelay(USERUI_TASK_CONTROL_TIME_MS);
+		}
 }
 
 
@@ -111,7 +149,7 @@ void userUI_init(void)
   */
 void userUI_draw_foresight(int16_t delta_x, int16_t delta_y, fp32 scale)
 {
-    Line_Draw(&graph1, "FS1", UI_Graph_ADD, 1, UI_Color_Cyan, 1, 960 + delta_x, 370 + delta_y, 960 + delta_x, 580 + delta_y);
+   	Line_Draw(&graph1, "FS1", UI_Graph_ADD, 1, UI_Color_Cyan, 1, 960 + delta_x, 370 + delta_y, 960 + delta_x, 580 + delta_y);
     Line_Draw(&graph2, "FS2", UI_Graph_ADD, 1, UI_Color_Cyan, 2, 900 + delta_x, 540 + delta_y, 1020 + delta_x, 540 + delta_y);
     Line_Draw(&graph3, "FS3", UI_Graph_ADD, 1, UI_Color_Cyan, 2, 920 + delta_x, 510 + delta_y, 1000 + delta_x, 510 + delta_y);
     Line_Draw(&graph4, "FS4", UI_Graph_ADD, 1, UI_Color_Cyan, 2, 930 + delta_x, 470 + delta_y, 990 + delta_x, 470 + delta_y);
@@ -125,8 +163,7 @@ void userUI_draw_foresight(int16_t delta_x, int16_t delta_y, fp32 scale)
 void userUI_draw_background(void)
 {
     //画行车辅助线
-    
-	Line_Draw(&graph6, "RC1", UI_Graph_ADD, 0, UI_Color_Green, 2, 400, 0, 800, 400);
+	  Line_Draw(&graph6, "RC1", UI_Graph_ADD, 0, UI_Color_Green, 2, 400, 0, 800, 400);
     Line_Draw(&graph7, "RC2", UI_Graph_ADD, 0, UI_Color_Green, 2, 1520, 0, 1120, 400);
     ui_display_7_graph(&graph1, &graph2, &graph3, &graph4, &graph5, &graph6, &graph7);
 
@@ -143,14 +180,15 @@ void userUI_draw_background(void)
   */
 void userUI_draw_wipping(uint8_t refresh, uint8_t display)
 {
-    static uint8_t is_working = 0;
+	  static uint8_t is_working = 0;
 
     if (display == 1)
     {
         if (is_working == 0 || refresh)
         {
+						UI_delete(1, 5);
             is_working = 1;
-            string_Draw(&ui_str, "ROT", UI_Graph_ADD, 2, UI_Color_Yellow, 2, 20, 1200, 155, "ROTATING");
+            string_Draw(&ui_str, "ROT", UI_Graph_ADD, 5, UI_Color_Yellow, 2, 20, 1200, 155, "ROTATING");
             ui_display_string(&ui_str);
         }
     }
@@ -158,8 +196,9 @@ void userUI_draw_wipping(uint8_t refresh, uint8_t display)
     {
         if (is_working == 1 || refresh)
         {
-            is_working = 0;
-            string_Draw(&ui_str, "ROT", UI_Graph_Del, 2, UI_Color_Yellow, 2, 20, 1200, 155, "ROTATING");
+            UI_delete(1, 5);
+					  is_working = 0;
+            string_Draw(&ui_str, "ROT", UI_Graph_Del, 5, UI_Color_Yellow, 2, 20, 1200, 155, "ROTATING");
             ui_display_string(&ui_str);
         }
     }
@@ -177,16 +216,37 @@ void userUI_draw_robot_control_mode(uint8_t en, uint8_t refresh, robot_data_t in
     
 	if(infantry.chassis_follow)
 	{
+		UI_delete(1, 6);
 		string_Draw(&ui_str, "CTM", en == 0 ? UI_Graph_ADD : UI_Graph_Change, 6, UI_Color_Yellow, 3, 20, 650, 155, "CHASSIS_FOLLOW");
-	}
+	        
 	else
 	{
+		UI_delete(1, 6);
 		string_Draw(&ui_str, "CTM", en == 0 ? UI_Graph_ADD : UI_Graph_Change, 6, UI_Color_Yellow, 3, 20, 650, 155, "CHASSIS_FREE");
 	}
 	
     ui_display_string(&ui_str);
 }
 
+
+
+//自瞄识别符号
+void userUI_draw_auto_aim(uint8_t en, uint8_t refresh,fp32 get_minipc)
+{
+    
+	if(get_minipc)
+	{
+		UI_delete(1, 7);
+		string_Draw(&ui_str, "AIM", en == 0 ? UI_Graph_ADD : UI_Graph_Change, 7, UI_Color_Pink, 3, 20, 1000, 155, "GET_ENEMY");
+	}
+	else
+	{
+		UI_delete(1, 7);
+		string_Draw(&ui_str, "AIM", en == 0 ? UI_Graph_ADD : UI_Graph_Change, 7, UI_Color_Pink, 3, 20, 1000, 155, "AUTO_AIM");
+	}
+	
+    ui_display_string(&ui_str);
+}
 
 //********************************************************************************************************************
 
