@@ -131,17 +131,16 @@ void Chassis_task(void const *pvParameters)
 			
     for(;;)		
     {     
-	 Chassis_loop_Init();
-	 chassis_choice();                //控制模式选择
-	 chassis_motol_speed_calculate(); //速度计算
-	 speed_pid_calc();
-	 Motor_Speed_limiting(motor_speed_target,speed_limit); //速度限制 
-	 Chassis_Power_Limit(speed_limit * 4);      //功率限制
-		//speed_pid_calc();
-	 chassis_current_give();          //发送底盘电流
-	 imu_reset();                     //重置陀螺仪
+		Chassis_loop_Init();
+		chassis_choice();                //控制模式选择
+		chassis_motol_speed_calculate(); //速度计算
+		speed_pid_calc();
+		Motor_Speed_limiting(motor_speed_target,speed_limit); //速度限制 
+		Chassis_Power_Limit(speed_limit * 4);      //功率限制
+		chassis_current_give();          //发送底盘电流
+		imu_reset();                     //重置陀螺仪
 	
-     osDelay(1);
+    osDelay(1);
 
     }  
 
@@ -219,7 +218,7 @@ static void Get_Err()
 void chassis_motol_speed_calculate()
 {
 	
-		motor_speed_target[CHAS_LF] =   Vx+Vy+Wz;
+	motor_speed_target[CHAS_LF] =   Vx+Vy+Wz;
     motor_speed_target[CHAS_RF] =   Vx-Vy+Wz;
     motor_speed_target[CHAS_RB] =  -Vy-Vx+Wz; 
     motor_speed_target[CHAS_LB] =   Vy-Vx+Wz;

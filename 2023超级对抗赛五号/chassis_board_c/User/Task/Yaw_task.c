@@ -103,7 +103,7 @@ static void Yaw_init()
 	
 }
 
-static void Yaw_read_imu() //insdata1是云台陀螺仪数据
+static void Yaw_read_imu() //ins_data1是云台陀螺仪数据
 {
 	ins_yaw   = ins_data1.angle[0];
 	ins_pitch = ins_data1.angle[1];
@@ -124,6 +124,7 @@ static void Yaw_mode_1() //锁云台模式
 			
 			detel_calc(&err_yaw);
 			
+			//角度环PID
 			if(err_yaw < -1 || err_yaw > 1)
 			{
 				motor_speed_target[4] =  - gimbal_PID_calc(&yaw_angle_pid[4], ins_yaw, init_yaw);
@@ -160,6 +161,7 @@ static void auto_aim()
 
 static void Yaw_calc_and_send()
 {
+	//速度环PID
 	if((rc_ctrl.rc.s[0]== 1 || press_right) && ins_yaw)
 	{
 		motor_info_chassis[4].set_current = pid_calc(&aim_speed_pid, ins_gyro,motor_speed_target[4]);

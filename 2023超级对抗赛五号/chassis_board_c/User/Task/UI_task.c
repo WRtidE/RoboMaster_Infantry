@@ -218,7 +218,8 @@ void userUI_draw_robot_control_mode(uint8_t en, uint8_t refresh, robot_data_t in
 	{
 		UI_delete(1, 6);
 		string_Draw(&ui_str, "CTM", en == 0 ? UI_Graph_ADD : UI_Graph_Change, 6, UI_Color_Yellow, 3, 20, 650, 155, "CHASSIS_FOLLOW");
-	        
+		
+	}  
 	else
 	{
 		UI_delete(1, 6);

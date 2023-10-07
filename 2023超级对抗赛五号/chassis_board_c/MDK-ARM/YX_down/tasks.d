@@ -1,9 +1,9 @@
 yx_down\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c
-yx_down\tasks.o: D:\keil\ARM\ARMCC\Bin\..\include\stdlib.h
-yx_down\tasks.o: D:\keil\ARM\ARMCC\Bin\..\include\string.h
+yx_down\tasks.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+yx_down\tasks.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\string.h
 yx_down\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-yx_down\tasks.o: D:\keil\ARM\ARMCC\Bin\..\include\stddef.h
-yx_down\tasks.o: D:\keil\ARM\ARMCC\Bin\..\include\stdint.h
+yx_down\tasks.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+yx_down\tasks.o: F:\DownLoad\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
 yx_down\tasks.o: ../Core/Inc/FreeRTOSConfig.h
 yx_down\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 yx_down\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

@@ -80,10 +80,9 @@ void gimbal_init()
 	
 	 pitch_target_angle = 2900;
 	
+	//视觉接口
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE); //使能IDLE中断
 	HAL_UART_Receive_DMA(&huart1,rx_buffer,100); //开启接收,接受minipc的数据
-	
-
 	
 }
 
