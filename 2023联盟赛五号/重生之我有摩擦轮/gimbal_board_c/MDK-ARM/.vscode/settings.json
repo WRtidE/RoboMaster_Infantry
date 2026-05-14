@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "ins_task.h": "c",
+        "tim.h": "c",
+        "spi.h": "c"
+    }
+}
